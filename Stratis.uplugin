@@ -1,0 +1,29 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Stratis",
+	"Description": "Official Stratis Blockchain Platform integration plugin for Unreal Engine",
+	"Category": "Other",
+	"CreatedBy": "Stratis Platform",
+	"CreatedByURL": "https://www.stratisplatform.com/",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": true,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "Stratis",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "StratisAPI",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
