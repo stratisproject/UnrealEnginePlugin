@@ -13,7 +13,6 @@
 #pragma once
 
 #include "BaseModel.h"
-#include "AnyType.h"
 
 namespace stratis 
 {
@@ -35,7 +34,7 @@ public:
 	TOptional<FString> Address;
 	TOptional<TArray<FString>> Topics;
 	TOptional<FString> Data;
-	TOptional<AnyType> Log;
+	TOptional<TSharedPtr<FJsonValue>> Log;
 };
 
 }

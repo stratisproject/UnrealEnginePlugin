@@ -13,7 +13,6 @@
 #pragma once
 
 #include "BaseModel.h"
-#include "AnyType.h"
 #include "ContractErrorMessage.h"
 #include "Gas.h"
 #include "Log.h"
@@ -40,7 +39,7 @@ public:
 	TOptional<Gas> GasConsumed;
 	TOptional<bool> Revert;
 	TOptional<ContractErrorMessage> ErrorMessage;
-	TOptional<AnyType> _Return;
+	TOptional<TSharedPtr<FJsonValue>> _Return;
 	TOptional<TArray<Log>> Logs;
 };
 

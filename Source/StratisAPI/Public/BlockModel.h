@@ -13,7 +13,6 @@
 #pragma once
 
 #include "BaseModel.h"
-#include "AnyType.h"
 
 namespace stratis 
 {
@@ -40,7 +39,7 @@ public:
 	TOptional<int32> Version;
 	TOptional<FString> VersionHex;
 	TOptional<FString> Merkleroot;
-	TOptional<TArray<AnyType>> Tx;
+	TOptional<TArray<TSharedPtr<FJsonValue>>> Tx;
 	TOptional<int64> Time;
 	TOptional<int64> Mediantime;
 	TOptional<int32> Nonce;
