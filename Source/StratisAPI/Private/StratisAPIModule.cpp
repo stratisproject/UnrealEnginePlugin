@@ -22,4 +22,3 @@ void StratisAPIModule::StartupModule()
 void StratisAPIModule::ShutdownModule()
 {
 }
-

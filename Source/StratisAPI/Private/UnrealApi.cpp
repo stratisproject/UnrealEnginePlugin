@@ -18,12 +18,12 @@
 #include "HttpModule.h"
 #include "Serialization/JsonSerializer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
-UnrealApi::UnrealApi() 
+UnrealApi::UnrealApi()
 : Url(TEXT("http://localhost"))
 {
 }
@@ -148,7 +148,7 @@ FHttpRequestPtr UnrealApi::Unity3dApiUnity3dLocalCallPost(const Unity3dApiUnity3
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dApiUnity3dLocalCallPostResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;
@@ -175,7 +175,7 @@ FHttpRequestPtr UnrealApi::Unity3dApiUnity3dReceiptGet(const Unity3dApiUnity3dRe
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dApiUnity3dReceiptGetResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;
@@ -202,7 +202,7 @@ FHttpRequestPtr UnrealApi::Unity3dBlockGet(const Unity3dBlockGetRequest& Request
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dBlockGetResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;
@@ -229,7 +229,7 @@ FHttpRequestPtr UnrealApi::Unity3dGetaddressbalanceGet(const Unity3dGetaddressba
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dGetaddressbalanceGetResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;
@@ -256,7 +256,7 @@ FHttpRequestPtr UnrealApi::Unity3dGetblockheaderGet(const Unity3dGetblockheaderG
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dGetblockheaderGetResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;
@@ -283,7 +283,7 @@ FHttpRequestPtr UnrealApi::Unity3dGetrawtransactionGet(const Unity3dGetrawtransa
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dGetrawtransactionGetResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;
@@ -310,7 +310,7 @@ FHttpRequestPtr UnrealApi::Unity3dGetutxosforaddressGet(const Unity3dGetutxosfor
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dGetutxosforaddressGetResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;
@@ -337,7 +337,7 @@ FHttpRequestPtr UnrealApi::Unity3dSendTransactionPost(const Unity3dSendTransacti
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dSendTransactionPostResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;
@@ -364,7 +364,7 @@ FHttpRequestPtr UnrealApi::Unity3dTipGet(const Unity3dTipGetRequest& Request, co
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dTipGetResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;
@@ -391,7 +391,7 @@ FHttpRequestPtr UnrealApi::Unity3dValidateaddressGet(const Unity3dValidateaddres
 	}
 
 	Request.SetupHttpRequest(HttpRequest);
-	
+
 	HttpRequest->OnProcessRequestComplete().BindRaw(this, &UnrealApi::OnUnity3dValidateaddressGetResponse, Delegate);
 	HttpRequest->ProcessRequest();
 	return HttpRequest;

@@ -21,9 +21,9 @@
 
 class IHttpRequest;
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 typedef TSharedRef<TJsonWriter<>> JsonWriter;

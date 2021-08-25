@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void SendTransactionRequest::WriteJson(JsonWriter& Writer) const

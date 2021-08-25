@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void ProblemDetails::WriteJson(JsonWriter& Writer) const
@@ -27,23 +27,23 @@ void ProblemDetails::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (Type.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("type")); WriteJsonValue(Writer, Type.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("type")); WriteJsonValue(Writer, Type.GetValue());
 	}
 	if (Title.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("title")); WriteJsonValue(Writer, Title.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("title")); WriteJsonValue(Writer, Title.GetValue());
 	}
 	if (Status.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("status")); WriteJsonValue(Writer, Status.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("status")); WriteJsonValue(Writer, Status.GetValue());
 	}
 	if (Detail.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("detail")); WriteJsonValue(Writer, Detail.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("detail")); WriteJsonValue(Writer, Detail.GetValue());
 	}
 	if (Instance.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("instance")); WriteJsonValue(Writer, Instance.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("instance")); WriteJsonValue(Writer, Instance.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

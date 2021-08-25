@@ -19,9 +19,9 @@
 #include "Misc/FileHelper.h"
 #include "Misc/Paths.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 HttpFileInput::HttpFileInput(const TCHAR* InFilePath)

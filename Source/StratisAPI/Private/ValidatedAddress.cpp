@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void ValidatedAddress::WriteJson(JsonWriter& Writer) const
@@ -27,23 +27,23 @@ void ValidatedAddress::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (Isvalid.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("isvalid")); WriteJsonValue(Writer, Isvalid.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("isvalid")); WriteJsonValue(Writer, Isvalid.GetValue());
 	}
 	if (Address.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("address")); WriteJsonValue(Writer, Address.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("address")); WriteJsonValue(Writer, Address.GetValue());
 	}
 	if (ScriptPubKey.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("scriptPubKey")); WriteJsonValue(Writer, ScriptPubKey.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("scriptPubKey")); WriteJsonValue(Writer, ScriptPubKey.GetValue());
 	}
 	if (Isscript.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("isscript")); WriteJsonValue(Writer, Isscript.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("isscript")); WriteJsonValue(Writer, Isscript.GetValue());
 	}
 	if (Iswitness.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("iswitness")); WriteJsonValue(Writer, Iswitness.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("iswitness")); WriteJsonValue(Writer, Iswitness.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

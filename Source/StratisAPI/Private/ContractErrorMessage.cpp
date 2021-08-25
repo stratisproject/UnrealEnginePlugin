@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void ContractErrorMessage::WriteJson(JsonWriter& Writer) const
@@ -27,7 +27,7 @@ void ContractErrorMessage::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (Value.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("value")); WriteJsonValue(Writer, Value.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("value")); WriteJsonValue(Writer, Value.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

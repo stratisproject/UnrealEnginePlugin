@@ -14,9 +14,9 @@
 
 #include "BaseModel.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 /*

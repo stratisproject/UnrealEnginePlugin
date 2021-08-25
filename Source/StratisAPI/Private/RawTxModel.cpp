@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void RawTxModel::WriteJson(JsonWriter& Writer) const
@@ -27,7 +27,7 @@ void RawTxModel::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (Hex.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("hex")); WriteJsonValue(Writer, Hex.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("hex")); WriteJsonValue(Writer, Hex.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

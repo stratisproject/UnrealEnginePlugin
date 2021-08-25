@@ -15,9 +15,9 @@
 #include "CoreMinimal.h"
 #include "BaseModel.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 class STRATISAPI_API UnrealApi
@@ -26,16 +26,16 @@ public:
 	UnrealApi();
 	~UnrealApi();
 
-	/* Sets the URL Endpoint. 
+	/* Sets the URL Endpoint.
 	* Note: several fallback endpoints can be configured in request retry policies, see Request::SetShouldRetry */
 	void SetURL(const FString& Url);
 
 	/* Adds global header params to all requests */
 	void AddHeaderParam(const FString& Key, const FString& Value);
 	void ClearHeaderParams();
-	
+
 	/* Sets the retry manager to the user-defined retry manager. User must manage the lifetime of the retry manager.
-	* If no retry manager is specified and a request needs retries, a default retry manager will be used. 
+	* If no retry manager is specified and a request needs retries, a default retry manager will be used.
 	* See also: Request::SetShouldRetry */
 	void SetHttpRetryManager(FHttpRetrySystem::FManager& RetryManager);
 	FHttpRetrySystem::FManager& GetHttpRetryManager();
@@ -104,6 +104,6 @@ private:
 	mutable FHttpRetrySystem::FManager* RetryManager = nullptr;
 	mutable TUniquePtr<HttpRetryManager> DefaultRetryManager;
 };
-	
+
 }
 }

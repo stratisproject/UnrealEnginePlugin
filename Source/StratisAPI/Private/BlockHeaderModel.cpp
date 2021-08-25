@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void BlockHeaderModel::WriteJson(JsonWriter& Writer) const
@@ -27,27 +27,27 @@ void BlockHeaderModel::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (Version.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("version")); WriteJsonValue(Writer, Version.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("version")); WriteJsonValue(Writer, Version.GetValue());
 	}
 	if (Merkleroot.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("merkleroot")); WriteJsonValue(Writer, Merkleroot.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("merkleroot")); WriteJsonValue(Writer, Merkleroot.GetValue());
 	}
 	if (Nonce.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("nonce")); WriteJsonValue(Writer, Nonce.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("nonce")); WriteJsonValue(Writer, Nonce.GetValue());
 	}
 	if (Bits.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("bits")); WriteJsonValue(Writer, Bits.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("bits")); WriteJsonValue(Writer, Bits.GetValue());
 	}
 	if (Previousblockhash.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("previousblockhash")); WriteJsonValue(Writer, Previousblockhash.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("previousblockhash")); WriteJsonValue(Writer, Previousblockhash.GetValue());
 	}
 	if (Time.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("time")); WriteJsonValue(Writer, Time.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("time")); WriteJsonValue(Writer, Time.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

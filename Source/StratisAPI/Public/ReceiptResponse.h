@@ -15,9 +15,9 @@
 #include "BaseModel.h"
 #include "LogResponse.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 /*

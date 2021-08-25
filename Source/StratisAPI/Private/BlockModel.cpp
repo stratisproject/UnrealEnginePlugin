@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void BlockModel::WriteJson(JsonWriter& Writer) const
@@ -27,99 +27,99 @@ void BlockModel::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (Hash.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("hash")); WriteJsonValue(Writer, Hash.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("hash")); WriteJsonValue(Writer, Hash.GetValue());
 	}
 	if (Confirmations.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("confirmations")); WriteJsonValue(Writer, Confirmations.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("confirmations")); WriteJsonValue(Writer, Confirmations.GetValue());
 	}
 	if (Size.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("size")); WriteJsonValue(Writer, Size.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("size")); WriteJsonValue(Writer, Size.GetValue());
 	}
 	if (Weight.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("weight")); WriteJsonValue(Writer, Weight.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("weight")); WriteJsonValue(Writer, Weight.GetValue());
 	}
 	if (Height.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("height")); WriteJsonValue(Writer, Height.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("height")); WriteJsonValue(Writer, Height.GetValue());
 	}
 	if (Version.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("version")); WriteJsonValue(Writer, Version.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("version")); WriteJsonValue(Writer, Version.GetValue());
 	}
 	if (VersionHex.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("versionHex")); WriteJsonValue(Writer, VersionHex.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("versionHex")); WriteJsonValue(Writer, VersionHex.GetValue());
 	}
 	if (Merkleroot.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("merkleroot")); WriteJsonValue(Writer, Merkleroot.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("merkleroot")); WriteJsonValue(Writer, Merkleroot.GetValue());
 	}
 	if (Tx.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("tx")); WriteJsonValue(Writer, Tx.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("tx")); WriteJsonValue(Writer, Tx.GetValue());
 	}
 	if (Time.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("time")); WriteJsonValue(Writer, Time.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("time")); WriteJsonValue(Writer, Time.GetValue());
 	}
 	if (Mediantime.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("mediantime")); WriteJsonValue(Writer, Mediantime.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("mediantime")); WriteJsonValue(Writer, Mediantime.GetValue());
 	}
 	if (Nonce.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("nonce")); WriteJsonValue(Writer, Nonce.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("nonce")); WriteJsonValue(Writer, Nonce.GetValue());
 	}
 	if (Bits.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("bits")); WriteJsonValue(Writer, Bits.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("bits")); WriteJsonValue(Writer, Bits.GetValue());
 	}
 	if (Difficulty.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("difficulty")); WriteJsonValue(Writer, Difficulty.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("difficulty")); WriteJsonValue(Writer, Difficulty.GetValue());
 	}
 	if (Chainwork.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("chainwork")); WriteJsonValue(Writer, Chainwork.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("chainwork")); WriteJsonValue(Writer, Chainwork.GetValue());
 	}
 	if (NTx.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("nTx")); WriteJsonValue(Writer, NTx.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("nTx")); WriteJsonValue(Writer, NTx.GetValue());
 	}
 	if (Previousblockhash.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("previousblockhash")); WriteJsonValue(Writer, Previousblockhash.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("previousblockhash")); WriteJsonValue(Writer, Previousblockhash.GetValue());
 	}
 	if (Nextblockhash.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("nextblockhash")); WriteJsonValue(Writer, Nextblockhash.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("nextblockhash")); WriteJsonValue(Writer, Nextblockhash.GetValue());
 	}
 	if (Signature.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("signature")); WriteJsonValue(Writer, Signature.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("signature")); WriteJsonValue(Writer, Signature.GetValue());
 	}
 	if (Modifierv2.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("modifierv2")); WriteJsonValue(Writer, Modifierv2.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("modifierv2")); WriteJsonValue(Writer, Modifierv2.GetValue());
 	}
 	if (Flags.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("flags")); WriteJsonValue(Writer, Flags.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("flags")); WriteJsonValue(Writer, Flags.GetValue());
 	}
 	if (Hashproof.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("hashproof")); WriteJsonValue(Writer, Hashproof.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("hashproof")); WriteJsonValue(Writer, Hashproof.GetValue());
 	}
 	if (Blocktrust.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("blocktrust")); WriteJsonValue(Writer, Blocktrust.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("blocktrust")); WriteJsonValue(Writer, Blocktrust.GetValue());
 	}
 	if (Chaintrust.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("chaintrust")); WriteJsonValue(Writer, Chaintrust.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("chaintrust")); WriteJsonValue(Writer, Chaintrust.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

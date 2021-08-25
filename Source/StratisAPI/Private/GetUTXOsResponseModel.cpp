@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void GetUTXOsResponseModel::WriteJson(JsonWriter& Writer) const
@@ -27,15 +27,15 @@ void GetUTXOsResponseModel::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (BalanceSat.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("balanceSat")); WriteJsonValue(Writer, BalanceSat.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("balanceSat")); WriteJsonValue(Writer, BalanceSat.GetValue());
 	}
 	if (UtxOs.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("utxOs")); WriteJsonValue(Writer, UtxOs.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("utxOs")); WriteJsonValue(Writer, UtxOs.GetValue());
 	}
 	if (Reason.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("reason")); WriteJsonValue(Writer, Reason.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("reason")); WriteJsonValue(Writer, Reason.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

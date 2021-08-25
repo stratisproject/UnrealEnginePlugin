@@ -19,9 +19,9 @@
 #include "HttpRetrySystem.h"
 #include "Containers/Ticker.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 typedef TSharedRef<TJsonWriter<>> JsonWriter;
@@ -52,7 +52,7 @@ struct STRATISAPI_API HttpRetryParams
 };
 
 class STRATISAPI_API Model
-{ 
+{
 public:
 	virtual ~Model() {}
 	virtual void WriteJson(JsonWriter& Writer) const = 0;

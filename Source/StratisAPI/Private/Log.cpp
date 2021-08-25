@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void Log::WriteJson(JsonWriter& Writer) const
@@ -27,15 +27,15 @@ void Log::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (Address.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("address")); WriteJsonValue(Writer, Address.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("address")); WriteJsonValue(Writer, Address.GetValue());
 	}
 	if (Topics.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("topics")); WriteJsonValue(Writer, Topics.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("topics")); WriteJsonValue(Writer, Topics.GetValue());
 	}
 	if (Data.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("data")); WriteJsonValue(Writer, Data.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("data")); WriteJsonValue(Writer, Data.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

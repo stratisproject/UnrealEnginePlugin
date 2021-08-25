@@ -20,9 +20,9 @@
 #include "HttpModule.h"
 #include "PlatformHttp.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 FString UnrealApi::Unity3dApiUnity3dLocalCallPostRequest::ComputePath() const

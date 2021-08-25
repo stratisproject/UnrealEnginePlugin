@@ -18,9 +18,9 @@
 #include "Log.h"
 #include "TransferInfo.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 /*

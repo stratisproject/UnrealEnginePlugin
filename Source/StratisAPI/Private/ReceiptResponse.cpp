@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void ReceiptResponse::WriteJson(JsonWriter& Writer) const
@@ -27,55 +27,55 @@ void ReceiptResponse::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (TransactionHash.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("transactionHash")); WriteJsonValue(Writer, TransactionHash.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("transactionHash")); WriteJsonValue(Writer, TransactionHash.GetValue());
 	}
 	if (BlockHash.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("blockHash")); WriteJsonValue(Writer, BlockHash.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("blockHash")); WriteJsonValue(Writer, BlockHash.GetValue());
 	}
 	if (BlockNumber.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("blockNumber")); WriteJsonValue(Writer, BlockNumber.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("blockNumber")); WriteJsonValue(Writer, BlockNumber.GetValue());
 	}
 	if (PostState.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("postState")); WriteJsonValue(Writer, PostState.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("postState")); WriteJsonValue(Writer, PostState.GetValue());
 	}
 	if (GasUsed.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("gasUsed")); WriteJsonValue(Writer, GasUsed.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("gasUsed")); WriteJsonValue(Writer, GasUsed.GetValue());
 	}
 	if (From.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("from")); WriteJsonValue(Writer, From.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("from")); WriteJsonValue(Writer, From.GetValue());
 	}
 	if (To.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("to")); WriteJsonValue(Writer, To.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("to")); WriteJsonValue(Writer, To.GetValue());
 	}
 	if (NewContractAddress.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("newContractAddress")); WriteJsonValue(Writer, NewContractAddress.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("newContractAddress")); WriteJsonValue(Writer, NewContractAddress.GetValue());
 	}
 	if (Success.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("success")); WriteJsonValue(Writer, Success.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("success")); WriteJsonValue(Writer, Success.GetValue());
 	}
 	if (ReturnValue.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("returnValue")); WriteJsonValue(Writer, ReturnValue.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("returnValue")); WriteJsonValue(Writer, ReturnValue.GetValue());
 	}
 	if (Bloom.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("bloom")); WriteJsonValue(Writer, Bloom.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("bloom")); WriteJsonValue(Writer, Bloom.GetValue());
 	}
 	if (Error.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("error")); WriteJsonValue(Writer, Error.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("error")); WriteJsonValue(Writer, Error.GetValue());
 	}
 	if (Logs.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("logs")); WriteJsonValue(Writer, Logs.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("logs")); WriteJsonValue(Writer, Logs.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

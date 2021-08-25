@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void LocalExecutionResult::WriteJson(JsonWriter& Writer) const
@@ -27,27 +27,27 @@ void LocalExecutionResult::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (InternalTransfers.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("internalTransfers")); WriteJsonValue(Writer, InternalTransfers.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("internalTransfers")); WriteJsonValue(Writer, InternalTransfers.GetValue());
 	}
 	if (GasConsumed.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("gasConsumed")); WriteJsonValue(Writer, GasConsumed.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("gasConsumed")); WriteJsonValue(Writer, GasConsumed.GetValue());
 	}
 	if (Revert.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("revert")); WriteJsonValue(Writer, Revert.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("revert")); WriteJsonValue(Writer, Revert.GetValue());
 	}
 	if (ErrorMessage.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("errorMessage")); WriteJsonValue(Writer, ErrorMessage.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("errorMessage")); WriteJsonValue(Writer, ErrorMessage.GetValue());
 	}
 	if (_Return.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("return")); WriteJsonValue(Writer, _Return.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("return")); WriteJsonValue(Writer, _Return.GetValue());
 	}
 	if (Logs.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("logs")); WriteJsonValue(Writer, Logs.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("logs")); WriteJsonValue(Writer, Logs.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

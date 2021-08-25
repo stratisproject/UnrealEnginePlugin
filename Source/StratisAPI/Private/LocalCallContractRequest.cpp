@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void LocalCallContractRequest::WriteJson(JsonWriter& Writer) const
@@ -27,29 +27,29 @@ void LocalCallContractRequest::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (BlockHeight.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("blockHeight")); WriteJsonValue(Writer, BlockHeight.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("blockHeight")); WriteJsonValue(Writer, BlockHeight.GetValue());
 	}
 	Writer->WriteIdentifierPrefix(TEXT("contractAddress")); WriteJsonValue(Writer, ContractAddress);
 	Writer->WriteIdentifierPrefix(TEXT("methodName")); WriteJsonValue(Writer, MethodName);
 	if (Amount.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("amount")); WriteJsonValue(Writer, Amount.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("amount")); WriteJsonValue(Writer, Amount.GetValue());
 	}
 	if (GasPrice.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("gasPrice")); WriteJsonValue(Writer, GasPrice.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("gasPrice")); WriteJsonValue(Writer, GasPrice.GetValue());
 	}
 	if (GasLimit.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("gasLimit")); WriteJsonValue(Writer, GasLimit.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("gasLimit")); WriteJsonValue(Writer, GasLimit.GetValue());
 	}
 	if (Sender.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("sender")); WriteJsonValue(Writer, Sender.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("sender")); WriteJsonValue(Writer, Sender.GetValue());
 	}
 	if (Parameters.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("parameters")); WriteJsonValue(Writer, Parameters.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("parameters")); WriteJsonValue(Writer, Parameters.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

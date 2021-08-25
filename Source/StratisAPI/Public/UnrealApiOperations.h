@@ -27,9 +27,9 @@
 #include "TipModel.h"
 #include "ValidatedAddress.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 /* 
@@ -41,7 +41,7 @@ public:
     virtual ~Unity3dApiUnity3dLocalCallPostRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 	TOptional<LocalCallContractRequest> LocalCallContractRequest;
 };
 
@@ -51,7 +51,7 @@ public:
     virtual ~Unity3dApiUnity3dLocalCallPostResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     LocalExecutionResult Content;
 };
 
@@ -64,7 +64,7 @@ public:
     virtual ~Unity3dApiUnity3dReceiptGetRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 	TOptional<FString> TxHash;
 };
 
@@ -74,7 +74,7 @@ public:
     virtual ~Unity3dApiUnity3dReceiptGetResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     ReceiptResponse Content;
 };
 
@@ -87,7 +87,7 @@ public:
     virtual ~Unity3dBlockGetRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 	FString Hash;
 	TOptional<bool> ShowTransactionDetails;
 	TOptional<bool> OutputJson;
@@ -99,7 +99,7 @@ public:
     virtual ~Unity3dBlockGetResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     BlockModel Content;
 };
 
@@ -112,7 +112,7 @@ public:
     virtual ~Unity3dGetaddressbalanceGetRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 	TOptional<FString> Address;
 };
 
@@ -122,7 +122,7 @@ public:
     virtual ~Unity3dGetaddressbalanceGetResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     int64 Content;
 };
 
@@ -135,7 +135,7 @@ public:
     virtual ~Unity3dGetblockheaderGetRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 	TOptional<FString> Hash;
 };
 
@@ -145,7 +145,7 @@ public:
     virtual ~Unity3dGetblockheaderGetResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     BlockHeaderModel Content;
 };
 
@@ -158,7 +158,7 @@ public:
     virtual ~Unity3dGetrawtransactionGetRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 	TOptional<FString> Trxid;
 };
 
@@ -168,7 +168,7 @@ public:
     virtual ~Unity3dGetrawtransactionGetResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     RawTxModel Content;
 };
 
@@ -181,7 +181,7 @@ public:
     virtual ~Unity3dGetutxosforaddressGetRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 	TOptional<FString> Address;
 };
 
@@ -191,7 +191,7 @@ public:
     virtual ~Unity3dGetutxosforaddressGetResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     GetUTXOsResponseModel Content;
 };
 
@@ -204,7 +204,7 @@ public:
     virtual ~Unity3dSendTransactionPostRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 	TOptional<SendTransactionRequest> SendTransactionRequest;
 };
 
@@ -214,7 +214,7 @@ public:
     virtual ~Unity3dSendTransactionPostResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     
 };
 
@@ -227,7 +227,7 @@ public:
     virtual ~Unity3dTipGetRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 };
 
 class STRATISAPI_API UnrealApi::Unity3dTipGetResponse : public Response
@@ -236,7 +236,7 @@ public:
     virtual ~Unity3dTipGetResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     TipModel Content;
 };
 
@@ -249,7 +249,7 @@ public:
     virtual ~Unity3dValidateaddressGetRequest() {}
 	void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
 	FString ComputePath() const final;
-    
+
 	TOptional<FString> Address;
 };
 
@@ -259,7 +259,7 @@ public:
     virtual ~Unity3dValidateaddressGetResponse() {}
 	void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
 	bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
-    
+
     ValidatedAddress Content;
 };
 

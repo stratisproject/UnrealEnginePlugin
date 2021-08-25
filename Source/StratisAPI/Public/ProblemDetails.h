@@ -13,11 +13,10 @@
 #pragma once
 
 #include "BaseModel.h"
-#include "AnyType.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 /*

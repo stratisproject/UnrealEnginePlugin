@@ -17,9 +17,9 @@
 
 #include "Templates/SharedPointer.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 void TipModel::WriteJson(JsonWriter& Writer) const
@@ -27,11 +27,11 @@ void TipModel::WriteJson(JsonWriter& Writer) const
 	Writer->WriteObjectStart();
 	if (TipHash.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("tipHash")); WriteJsonValue(Writer, TipHash.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("tipHash")); WriteJsonValue(Writer, TipHash.GetValue());
 	}
 	if (TipHeight.IsSet())
 	{
-		Writer->WriteIdentifierPrefix(TEXT("tipHeight")); WriteJsonValue(Writer, TipHeight.GetValue());	
+		Writer->WriteIdentifierPrefix(TEXT("tipHeight")); WriteJsonValue(Writer, TipHeight.GetValue());
 	}
 	Writer->WriteObjectEnd();
 }

@@ -15,9 +15,9 @@
 #include "BaseModel.h"
 #include "UTXOModel.h"
 
-namespace stratis 
+namespace stratis
 {
-namespace api 
+namespace api
 {
 
 /*
