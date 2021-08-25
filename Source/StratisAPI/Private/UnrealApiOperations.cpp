@@ -114,6 +114,14 @@ void UnrealApi::Unity3dApiUnity3dReceiptGetRequest::SetupHttpRequest(const FHttp
 	// Default to Json Body request
 	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
 	{
+		// Form parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+		Writer->WriteObjectStart();
+		Writer->WriteObjectEnd();
+		Writer->Close();
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
@@ -175,6 +183,14 @@ void UnrealApi::Unity3dBlockGetRequest::SetupHttpRequest(const FHttpRequestRef& 
 	// Default to Json Body request
 	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
 	{
+		// Form parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+		Writer->WriteObjectStart();
+		Writer->WriteObjectEnd();
+		Writer->Close();
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
@@ -231,6 +247,14 @@ void UnrealApi::Unity3dGetaddressbalanceGetRequest::SetupHttpRequest(const FHttp
 	// Default to Json Body request
 	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
 	{
+		// Form parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+		Writer->WriteObjectStart();
+		Writer->WriteObjectEnd();
+		Writer->Close();
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
@@ -287,6 +311,14 @@ void UnrealApi::Unity3dGetblockheaderGetRequest::SetupHttpRequest(const FHttpReq
 	// Default to Json Body request
 	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
 	{
+		// Form parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+		Writer->WriteObjectStart();
+		Writer->WriteObjectEnd();
+		Writer->Close();
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
@@ -340,6 +372,14 @@ void UnrealApi::Unity3dGetrawtransactionGetRequest::SetupHttpRequest(const FHttp
 	// Default to Json Body request
 	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
 	{
+		// Form parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+		Writer->WriteObjectStart();
+		Writer->WriteObjectEnd();
+		Writer->Close();
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
@@ -393,6 +433,14 @@ void UnrealApi::Unity3dGetutxosforaddressGetRequest::SetupHttpRequest(const FHtt
 	// Default to Json Body request
 	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
 	{
+		// Form parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+		Writer->WriteObjectStart();
+		Writer->WriteObjectEnd();
+		Writer->Close();
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
@@ -506,6 +554,14 @@ void UnrealApi::Unity3dTipGetRequest::SetupHttpRequest(const FHttpRequestRef& Ht
 	// Default to Json Body request
 	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
 	{
+		// Form parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+		Writer->WriteObjectStart();
+		Writer->WriteObjectEnd();
+		Writer->Close();
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
@@ -562,6 +618,14 @@ void UnrealApi::Unity3dValidateaddressGetRequest::SetupHttpRequest(const FHttpRe
 	// Default to Json Body request
 	if (Consumes.Num() == 0 || Consumes.Contains(TEXT("application/json")))
 	{
+		// Form parameters
+		FString JsonBody;
+		JsonWriter Writer = TJsonWriterFactory<>::Create(&JsonBody);
+		Writer->WriteObjectStart();
+		Writer->WriteObjectEnd();
+		Writer->Close();
+		HttpRequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
+		HttpRequest->SetContentAsString(JsonBody);
 	}
 	else if (Consumes.Contains(TEXT("multipart/form-data")))
 	{
