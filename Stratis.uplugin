@@ -4,7 +4,7 @@
 	"VersionName": "1.0",
 	"FriendlyName": "Stratis",
 	"Description": "Official Stratis Blockchain Platform integration plugin for Unreal Engine",
-	"Category": "Other",
+	"Category": "Blockchain",
 	"CreatedBy": "Stratis Platform",
 	"CreatedByURL": "https://www.stratisplatform.com/",
 	"DocsURL": "",
