@@ -3,8 +3,12 @@
 #include "CoreMinimal.h"
 #include "StratisTypes.h"
 
-class STRATIS_API StratisUnrealManager
+UCLASS(BlueprintType, Blueprintable)
+class STRATIS_API StratisUnrealManager : public UObject
 {
+
+GENERATED_BODY()
+
 public:
     StratisUnrealManager(FString mnemonic);
 
