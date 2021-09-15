@@ -13,7 +13,8 @@ public class Stratis : ModuleRules
 			{
 				"Core",
 				"StratisAPI",
-				"CoreUObject"
+				"CoreUObject",
+				"Libbitcoin"
 			}
 			);
 	}
