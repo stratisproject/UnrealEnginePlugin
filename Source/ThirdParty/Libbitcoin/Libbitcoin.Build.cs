@@ -14,7 +14,7 @@ public class Libbitcoin : ModuleRules
         }
         else if (Target.Platform == UnrealTargetPlatform.Mac)
         {
-			// PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "bin", "Mac", "libbitcoin.a"));
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "bin", "Mac", "libbitcoin.a"));
         }
 	}
 }
