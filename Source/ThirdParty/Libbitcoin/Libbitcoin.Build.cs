@@ -7,6 +7,8 @@ public class Libbitcoin : ModuleRules
 	{
 		Type = ModuleType.External;
 
+		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "include"));
+
 		if (Target.Platform == UnrealTargetPlatform.Win32 || Target.Platform == UnrealTargetPlatform.Win64)
 		{
 			string architecture = Target.Platform == UnrealTargetPlatform.Win32 ? "Win32" : "Win64";
