@@ -12,7 +12,8 @@ public class Stratis : ModuleRules
 			new string[]
 			{
 				"Core",
-				"StratisAPI"
+				"StratisAPI",
+				"CoreUObject"
 			}
 			);
 	}
