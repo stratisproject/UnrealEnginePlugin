@@ -1,7 +1,8 @@
 # UnrealEnginePlugin
 Official Unreal Engine plugin for Stratis Blockchain Platform.
 
-If you are looking for a plugin for Unity Engine, [check this repository](https://github.com/stratisproject/Unity3dIntegration).
+> If you are looking for a plugin for Unity Engine, [check this repository](https://github.com/stratisproject/Unity3dIntegration).
+
 This plugin provides functionallity for creating a wallet, building different types of transactions and interacting with [smart contracts](https://academy.stratisplatform.com/Architecture%20Reference/SmartContracts/smartcontracts-introduction.html).
 
 ### Modules reference
@@ -13,8 +14,10 @@ This plugin provides functionallity for creating a wallet, building different ty
 
 ### Basic usage
 
-`UStratisUnrealManager` should be used as the main entry-point for all Stratis-related actions.
+`UStratisUnrealManager` should be used as the main entry-point for all Stratis-related actions (except StandartToken & NFT interaction).
+
 `UStandartTokenWrapper` is a high-level wrapper for a [standart token](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/) contracts.
+
 `UNFTWrapper` is a high-level wrapper for [non-fungible token](https://ethereum.org/en/developers/docs/standards/tokens/erc-721/) contracts.
 
 ### Examples
