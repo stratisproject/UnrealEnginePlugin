@@ -18,19 +18,17 @@ namespace stratis {
 namespace api {
 
 /*
- * Log
+ * BalanceModel
  *
  *
  */
-class STRATISAPI_API Log : public Model {
+class STRATISAPI_API BalanceModel : public Model {
 public:
-  virtual ~Log() {}
+  virtual ~BalanceModel() {}
   bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
   void WriteJson(JsonWriter &Writer) const final;
 
-  TOptional<TArray<uint8>> Address;
-  TOptional<TArray<TArray<uint8>>> Topics;
-  TOptional<TArray<uint8>> Data;
+  TOptional<int64> Balance;
 };
 
 } // namespace api
