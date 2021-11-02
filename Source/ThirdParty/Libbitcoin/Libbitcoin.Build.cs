@@ -18,5 +18,12 @@ public class Libbitcoin : ModuleRules
         {
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "bin", "Mac", "libbitcoin.a"));
         }
+
+		bUseRTTI = true;
+		bEnableExceptions = true;
+		bEnableUndefinedIdentifierWarnings = true;
+
+		Definitions.Add("BOOST_DISABLE_ABI_HEADERS=1");
+		Definitions.Add("WITH_BOOST_BINDING=1");
 	}
 }
