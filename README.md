@@ -1,5 +1,5 @@
 # UnrealEnginePlugin
-Official Unreal Engine plugin for Stratis Blockchain Platform
+Official Unreal Engine plugin for Stratis Blockchain Platform.
 
 If you are looking for a plugin for Unity Engine, [check this repository](https://github.com/stratisproject/Unity3dIntegration).
 This plugin provides functionallity for creating a wallet, building different types of transactions and interacting with [smart contracts](https://academy.stratisplatform.com/Architecture%20Reference/SmartContracts/smartcontracts-introduction.html).
