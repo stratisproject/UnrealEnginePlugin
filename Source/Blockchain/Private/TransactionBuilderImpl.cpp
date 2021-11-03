@@ -28,19 +28,20 @@ TransactionBuilderImpl::TransactionBuilderImpl(const std::string &mnemonic,
   data_chunk seed(std::begin(wallet_generation_seed),
                   std::end(wallet_generation_seed));
   privateKey_ = wallet::hd_private(seed);
-
-  wallet::ec_public ecPublicKey(privateKey_);
-
-  address_ =
-      ecPublicKey.to_payment_address(network_.base58_pubkey_address_prefix);
 }
 
 void TransactionBuilderImpl::setNetwork(const StratisNetwork &network) {
   network_ = network;
 }
 
+libbitcoin::system::wallet::payment_address
+TransactionBuilderImpl::address() const {
+  wallet::ec_public ecPublicKey(privateKey_);
+  return ecPublicKey.to_payment_address(network_.base58_pubkey_address_prefix);
+}
+
 FString TransactionBuilderImpl::paymentAddress() const {
-  return TO_FSTRING(address_.encoded());
+  return TO_FSTRING(this->address().encoded());
 }
 
 Transaction
@@ -54,7 +55,7 @@ TransactionBuilderImpl::buildSendTransaction(const FString &destinationAddress,
 
   chain::input::list inputs(buildInputs(utxos, currentBalance));
 
-  chain::script paybackScript(converters::makeP2PKH(address_));
+  chain::script paybackScript(converters::makeP2PKH(this->address()));
 
   chain::output::list outputs{
       {currentBalance - amount - fee, paybackScript},
@@ -79,7 +80,7 @@ Transaction TransactionBuilderImpl::buildOpReturnTransaction(
   chain::script opReturnScript({machine::operation(machine::opcode::return_),
                                 machine::operation(dataChunk, true)});
 
-  chain::script paybackScript(converters::makeP2PKH(address_));
+  chain::script paybackScript(converters::makeP2PKH(this->address()));
 
   uint64 currentBalance = 0;
   chain::input::list inputs(buildInputs(utxos, currentBalance));
@@ -108,7 +109,7 @@ Transaction TransactionBuilderImpl::buildCreateContractTransaction(
 
   chain::script createContractScript(std::move(scriptBytes), false);
 
-  chain::script paybackScript(converters::makeP2PKH(address_));
+  chain::script paybackScript(converters::makeP2PKH(this->address()));
 
   uint64 currentBalance = 0;
   chain::input::list inputs(buildInputs(utxos, currentBalance));
@@ -139,7 +140,7 @@ Transaction TransactionBuilderImpl::buildCallContractTransaction(
 
   chain::script createContractScript(std::move(scriptBytes), false);
 
-  chain::script paybackScript(converters::makeP2PKH(address_));
+  chain::script paybackScript(converters::makeP2PKH(this->address()));
 
   uint64 currentBalance = 0;
   chain::input::list inputs(buildInputs(utxos, currentBalance));

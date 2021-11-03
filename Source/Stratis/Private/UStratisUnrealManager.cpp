@@ -49,9 +49,7 @@ void UStratisUnrealManager::PostEditChangeProperty(
     }
   } else if (PropertyName ==
              GET_MEMBER_NAME_CHECKED(UStratisUnrealManager, network)) {
-    if (transactionBuilder_.IsValid()) {
-      transactionBuilder_->setNetwork(adapters::fromFNetwork(network));
-    }
+    this->notifyNetworkChanged();
   }
   Super::PostEditChangeProperty(e);
 }
@@ -73,6 +71,7 @@ void UStratisUnrealManager::setPredefinedNetwork(ENetwork networkType) {
   default:
     break;
   }
+  this->notifyNetworkChanged();
 }
 
 FString UStratisUnrealManager::getAddress() {
@@ -447,6 +446,12 @@ void UStratisUnrealManager::makeLocalCall(
 UWorld *UStratisUnrealManager::GetWorld() const {
   UGameInstance *GameInstance = GetTypedOuter<UGameInstance>();
   return GameInstance->GetWorld();
+}
+
+void UStratisUnrealManager::notifyNetworkChanged() {
+  if (transactionBuilder_.IsValid()) {
+    transactionBuilder_->setNetwork(adapters::fromFNetwork(network));
+  }
 }
 
 // LEGACY

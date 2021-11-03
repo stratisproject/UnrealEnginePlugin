@@ -166,6 +166,7 @@ public:
 
 private:
   UWorld *GetWorld() const;
+  void notifyNetworkChanged();
 
   TSharedPtr<TransactionBuilder> transactionBuilder_;
   TSharedPtr<stratis::api::UnrealApi> unrealApi_;

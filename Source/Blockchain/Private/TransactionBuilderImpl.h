@@ -41,7 +41,7 @@ private:
   StratisNetwork network_;
 
   libbitcoin::system::wallet::hd_private privateKey_;
-  libbitcoin::system::wallet::payment_address address_;
+  libbitcoin::system::wallet::payment_address address() const;
 
   TUniquePtr<smart_contracts::SmartContractScriptFactory>
       smartContractScriptFactory_;
