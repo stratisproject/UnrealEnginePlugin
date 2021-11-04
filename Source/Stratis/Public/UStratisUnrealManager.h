@@ -51,19 +51,17 @@ public:
   UPROPERTY(EditAnywhere)
   uint64 defaultFee;
 
-  UPROPERTY(EditAnywhere)
-  FString mnemonic;
+  UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
+  void setMnemonic(const FString &mnemonic);
 
-  UPROPERTY(EditAnywhere)
-  FString baseUrl;
-
-  UPROPERTY(EditAnywhere)
-  FNetwork network;
+  UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
+  void setBaseUrl(const FString &baseUrl);
 
   UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
   void setPredefinedNetwork(ENetwork networkType);
 
-  void PostEditChangeProperty(struct FPropertyChangedEvent &e) override;
+  UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
+  void setNetwork(const FNetwork &network);
 
   UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
   FString getAddress();
@@ -167,6 +165,10 @@ public:
 private:
   UWorld *GetWorld() const;
   void notifyNetworkChanged();
+
+  FString mnemonic_;
+  FString baseUrl_;
+  FNetwork network_;
 
   TSharedPtr<TransactionBuilder> transactionBuilder_;
   TSharedPtr<stratis::api::UnrealApi> unrealApi_;

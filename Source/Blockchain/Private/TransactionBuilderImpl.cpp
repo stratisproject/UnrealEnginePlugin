@@ -21,13 +21,11 @@ TransactionBuilderImpl::TransactionBuilderImpl(const std::string &mnemonic,
     : network_(network),
       smartContractScriptFactory_(
           smart_contracts::createSmartContractScriptFactory()) {
-  std::vector<std::string> words;
-  boost::split(words, mnemonic, boost::is_any_of("\t"));
+  this->setupKeysFromMnemonic(mnemonic);
+}
 
-  long_hash wallet_generation_seed = wallet::decode_mnemonic(words);
-  data_chunk seed(std::begin(wallet_generation_seed),
-                  std::end(wallet_generation_seed));
-  privateKey_ = wallet::hd_private(seed);
+void TransactionBuilderImpl::setMnemonic(const FString &mnemonic) {
+  this->setupKeysFromMnemonic(TO_STD_STRING(mnemonic));
 }
 
 void TransactionBuilderImpl::setNetwork(const StratisNetwork &network) {
@@ -36,8 +34,7 @@ void TransactionBuilderImpl::setNetwork(const StratisNetwork &network) {
 
 libbitcoin::system::wallet::payment_address
 TransactionBuilderImpl::address() const {
-  wallet::ec_public ecPublicKey(privateKey_);
-  return ecPublicKey.to_payment_address(network_.base58_pubkey_address_prefix);
+  return ecPublicKey_.to_payment_address(network_.base58_pubkey_address_prefix);
 }
 
 FString TransactionBuilderImpl::paymentAddress() const {
@@ -155,6 +152,18 @@ Transaction TransactionBuilderImpl::buildCallContractTransaction(
   return utils::transformTransaction(transaction);
 }
 
+void TransactionBuilderImpl::setupKeysFromMnemonic(
+    const std::string &mnemonic) {
+  std::vector<std::string> words;
+  boost::split(words, mnemonic, boost::is_any_of("\t"));
+
+  long_hash wallet_generation_seed = wallet::decode_mnemonic(words);
+  data_chunk seed(std::begin(wallet_generation_seed),
+                  std::end(wallet_generation_seed));
+  privateKey_ = wallet::hd_private(seed);
+  ecPublicKey_ = wallet::ec_public(privateKey_);
+}
+
 chain::input::list
 TransactionBuilderImpl::buildInputs(const TArray<UTXO> &utxos,
                                     uint64 &totalBalance) const {
@@ -183,8 +192,7 @@ TransactionBuilderImpl::buildInputs(const TArray<UTXO> &utxos,
 
 void TransactionBuilderImpl::signTransaction(
     chain::transaction &transaction, const chain::script &paybackScript) const {
-  wallet::ec_public ecPublicKey(privateKey_);
-  data_chunk publicKeyData = to_chunk(ecPublicKey.point());
+  data_chunk publicKeyData = to_chunk(ecPublicKey_.point());
 
   auto &transaction_inputs = transaction.inputs();
   for (size_t i = 0; i < transaction_inputs.size(); i++) {

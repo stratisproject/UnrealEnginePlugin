@@ -12,6 +12,7 @@ public:
                          const StratisNetwork &network);
   virtual ~TransactionBuilderImpl() {}
 
+  void setMnemonic(const FString &mnemonic) override;
   void setNetwork(const StratisNetwork &network) override;
 
   FString paymentAddress() const override;
@@ -41,10 +42,14 @@ private:
   StratisNetwork network_;
 
   libbitcoin::system::wallet::hd_private privateKey_;
+  libbitcoin::system::wallet::ec_public ecPublicKey_;
+
   libbitcoin::system::wallet::payment_address address() const;
 
   TUniquePtr<smart_contracts::SmartContractScriptFactory>
       smartContractScriptFactory_;
+
+  void setupKeysFromMnemonic(const std::string &mnemonic);
 
   libbitcoin::system::chain::input::list
   buildInputs(const TArray<UTXO> &utxos, uint64 &totalBalance) const;

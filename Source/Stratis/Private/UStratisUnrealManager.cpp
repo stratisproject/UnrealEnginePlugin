@@ -29,44 +29,48 @@ using API = stratis::api::UnrealApi;
 
 UStratisUnrealManager::UStratisUnrealManager()
     : gasPrice(100), gasLimit(150000), defaultFee(10000),
-      baseUrl(TEXT("http://localhost")) {
+      baseUrl_(TEXT("http://localhost:44336")) {
 
   setPredefinedNetwork(ENetwork::CIRRUS);
   transactionBuilder_ =
-      createTransactionBuilder(mnemonic, adapters::fromFNetwork(network));
+      createTransactionBuilder(mnemonic_, adapters::fromFNetwork(network_));
 
   unrealApi_ = MakeShared<stratis::api::UnrealApi>();
-  unrealApi_->SetURL(baseUrl);
+  unrealApi_->SetURL(baseUrl_);
 }
 
-void UStratisUnrealManager::PostEditChangeProperty(
-    struct FPropertyChangedEvent &e) {
-  FName PropertyName =
-      (e.Property != NULL) ? e.Property->GetFName() : NAME_None;
-  if (PropertyName == GET_MEMBER_NAME_CHECKED(UStratisUnrealManager, baseUrl)) {
-    if (unrealApi_.IsValid()) {
-      unrealApi_->SetURL(baseUrl);
-    }
-  } else if (PropertyName ==
-             GET_MEMBER_NAME_CHECKED(UStratisUnrealManager, network)) {
-    this->notifyNetworkChanged();
+void UStratisUnrealManager::setMnemonic(const FString &mnemonic) {
+  mnemonic_ = mnemonic;
+  if (transactionBuilder_.IsValid()) {
+    transactionBuilder_->setMnemonic(mnemonic_);
   }
-  Super::PostEditChangeProperty(e);
+}
+
+void UStratisUnrealManager::setBaseUrl(const FString &baseUrl) {
+  baseUrl_ = baseUrl;
+  if (unrealApi_.IsValid()) {
+    unrealApi_->SetURL(baseUrl_);
+  }
+}
+
+void UStratisUnrealManager::setNetwork(const FNetwork &network) {
+  network_ = network;
+  this->notifyNetworkChanged();
 }
 
 void UStratisUnrealManager::setPredefinedNetwork(ENetwork networkType) {
   switch (networkType) {
   case ENetwork::STRAX:
-    network = FNetwork::STRAX;
+    network_ = FNetwork::STRAX;
     break;
   case ENetwork::STRAX_TEST:
-    network = FNetwork::STRAX_TEST;
+    network_ = FNetwork::STRAX_TEST;
     break;
   case ENetwork::CIRRUS:
-    network = FNetwork::CIRRUS;
+    network_ = FNetwork::CIRRUS;
     break;
   case ENetwork::CIRRUS_TEST:
-    network = FNetwork::CIRRUS_TEST;
+    network_ = FNetwork::CIRRUS_TEST;
     break;
   default:
     break;
@@ -450,7 +454,7 @@ UWorld *UStratisUnrealManager::GetWorld() const {
 
 void UStratisUnrealManager::notifyNetworkChanged() {
   if (transactionBuilder_.IsValid()) {
-    transactionBuilder_->setNetwork(adapters::fromFNetwork(network));
+    transactionBuilder_->setNetwork(adapters::fromFNetwork(network_));
   }
 }
 
