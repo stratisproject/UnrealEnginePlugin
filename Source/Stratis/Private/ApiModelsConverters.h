@@ -7,7 +7,7 @@
 
 inline void convert(TArray<FUTXO> &out,
                     const TArray<stratis::api::UTXOModel> &utxos) {
-  out.SetNum(utxos.Num());
+  out.Reserve(utxos.Num());
 
   for (auto &utxo : utxos) {
     if (utxo.Hash.IsSet() && utxo.N.IsSet() && utxo.Satoshis.IsSet()) {
