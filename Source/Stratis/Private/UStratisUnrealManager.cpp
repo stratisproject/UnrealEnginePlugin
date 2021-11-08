@@ -85,7 +85,7 @@ FString UStratisUnrealManager::getAddress() {
 void UStratisUnrealManager::getBalance(
     const FGetBalanceResponseReceivedDelegate &delegate,
     const FErrorReceivedDelegate &errorDelegate) {
-  this->getBalance([&delegate, &errorDelegate](const TResult<int64> &result) {
+  this->getBalance([delegate, errorDelegate](const TResult<int64> &result) {
     if (result::isSuccessful(result))
       delegate.ExecuteIfBound(result::getValue(result));
     else
@@ -115,7 +115,7 @@ void UStratisUnrealManager::getCoins(
     const FGetCoinsResponseReceivedDelegate &delegate,
     const FErrorReceivedDelegate &errorDelegate) {
   this->getCoins(
-      [&delegate, &errorDelegate](const TResult<TArray<FUTXO>> &result) {
+      [delegate, errorDelegate](const TResult<TArray<FUTXO>> &result) {
         if (result::isSuccessful(result))
           delegate.ExecuteIfBound(result::getValue(result));
         else
@@ -155,7 +155,7 @@ void UStratisUnrealManager::sendRawTransaction(
     const FErrorReceivedDelegate &errorDelegate) {
   this->sendRawTransaction(
       transactionHex, transactionID,
-      [&delegate, &errorDelegate](const TResult<FString> &result) {
+      [delegate, errorDelegate](const TResult<FString> &result) {
         if (result::isSuccessful(result))
           delegate.ExecuteIfBound(result::getValue(result));
         else
@@ -188,7 +188,7 @@ void UStratisUnrealManager::sendCoinsTransaction(
     const FErrorReceivedDelegate &errorDelegate) {
   this->sendCoinsTransaction(
       destinationAddress, money,
-      [&delegate, &errorDelegate](const TResult<FString> &result) {
+      [delegate, errorDelegate](const TResult<FString> &result) {
         if (result::isSuccessful(result))
           delegate.ExecuteIfBound(result::getValue(result));
         else
@@ -241,8 +241,7 @@ void UStratisUnrealManager::sendOpReturnArrayTransaction(
     const FSendTransactionResponseReceivedDelegate &delegate,
     const FErrorReceivedDelegate &errorDelegate) {
   this->sendOpReturnArrayTransaction(
-      opReturnData,
-      [&delegate, &errorDelegate](const TResult<FString> &result) {
+      opReturnData, [delegate, errorDelegate](const TResult<FString> &result) {
         if (result::isSuccessful(result))
           delegate.ExecuteIfBound(result::getValue(result));
         else
@@ -283,7 +282,7 @@ void UStratisUnrealManager::sendCreateContractTransaction(
     const FErrorReceivedDelegate &errorDelegate) {
   this->sendCreateContractTransaction(
       contractCode, parameters, money,
-      [&delegate, &errorDelegate](const TResult<FString> &result) {
+      [delegate, errorDelegate](const TResult<FString> &result) {
         if (result::isSuccessful(result))
           delegate.ExecuteIfBound(result::getValue(result));
         else
@@ -332,7 +331,7 @@ void UStratisUnrealManager::sendCallContractTransaction(
     const FErrorReceivedDelegate &errorDelegate) {
   this->sendCallContractTransaction(
       contractAddress, methodName, parameters, (uint64)money,
-      [&delegate, &errorDelegate](const TResult<FString> &result) {
+      [delegate, errorDelegate](const TResult<FString> &result) {
         if (result::isSuccessful(result))
           delegate.ExecuteIfBound(result::getValue(result));
         else
@@ -382,7 +381,7 @@ void UStratisUnrealManager::waitTillReceiptAvailable(
     const FErrorReceivedDelegate &errorDelegate) {
   this->waitTillReceiptAvailable(
       transactionID,
-      [&delegate, &errorDelegate](const TResult<FReceiptResponse> &result) {
+      [delegate, errorDelegate](const TResult<FReceiptResponse> &result) {
         if (result::isSuccessful(result))
           delegate.ExecuteIfBound(result::getValue(result));
         else
@@ -420,7 +419,7 @@ void UStratisUnrealManager::makeLocalCall(
     const FLocalCallResponseReceivedDelegate &delegate,
     const FErrorReceivedDelegate &errorDelegate) {
   this->makeLocalCall(
-      data, [&delegate, &errorDelegate](const TResult<FString> &result) {
+      data, [delegate, errorDelegate](const TResult<FString> &result) {
         if (result::isSuccessful(result))
           delegate.ExecuteIfBound(result::getValue(result));
         else
