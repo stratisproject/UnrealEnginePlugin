@@ -37,6 +37,7 @@ UStratisUnrealManager::UStratisUnrealManager()
 
   unrealApi_ = MakeShared<stratis::api::UnrealApi>();
   unrealApi_->SetURL(baseUrl_);
+  unrealApi_->AddHeaderParam(TEXT("Accept"), TEXT("application/json"));
 }
 
 void UStratisUnrealManager::setMnemonic(const FString &mnemonic) {
