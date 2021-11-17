@@ -22,18 +22,61 @@ inline void convert(TArray<FUTXO> &out,
 }
 
 inline FReceiptResponse convert(const stratis::api::ReceiptResponse &response) {
-  FReceiptResponse result;
-  result.transactionHash = *response.TransactionHash;
-  result.blockHash = *response.BlockHash;
-  result.blockNumber = *response.BlockNumber;
-  result.postState = *response.PostState;
+  FReceiptResponse result = FReceiptResponse();
+
+  if (response.TransactionHash) {
+    result.transactionHash = *response.TransactionHash;
+    result.isTransactionHashValid = true;
+  }
+
+  if (response.BlockHash) {
+    result.blockHash = *response.BlockHash;
+    result.isBlockHashValid = true;
+  }
+
+  if (response.BlockNumber) {
+    result.blockNumber = *response.BlockNumber;
+    result.isBlockNumberValid = true;
+  }
+
+  if (response.PostState) {
+    result.postState = *response.PostState;
+    result.isPostStateValid = true;
+  }
+
   result.gasUsed = *response.GasUsed;
-  result.fromAddress = *response.From;
-  result.toAddress = *response.To;
-  result.newContractAddress = *response.NewContractAddress;
+
+  if (response.From) {
+    result.fromAddress = *response.From;
+    result.isFromAddressValid = true;
+  }
+
+  if (response.To) {
+    result.newContractAddress = *response.To;
+    result.isToAddressValid = true;
+  }
+
+  if (response.NewContractAddress) {
+    result.newContractAddress = *response.NewContractAddress;
+    result.isNewContractAddressValid = true;
+  }
+
   result.success = *response.Success;
-  result.returnValue = *response.ReturnValue;
-  result.bloom = *response.Bloom;
-  result.error = *response.Error;
+
+  if (response.ReturnValue) {
+    result.returnValue = *response.ReturnValue;
+    result.isReturnValueValid = true;
+  }
+
+  if (response.Bloom) {
+    result.bloom = *response.Bloom;
+    result.isBloomValid = true;
+  }
+
+  if (response.Error) {
+    result.error = *response.Error;
+    result.isErrorValid = true;
+  }
+
   return result;
 }
