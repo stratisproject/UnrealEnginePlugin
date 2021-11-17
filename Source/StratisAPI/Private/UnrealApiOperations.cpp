@@ -24,7 +24,7 @@ namespace stratis {
 namespace api {
 
 FString UnrealApi::Unity3dApiUnity3dLocalCallPostRequest::ComputePath() const {
-  FString Path(TEXT("/Unity3d/api/Unity3d/local-call"));
+  FString Path(TEXT("/Unity3d/local-call"));
   return Path;
 }
 
@@ -88,7 +88,7 @@ bool UnrealApi::Unity3dApiUnity3dLocalCallPostResponse::FromJson(
 }
 
 FString UnrealApi::Unity3dApiUnity3dReceiptGetRequest::ComputePath() const {
-  FString Path(TEXT("/Unity3d/api/Unity3d/receipt"));
+  FString Path(TEXT("/Unity3d/receipt"));
   TArray<FString> QueryParams;
   if (TxHash.IsSet()) {
     QueryParams.Add(FString(TEXT("txHash=")) + ToUrlString(TxHash.GetValue()));
