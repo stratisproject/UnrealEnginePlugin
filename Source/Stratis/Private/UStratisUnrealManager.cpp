@@ -401,16 +401,23 @@ void UStratisUnrealManager::waitTillReceiptAvailable(
                     std::placeholders::_1, std::placeholders::_2),
           [this, transactionID, callback](const auto &response) {
             if (response.IsSuccessful()) {
-              callback(result::ok(convert(response.Content)));
+              if (response.GetHttpResponseCode() ==
+                  EHttpResponseCodes::Type::NoContent) {
+                auto &timerManager = this->GetWorld()->GetTimerManager();
+                auto handle = FTimerHandle();
+                timerManager.SetTimer(
+                    handle,
+                    [this, transactionID, callback]() {
+                      this->waitTillReceiptAvailable(transactionID, callback);
+                    },
+                    10.0f, false);
+              } else {
+                callback(result::ok(convert(response.Content)));
+              }
+
             } else {
-              auto &timerManager = GetWorld()->GetTimerManager();
-              auto handle = FTimerHandle();
-              timerManager.SetTimer(
-                  handle,
-                  [this, transactionID, callback]() {
-                    this->waitTillReceiptAvailable(transactionID, callback);
-                  },
-                  5.0f, false);
+              callback(result::error<FReceiptResponse>(
+                  response.GetResponseString()));
             }
           });
 }
@@ -448,8 +455,7 @@ void UStratisUnrealManager::makeLocalCall(
 }
 
 UWorld *UStratisUnrealManager::GetWorld() const {
-  UGameInstance *GameInstance = GetTypedOuter<UGameInstance>();
-  return GameInstance->GetWorld();
+  return GetOuter()->GetWorld();
 }
 
 void UStratisUnrealManager::notifyNetworkChanged() {

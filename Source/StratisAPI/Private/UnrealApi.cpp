@@ -81,12 +81,14 @@ void UnrealApi::HandleResponse(FHttpResponsePtr HttpResponse, bool bSucceeded,
   InOutResponse.SetSuccessful(bSucceeded);
 
   if (bSucceeded && HttpResponse.IsValid()) {
-    InOutResponse.SetHttpResponseCode(
-        (EHttpResponseCodes::Type)HttpResponse->GetResponseCode());
+    EHttpResponseCodes::Type responseCode =
+        (EHttpResponseCodes::Type)HttpResponse->GetResponseCode();
+    InOutResponse.SetHttpResponseCode(responseCode);
     FString ContentType = HttpResponse->GetContentType();
     FString Content;
 
-    if (ContentType.IsEmpty()) {
+    if (ContentType.IsEmpty() ||
+        responseCode == EHttpResponseCodes::Type::NoContent) {
       return; // Nothing to parse
     } else if (ContentType.StartsWith(TEXT("application/json")) ||
                ContentType.StartsWith("text/json")) {
