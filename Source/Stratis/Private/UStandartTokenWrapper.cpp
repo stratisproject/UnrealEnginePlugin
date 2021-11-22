@@ -9,12 +9,13 @@ UStandartTokenWrapper::UStandartTokenWrapper() {
 
 void UStandartTokenWrapper::deployStandartToken(
     const FUInt64 &totalSupply, const FString &name, const FString &symbols,
-    int64 decimals, const FDeployStandartTokenDelegate &delegate) {
-  this->deployStandartToken((uint64)totalSupply, name, symbols,
-                            (uint32)decimals,
-                            [&delegate](const FString &transactionID) {
-                              delegate.ExecuteIfBound(transactionID);
-                            });
+    int64 decimals, const FDeployStandartTokenDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->deployStandartToken(
+      (uint64)totalSupply, name, symbols, (uint32)decimals,
+      [delegate, errorDelegate](const FString &transactionID) {
+        delegate.ExecuteIfBound(transactionID);
+      });
 }
 
 void UStandartTokenWrapper::deployStandartToken(
@@ -31,9 +32,12 @@ void UStandartTokenWrapper::deployStandartToken(
       [callback](const FString &transactionID) { callback(transactionID); });
 }
 
-void UStandartTokenWrapper::getSymbol(const FGetSymbolDelegate &delegate) {
-  this->getSymbol(
-      [&delegate](const FString &symbol) { delegate.ExecuteIfBound(symbol); });
+void UStandartTokenWrapper::getSymbol(
+    const FGetSymbolDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->getSymbol([delegate, errorDelegate](const FString &symbol) {
+    delegate.ExecuteIfBound(symbol);
+  });
 }
 
 void UStandartTokenWrapper::getSymbol(
@@ -51,9 +55,12 @@ void UStandartTokenWrapper::getSymbol(
       [callback](const FString &returnValue) { callback(returnValue); });
 }
 
-void UStandartTokenWrapper::getName(const FGetNameDelegate &delegate) {
-  this->getName(
-      [&delegate](const FString &name) { delegate.ExecuteIfBound(name); });
+void UStandartTokenWrapper::getName(
+    const FGetNameDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->getName([delegate, errorDelegate](const FString &name) {
+    delegate.ExecuteIfBound(name);
+  });
 }
 
 void UStandartTokenWrapper::getName(TFunction<void(const FString &)> callback) {
@@ -71,8 +78,9 @@ void UStandartTokenWrapper::getName(TFunction<void(const FString &)> callback) {
 }
 
 void UStandartTokenWrapper::getTotalSupply(
-    const FGetTotalSupplyDelegate &delegate) {
-  this->getTotalSupply([&delegate](uint64 totalSupply) {
+    const FGetTotalSupplyDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->getTotalSupply([delegate, errorDelegate](uint64 totalSupply) {
     delegate.ExecuteIfBound(totalSupply);
   });
 }
@@ -92,9 +100,12 @@ void UStandartTokenWrapper::getTotalSupply(TFunction<void(uint64)> callback) {
       });
 }
 
-void UStandartTokenWrapper::getDecimals(const FGetDecimalsDelegate &delegate) {
-  this->getDecimals(
-      [&delegate](uint32 decimals) { delegate.ExecuteIfBound(decimals); });
+void UStandartTokenWrapper::getDecimals(
+    const FGetDecimalsDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->getDecimals([delegate, errorDelegate](uint32 decimals) {
+    delegate.ExecuteIfBound(decimals);
+  });
 }
 
 void UStandartTokenWrapper::getDecimals(TFunction<void(uint32)> callback) {
@@ -112,9 +123,10 @@ void UStandartTokenWrapper::getDecimals(TFunction<void(uint32)> callback) {
       });
 }
 
-void UStandartTokenWrapper::getBalance(const FString &address,
-                                       const FGetBalanceDelegate &delegate) {
-  this->getBalance(address, [&delegate](uint64 balance) {
+void UStandartTokenWrapper::getBalance(
+    const FString &address, const FGetBalanceDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->getBalance(address, [delegate, errorDelegate](uint64 balance) {
     delegate.ExecuteIfBound(balance);
   });
 }
@@ -139,10 +151,12 @@ void UStandartTokenWrapper::getBalance(const FString &address,
 
 void UStandartTokenWrapper::getAllowance(
     const FString &ownerAddress, const FString &spenderAddress,
-    const FGetAllowanceDelegate &delegate) {
-  this->getAllowance(
-      ownerAddress, spenderAddress,
-      [&delegate](uint64 allowance) { delegate.ExecuteIfBound(allowance); });
+    const FGetAllowanceDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->getAllowance(ownerAddress, spenderAddress,
+                     [delegate, errorDelegate](uint64 allowance) {
+                       delegate.ExecuteIfBound(allowance);
+                     });
 }
 
 void UStandartTokenWrapper::getAllowance(const FString &ownerAddress,
@@ -165,12 +179,14 @@ void UStandartTokenWrapper::getAllowance(const FString &ownerAddress,
       });
 }
 
-void UStandartTokenWrapper::transferTo(const FString &address,
-                                       const FUInt64 &amount,
-                                       const FTransferToDelegate &delegate) {
-  this->transferTo(address, amount, [&delegate](const FString &transactionID) {
-    delegate.ExecuteIfBound(transactionID);
-  });
+void UStandartTokenWrapper::transferTo(
+    const FString &address, const FUInt64 &amount,
+    const FTransferToDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->transferTo(address, amount,
+                   [delegate, errorDelegate](const FString &transactionID) {
+                     delegate.ExecuteIfBound(transactionID);
+                   });
 }
 
 void UStandartTokenWrapper::transferTo(
@@ -185,9 +201,10 @@ void UStandartTokenWrapper::transferTo(
 
 void UStandartTokenWrapper::transferFrom(
     const FString &fromAddress, const FString &toAddress, const FUInt64 &amount,
-    const FTransferFromDelegate &delegate) {
+    const FTransferFromDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
   this->transferFrom(fromAddress, toAddress, amount,
-                     [&delegate](const FString &transactionID) {
+                     [delegate, errorDelegate](const FString &transactionID) {
                        delegate.ExecuteIfBound(transactionID);
                      });
 }
@@ -203,12 +220,12 @@ void UStandartTokenWrapper::transferFrom(
       0, [callback](const FString &transactionID) { callback(transactionID); });
 }
 
-void UStandartTokenWrapper::approve(const FString &spender,
-                                    const FUInt64 &currentAmount,
-                                    const FUInt64 &amount,
-                                    const FApproveDelegate &delegate) {
+void UStandartTokenWrapper::approve(
+    const FString &spender, const FUInt64 &currentAmount, const FUInt64 &amount,
+    const FApproveDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
   this->approve(spender, currentAmount, amount,
-                [&delegate](const FString &transactionID) {
+                [delegate, errorDelegate](const FString &transactionID) {
                   delegate.ExecuteIfBound(transactionID);
                 });
 }

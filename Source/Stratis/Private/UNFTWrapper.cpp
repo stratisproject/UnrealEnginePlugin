@@ -9,11 +9,13 @@ UNFTWrapper::UNFTWrapper() {
 
 void UNFTWrapper::deployNFTContract(
     const FString &name, const FString &symbol, const FString &tokenURIFormat,
-    bool ownerOnlyMinting, const FDeployNFTContractDelegate &delegate) {
-  this->deployNFTContract(name, symbol, tokenURIFormat, ownerOnlyMinting,
-                          [&delegate](const FString &transactionID) {
-                            delegate.ExecuteIfBound(transactionID);
-                          });
+    bool ownerOnlyMinting, const FDeployNFTContractDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->deployNFTContract(
+      name, symbol, tokenURIFormat, ownerOnlyMinting,
+      [delegate, errorDelegate](const FString &transactionID) {
+        delegate.ExecuteIfBound(transactionID);
+      });
 }
 
 void UNFTWrapper::deployNFTContract(const FString &name, const FString &symbol,
@@ -31,9 +33,11 @@ void UNFTWrapper::deployNFTContract(const FString &name, const FString &symbol,
       [callback](const FString &transactionID) { callback(transactionID); });
 }
 
-void UNFTWrapper::getOwner(const FNFTGetOwnerDelegate &delegate) {
-  this->getOwner(
-      [&delegate](const FString &symbol) { delegate.ExecuteIfBound(symbol); });
+void UNFTWrapper::getOwner(const FNFTGetOwnerDelegate &delegate,
+                           const FErrorReceivedDelegate &errorDelegate) {
+  this->getOwner([delegate, errorDelegate](const FString &symbol) {
+    delegate.ExecuteIfBound(symbol);
+  });
 }
 
 void UNFTWrapper::getOwner(TFunction<void(const FString &)> callback) {
@@ -50,9 +54,11 @@ void UNFTWrapper::getOwner(TFunction<void(const FString &)> callback) {
       [callback](const FString &returnValue) { callback(returnValue); });
 }
 
-void UNFTWrapper::getName(const FNFTGetNameDelegate &delegate) {
-  this->getName(
-      [&delegate](const FString &name) { delegate.ExecuteIfBound(name); });
+void UNFTWrapper::getName(const FNFTGetNameDelegate &delegate,
+                          const FErrorReceivedDelegate &errorDelegate) {
+  this->getName([delegate, errorDelegate](const FString &name) {
+    delegate.ExecuteIfBound(name);
+  });
 }
 
 void UNFTWrapper::getName(TFunction<void(const FString &)> callback) {
@@ -69,9 +75,11 @@ void UNFTWrapper::getName(TFunction<void(const FString &)> callback) {
       [callback](const FString &returnValue) { callback(returnValue); });
 }
 
-void UNFTWrapper::getSymbol(const FNFTGetSymbolDelegate &delegate) {
-  this->getSymbol(
-      [&delegate](const FString &symbol) { delegate.ExecuteIfBound(symbol); });
+void UNFTWrapper::getSymbol(const FNFTGetSymbolDelegate &delegate,
+                            const FErrorReceivedDelegate &errorDelegate) {
+  this->getSymbol([delegate, errorDelegate](const FString &symbol) {
+    delegate.ExecuteIfBound(symbol);
+  });
 }
 
 void UNFTWrapper::getSymbol(TFunction<void(const FString &)> callback) {
@@ -89,10 +97,12 @@ void UNFTWrapper::getSymbol(TFunction<void(const FString &)> callback) {
 }
 
 void UNFTWrapper::supportsInterface(
-    int64 interfaceID, const FNFTSupportsInterfaceDelegate &delegate) {
-  this->supportsInterface(interfaceID, [&delegate](bool supports) {
-    delegate.ExecuteIfBound(supports);
-  });
+    int64 interfaceID, const FNFTSupportsInterfaceDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->supportsInterface(interfaceID,
+                          [delegate, errorDelegate](bool supports) {
+                            delegate.ExecuteIfBound(supports);
+                          });
 }
 
 void UNFTWrapper::supportsInterface(uint32 interfaceID,
@@ -114,8 +124,9 @@ void UNFTWrapper::supportsInterface(uint32 interfaceID,
 }
 
 void UNFTWrapper::getBalanceOf(const FString &address,
-                               const FNFTGetBalanceOfDelegate &delegate) {
-  this->getBalanceOf(address, [&delegate](uint64 balance) {
+                               const FNFTGetBalanceOfDelegate &delegate,
+                               const FErrorReceivedDelegate &errorDelegate) {
+  this->getBalanceOf(address, [delegate, errorDelegate](uint64 balance) {
     delegate.ExecuteIfBound(balance);
   });
 }
@@ -139,8 +150,9 @@ void UNFTWrapper::getBalanceOf(const FString &address,
 }
 
 void UNFTWrapper::getOwnerOf(const FUInt64 &tokenID,
-                             const FNFTGetOwnerOfDelegate &delegate) {
-  this->getOwnerOf(tokenID, [&delegate](const FString &owner) {
+                             const FNFTGetOwnerOfDelegate &delegate,
+                             const FErrorReceivedDelegate &errorDelegate) {
+  this->getOwnerOf(tokenID, [delegate, errorDelegate](const FString &owner) {
     delegate.ExecuteIfBound(owner);
   });
 }
@@ -163,10 +175,12 @@ void UNFTWrapper::getOwnerOf(uint64 tokenID,
 }
 
 void UNFTWrapper::getApproved(const FUInt64 &tokenID,
-                              const FNFTGetApprovedDelegate &delegate) {
-  this->getApproved(tokenID, [&delegate](const FString &approved) {
-    delegate.ExecuteIfBound(approved);
-  });
+                              const FNFTGetApprovedDelegate &delegate,
+                              const FErrorReceivedDelegate &errorDelegate) {
+  this->getApproved(tokenID,
+                    [delegate, errorDelegate](const FString &approved) {
+                      delegate.ExecuteIfBound(approved);
+                    });
 }
 
 void UNFTWrapper::getApproved(uint64 tokenID,
@@ -188,10 +202,12 @@ void UNFTWrapper::getApproved(uint64 tokenID,
 
 void UNFTWrapper::getApprovedForAll(
     const FString &ownderAddress, const FString &operatorAddress,
-    const FNFTGetApprovedForAllDelegate &delegate) {
-  this->getApprovedForAll(
-      ownderAddress, operatorAddress,
-      [&delegate](bool approved) { delegate.ExecuteIfBound(approved); });
+    const FNFTGetApprovedForAllDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->getApprovedForAll(ownderAddress, operatorAddress,
+                          [delegate, errorDelegate](bool approved) {
+                            delegate.ExecuteIfBound(approved);
+                          });
 }
 
 void UNFTWrapper::getApprovedForAll(const FString &ownderAddress,
@@ -215,10 +231,12 @@ void UNFTWrapper::getApprovedForAll(const FString &ownderAddress,
 }
 
 void UNFTWrapper::getTokenURI(const FUInt64 &tokenID,
-                              const FNFTGetTokenURIDelegate &delegate) {
-  this->getTokenURI(tokenID, [&delegate](const FString &approved) {
-    delegate.ExecuteIfBound(approved);
-  });
+                              const FNFTGetTokenURIDelegate &delegate,
+                              const FErrorReceivedDelegate &errorDelegate) {
+  this->getTokenURI(tokenID,
+                    [delegate, errorDelegate](const FString &approved) {
+                      delegate.ExecuteIfBound(approved);
+                    });
 }
 
 void UNFTWrapper::getTokenURI(uint64 tokenID,
@@ -241,11 +259,13 @@ void UNFTWrapper::getTokenURI(uint64 tokenID,
 void UNFTWrapper::safeTransferFrom(
     const FString &fromAddress, const FString &toAddress,
     const FUInt64 &tokenID, TArray<uint8> data,
-    const FNFTSafeTransferFromDelegate &delegate) {
-  this->safeTransferFrom(fromAddress, toAddress, tokenID, data,
-                         [&delegate](const FString &transactionID) {
-                           delegate.ExecuteIfBound(transactionID);
-                         });
+    const FNFTSafeTransferFromDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->safeTransferFrom(
+      fromAddress, toAddress, tokenID, data,
+      [delegate, errorDelegate](const FString &transactionID) {
+        delegate.ExecuteIfBound(transactionID);
+      });
 }
 
 void UNFTWrapper::safeTransferFrom(const FString &fromAddress,
@@ -268,9 +288,10 @@ void UNFTWrapper::safeTransferFrom(const FString &fromAddress,
 
 void UNFTWrapper::transferFrom(const FString &fromAddress,
                                const FString &toAddress, const FUInt64 &tokenID,
-                               const FNFTTransferFromDelegate &delegate) {
+                               const FNFTTransferFromDelegate &delegate,
+                               const FErrorReceivedDelegate &errorDelegate) {
   this->transferFrom(fromAddress, toAddress, tokenID,
-                     [&delegate](const FString &transactionID) {
+                     [delegate, errorDelegate](const FString &transactionID) {
                        delegate.ExecuteIfBound(transactionID);
                      });
 }
@@ -287,10 +308,12 @@ void UNFTWrapper::transferFrom(const FString &fromAddress,
 }
 
 void UNFTWrapper::approve(const FString &address, const FUInt64 &tokenID,
-                          const FNFTApproveDelegate &delegate) {
-  this->approve(address, tokenID, [&delegate](const FString &transactionID) {
-    delegate.ExecuteIfBound(transactionID);
-  });
+                          const FNFTApproveDelegate &delegate,
+                          const FErrorReceivedDelegate &errorDelegate) {
+  this->approve(address, tokenID,
+                [delegate, errorDelegate](const FString &transactionID) {
+                  delegate.ExecuteIfBound(transactionID);
+                });
 }
 
 void UNFTWrapper::approve(const FString &address, uint64 tokenID,
@@ -304,11 +327,13 @@ void UNFTWrapper::approve(const FString &address, uint64 tokenID,
 
 void UNFTWrapper::setApprovalForAll(
     const FString &address, const FUInt64 &tokenID,
-    const FNFTSetApprovalForAllDelegate &delegate) {
-  this->setApprovalForAll(address, tokenID,
-                          [&delegate](const FString &transactionID) {
-                            delegate.ExecuteIfBound(transactionID);
-                          });
+    const FNFTSetApprovalForAllDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->setApprovalForAll(
+      address, tokenID,
+      [delegate, errorDelegate](const FString &transactionID) {
+        delegate.ExecuteIfBound(transactionID);
+      });
 }
 
 void UNFTWrapper::setApprovalForAll(const FString &address, uint64 tokenID,
@@ -321,10 +346,12 @@ void UNFTWrapper::setApprovalForAll(const FString &address, uint64 tokenID,
 }
 
 void UNFTWrapper::transferOwnership(
-    const FString &address, const FNFTTransferOwnershipDelegate &delegate) {
-  this->transferOwnership(address, [&delegate](const FString &transactionID) {
-    delegate.ExecuteIfBound(transactionID);
-  });
+    const FString &address, const FNFTTransferOwnershipDelegate &delegate,
+    const FErrorReceivedDelegate &errorDelegate) {
+  this->transferOwnership(
+      address, [delegate, errorDelegate](const FString &transactionID) {
+        delegate.ExecuteIfBound(transactionID);
+      });
 }
 
 void UNFTWrapper::transferOwnership(const FString &address,
@@ -336,10 +363,12 @@ void UNFTWrapper::transferOwnership(const FString &address,
 }
 
 void UNFTWrapper::mint(const FString &toAddress,
-                       const FNFTMintDelegate &delegate) {
-  this->mint(toAddress, [&delegate](const FString &transactionID) {
-    delegate.ExecuteIfBound(transactionID);
-  });
+                       const FNFTMintDelegate &delegate,
+                       const FErrorReceivedDelegate &errorDelegate) {
+  this->mint(toAddress,
+             [delegate, errorDelegate](const FString &transactionID) {
+               delegate.ExecuteIfBound(transactionID);
+             });
 }
 
 void UNFTWrapper::mint(const FString &toAddress,
@@ -351,10 +380,12 @@ void UNFTWrapper::mint(const FString &toAddress,
 }
 
 void UNFTWrapper::safeMint(const FString &toAddress, const TArray<uint8> &data,
-                           const FNFTSafeMintDelegate &delegate) {
-  this->safeMint(toAddress, data, [&delegate](const FString &transactionID) {
-    delegate.ExecuteIfBound(transactionID);
-  });
+                           const FNFTSafeMintDelegate &delegate,
+                           const FErrorReceivedDelegate &errorDelegate) {
+  this->safeMint(toAddress, data,
+                 [delegate, errorDelegate](const FString &transactionID) {
+                   delegate.ExecuteIfBound(transactionID);
+                 });
 }
 
 void UNFTWrapper::safeMint(const FString &toAddress, const TArray<uint8> &data,
@@ -367,8 +398,9 @@ void UNFTWrapper::safeMint(const FString &toAddress, const TArray<uint8> &data,
 }
 
 void UNFTWrapper::burn(const UInt64 &tokenID,
-                       const FNFTSafeMintDelegate &delegate) {
-  this->burn(tokenID, [&delegate](const FString &transactionID) {
+                       const FNFTSafeMintDelegate &delegate,
+                       const FErrorReceivedDelegate &errorDelegate) {
+  this->burn(tokenID, [delegate, errorDelegate](const FString &transactionID) {
     delegate.ExecuteIfBound(transactionID);
   });
 }
