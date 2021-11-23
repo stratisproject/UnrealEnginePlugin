@@ -16,15 +16,17 @@ void UNFTWrapper::deployNFTContract(
     const FErrorReceivedDelegate &errorDelegate) {
   this->deployNFTContract(
       name, symbol, tokenURIFormat, ownerOnlyMinting,
-      [delegate, errorDelegate](const FString &transactionID) {
-        delegate.ExecuteIfBound(transactionID);
+      [delegate, errorDelegate](const TResult<FString> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
       });
 }
 
-void UNFTWrapper::deployNFTContract(const FString &name, const FString &symbol,
-                                    const FString &tokenURIFormat,
-                                    bool ownerOnlyMinting,
-                                    TFunction<void(const FString &)> callback) {
+void UNFTWrapper::deployNFTContract(
+    const FString &name, const FString &symbol, const FString &tokenURIFormat,
+    bool ownerOnlyMinting, TFunction<void(const TResult<FString> &)> callback) {
   TArray<FString> parameters{
       USmartContractsParametersEncoder::encodeString(name),
       USmartContractsParametersEncoder::encodeString(symbol),
@@ -33,17 +35,20 @@ void UNFTWrapper::deployNFTContract(const FString &name, const FString &symbol,
 
   this->stratisManager->sendCreateContractTransaction(
       FString(smart_contracts::NFTContractCode), parameters, 0,
-      [callback](const FString &transactionID) { callback(transactionID); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::getOwner(const FNFTGetOwnerDelegate &delegate,
                            const FErrorReceivedDelegate &errorDelegate) {
-  this->getOwner([delegate, errorDelegate](const FString &symbol) {
-    delegate.ExecuteIfBound(symbol);
+  this->getOwner([delegate, errorDelegate](const TResult<FString> &result) {
+    if (result::isSuccessful(result))
+      delegate.ExecuteIfBound(result::getValue(result));
+    else
+      errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
   });
 }
 
-void UNFTWrapper::getOwner(TFunction<void(const FString &)> callback) {
+void UNFTWrapper::getOwner(TFunction<void(const TResult<FString> &)> callback) {
   FLocalCallData localCallData;
   localCallData.gasPrice = 10000;
   localCallData.gasLimit = 250000;
@@ -54,17 +59,20 @@ void UNFTWrapper::getOwner(TFunction<void(const FString &)> callback) {
 
   this->stratisManager->makeLocalCall(
       localCallData,
-      [callback](const FString &returnValue) { callback(returnValue); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::getName(const FNFTGetNameDelegate &delegate,
                           const FErrorReceivedDelegate &errorDelegate) {
-  this->getName([delegate, errorDelegate](const FString &name) {
-    delegate.ExecuteIfBound(name);
+  this->getName([delegate, errorDelegate](const TResult<FString> &result) {
+    if (result::isSuccessful(result))
+      delegate.ExecuteIfBound(result::getValue(result));
+    else
+      errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
   });
 }
 
-void UNFTWrapper::getName(TFunction<void(const FString &)> callback) {
+void UNFTWrapper::getName(TFunction<void(const TResult<FString> &)> callback) {
   FLocalCallData localCallData;
   localCallData.gasPrice = 10000;
   localCallData.gasLimit = 250000;
@@ -75,17 +83,21 @@ void UNFTWrapper::getName(TFunction<void(const FString &)> callback) {
 
   this->stratisManager->makeLocalCall(
       localCallData,
-      [callback](const FString &returnValue) { callback(returnValue); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::getSymbol(const FNFTGetSymbolDelegate &delegate,
                             const FErrorReceivedDelegate &errorDelegate) {
-  this->getSymbol([delegate, errorDelegate](const FString &symbol) {
-    delegate.ExecuteIfBound(symbol);
+  this->getSymbol([delegate, errorDelegate](const TResult<FString> &result) {
+    if (result::isSuccessful(result))
+      delegate.ExecuteIfBound(result::getValue(result));
+    else
+      errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
   });
 }
 
-void UNFTWrapper::getSymbol(TFunction<void(const FString &)> callback) {
+void UNFTWrapper::getSymbol(
+    TFunction<void(const TResult<FString> &)> callback) {
   FLocalCallData localCallData;
   localCallData.gasPrice = 10000;
   localCallData.gasLimit = 250000;
@@ -96,20 +108,23 @@ void UNFTWrapper::getSymbol(TFunction<void(const FString &)> callback) {
 
   this->stratisManager->makeLocalCall(
       localCallData,
-      [callback](const FString &returnValue) { callback(returnValue); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::supportsInterface(
     int64 interfaceID, const FNFTSupportsInterfaceDelegate &delegate,
     const FErrorReceivedDelegate &errorDelegate) {
-  this->supportsInterface(interfaceID,
-                          [delegate, errorDelegate](bool supports) {
-                            delegate.ExecuteIfBound(supports);
-                          });
+  this->supportsInterface(
+      interfaceID, [delegate, errorDelegate](const TResult<bool> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+      });
 }
 
-void UNFTWrapper::supportsInterface(uint32 interfaceID,
-                                    TFunction<void(bool)> callback) {
+void UNFTWrapper::supportsInterface(
+    uint32 interfaceID, TFunction<void(const TResult<bool> &)> callback) {
   FLocalCallData localCallData;
   localCallData.gasPrice = 10000;
   localCallData.gasLimit = 250000;
@@ -121,21 +136,27 @@ void UNFTWrapper::supportsInterface(uint32 interfaceID,
       USmartContractsParametersEncoder::encodeUInt(interfaceID)};
 
   this->stratisManager->makeLocalCall(
-      localCallData, [callback](const FString &returnValue) {
-        callback(returnValue.Equals(TEXT("true")));
+      localCallData, [callback](const TResult<FString> &result) {
+        callback(result::transformValue<FString, bool>(
+            result,
+            [](const FString &value) { return value.Equals(TEXT("true")); }));
       });
 }
 
 void UNFTWrapper::getBalanceOf(const FString &address,
                                const FNFTGetBalanceOfDelegate &delegate,
                                const FErrorReceivedDelegate &errorDelegate) {
-  this->getBalanceOf(address, [delegate, errorDelegate](uint64 balance) {
-    delegate.ExecuteIfBound(balance);
-  });
+  this->getBalanceOf(
+      address, [delegate, errorDelegate](const TResult<uint64> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+      });
 }
 
-void UNFTWrapper::getBalanceOf(const FString &address,
-                               TFunction<void(uint64)> callback) {
+void UNFTWrapper::getBalanceOf(
+    const FString &address, TFunction<void(const TResult<uint64> &)> callback) {
   FLocalCallData localCallData;
   localCallData.gasPrice = 10000;
   localCallData.gasLimit = 250000;
@@ -147,21 +168,28 @@ void UNFTWrapper::getBalanceOf(const FString &address,
       USmartContractsParametersEncoder::encodeAddress(address)};
 
   this->stratisManager->makeLocalCall(
-      localCallData, [callback](const FString &returnValue) {
-        callback(FCString::Strtoui64(*returnValue, nullptr, 10));
+      localCallData, [callback](const TResult<FString> &result) {
+        callback(result::transformValue<FString, uint64>(
+            result, [](const FString &value) {
+              return FCString::Strtoui64(*value, nullptr, 10);
+            }));
       });
 }
 
 void UNFTWrapper::getOwnerOf(const FUInt64 &tokenID,
                              const FNFTGetOwnerOfDelegate &delegate,
                              const FErrorReceivedDelegate &errorDelegate) {
-  this->getOwnerOf(tokenID, [delegate, errorDelegate](const FString &owner) {
-    delegate.ExecuteIfBound(owner);
-  });
+  this->getOwnerOf(
+      tokenID, [delegate, errorDelegate](const TResult<FString> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+      });
 }
 
-void UNFTWrapper::getOwnerOf(uint64 tokenID,
-                             TFunction<void(const FString &)> callback) {
+void UNFTWrapper::getOwnerOf(
+    uint64 tokenID, TFunction<void(const TResult<FString> &)> callback) {
   FLocalCallData localCallData;
   localCallData.gasPrice = 10000;
   localCallData.gasLimit = 250000;
@@ -174,20 +202,23 @@ void UNFTWrapper::getOwnerOf(uint64 tokenID,
 
   this->stratisManager->makeLocalCall(
       localCallData,
-      [callback](const FString &returnValue) { callback(returnValue); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::getApproved(const FUInt64 &tokenID,
                               const FNFTGetApprovedDelegate &delegate,
                               const FErrorReceivedDelegate &errorDelegate) {
-  this->getApproved(tokenID,
-                    [delegate, errorDelegate](const FString &approved) {
-                      delegate.ExecuteIfBound(approved);
-                    });
+  this->getApproved(
+      tokenID, [delegate, errorDelegate](const TResult<FString> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+      });
 }
 
-void UNFTWrapper::getApproved(uint64 tokenID,
-                              TFunction<void(const FString &)> callback) {
+void UNFTWrapper::getApproved(
+    uint64 tokenID, TFunction<void(const TResult<FString> &)> callback) {
   FLocalCallData localCallData;
   localCallData.gasPrice = 10000;
   localCallData.gasLimit = 250000;
@@ -200,22 +231,26 @@ void UNFTWrapper::getApproved(uint64 tokenID,
 
   this->stratisManager->makeLocalCall(
       localCallData,
-      [callback](const FString &returnValue) { callback(returnValue); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::getApprovedForAll(
     const FString &ownderAddress, const FString &operatorAddress,
     const FNFTGetApprovedForAllDelegate &delegate,
     const FErrorReceivedDelegate &errorDelegate) {
-  this->getApprovedForAll(ownderAddress, operatorAddress,
-                          [delegate, errorDelegate](bool approved) {
-                            delegate.ExecuteIfBound(approved);
-                          });
+  this->getApprovedForAll(
+      ownderAddress, operatorAddress,
+      [delegate, errorDelegate](const TResult<bool> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+      });
 }
 
-void UNFTWrapper::getApprovedForAll(const FString &ownderAddress,
-                                    const FString &operatorAddress,
-                                    TFunction<void(bool)> callback) {
+void UNFTWrapper::getApprovedForAll(
+    const FString &ownderAddress, const FString &operatorAddress,
+    TFunction<void(const TResult<bool> &)> callback) {
   FLocalCallData localCallData;
   localCallData.gasPrice = 10000;
   localCallData.gasLimit = 250000;
@@ -228,22 +263,27 @@ void UNFTWrapper::getApprovedForAll(const FString &ownderAddress,
       USmartContractsParametersEncoder::encodeAddress(operatorAddress)};
 
   this->stratisManager->makeLocalCall(
-      localCallData, [callback](const FString &returnValue) {
-        callback(returnValue.Equals(TEXT("true")));
+      localCallData, [callback](const TResult<FString> &result) {
+        callback(result::transformValue<FString, bool>(
+            result,
+            [](const FString &value) { return value.Equals(TEXT("true")); }));
       });
 }
 
 void UNFTWrapper::getTokenURI(const FUInt64 &tokenID,
                               const FNFTGetTokenURIDelegate &delegate,
                               const FErrorReceivedDelegate &errorDelegate) {
-  this->getTokenURI(tokenID,
-                    [delegate, errorDelegate](const FString &approved) {
-                      delegate.ExecuteIfBound(approved);
-                    });
+  this->getTokenURI(
+      tokenID, [delegate, errorDelegate](const TResult<FString> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+      });
 }
 
-void UNFTWrapper::getTokenURI(uint64 tokenID,
-                              TFunction<void(const FString &)> callback) {
+void UNFTWrapper::getTokenURI(
+    uint64 tokenID, TFunction<void(const TResult<FString> &)> callback) {
   FLocalCallData localCallData;
   localCallData.gasPrice = 10000;
   localCallData.gasLimit = 250000;
@@ -256,7 +296,7 @@ void UNFTWrapper::getTokenURI(uint64 tokenID,
 
   this->stratisManager->makeLocalCall(
       localCallData,
-      [callback](const FString &returnValue) { callback(returnValue); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::safeTransferFrom(
@@ -266,15 +306,17 @@ void UNFTWrapper::safeTransferFrom(
     const FErrorReceivedDelegate &errorDelegate) {
   this->safeTransferFrom(
       fromAddress, toAddress, tokenID, data,
-      [delegate, errorDelegate](const FString &transactionID) {
-        delegate.ExecuteIfBound(transactionID);
+      [delegate, errorDelegate](const TResult<FString> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
       });
 }
 
-void UNFTWrapper::safeTransferFrom(const FString &fromAddress,
-                                   const FString &toAddress, uint64 tokenID,
-                                   TArray<uint8> data,
-                                   TFunction<void(const FString &)> callback) {
+void UNFTWrapper::safeTransferFrom(
+    const FString &fromAddress, const FString &toAddress, uint64 tokenID,
+    TArray<uint8> data, TFunction<void(const TResult<FString> &)> callback) {
   TArray<FString> parameters{
       USmartContractsParametersEncoder::encodeAddress(fromAddress),
       USmartContractsParametersEncoder::encodeAddress(toAddress),
@@ -286,7 +328,7 @@ void UNFTWrapper::safeTransferFrom(const FString &fromAddress,
 
   this->stratisManager->sendCallContractTransaction(
       this->contractAddress, TEXT("SafeTransferFrom"), parameters, 0,
-      [callback](const FString &transactionID) { callback(transactionID); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::transferFrom(const FString &fromAddress,
@@ -294,38 +336,46 @@ void UNFTWrapper::transferFrom(const FString &fromAddress,
                                const FNFTTransferFromDelegate &delegate,
                                const FErrorReceivedDelegate &errorDelegate) {
   this->transferFrom(fromAddress, toAddress, tokenID,
-                     [delegate, errorDelegate](const FString &transactionID) {
-                       delegate.ExecuteIfBound(transactionID);
+                     [delegate, errorDelegate](const TResult<FString> &result) {
+                       if (result::isSuccessful(result))
+                         delegate.ExecuteIfBound(result::getValue(result));
+                       else
+                         errorDelegate.ExecuteIfBound(
+                             result::getErrorMessage(result));
                      });
 }
 
-void UNFTWrapper::transferFrom(const FString &fromAddress,
-                               const FString &toAddress, uint64 tokenID,
-                               TFunction<void(const FString &)> callback) {
+void UNFTWrapper::transferFrom(
+    const FString &fromAddress, const FString &toAddress, uint64 tokenID,
+    TFunction<void(const TResult<FString> &)> callback) {
   this->stratisManager->sendCallContractTransaction(
       this->contractAddress, TEXT("TransferFrom"),
       {USmartContractsParametersEncoder::encodeAddress(fromAddress),
        USmartContractsParametersEncoder::encodeAddress(toAddress),
        USmartContractsParametersEncoder::encodeULong(tokenID)},
-      0, [callback](const FString &transactionID) { callback(transactionID); });
+      0, [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::approve(const FString &address, const FUInt64 &tokenID,
                           const FNFTApproveDelegate &delegate,
                           const FErrorReceivedDelegate &errorDelegate) {
   this->approve(address, tokenID,
-                [delegate, errorDelegate](const FString &transactionID) {
-                  delegate.ExecuteIfBound(transactionID);
+                [delegate, errorDelegate](const TResult<FString> &result) {
+                  if (result::isSuccessful(result))
+                    delegate.ExecuteIfBound(result::getValue(result));
+                  else
+                    errorDelegate.ExecuteIfBound(
+                        result::getErrorMessage(result));
                 });
 }
 
 void UNFTWrapper::approve(const FString &address, uint64 tokenID,
-                          TFunction<void(const FString &)> callback) {
+                          TFunction<void(const TResult<FString> &)> callback) {
   this->stratisManager->sendCallContractTransaction(
       this->contractAddress, TEXT("Approve"),
       {USmartContractsParametersEncoder::encodeAddress(address),
        USmartContractsParametersEncoder::encodeULong(tokenID)},
-      0, [callback](const FString &transactionID) { callback(transactionID); });
+      0, [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::setApprovalForAll(
@@ -334,84 +384,103 @@ void UNFTWrapper::setApprovalForAll(
     const FErrorReceivedDelegate &errorDelegate) {
   this->setApprovalForAll(
       address, tokenID,
-      [delegate, errorDelegate](const FString &transactionID) {
-        delegate.ExecuteIfBound(transactionID);
+      [delegate, errorDelegate](const TResult<FString> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
       });
 }
 
-void UNFTWrapper::setApprovalForAll(const FString &address, uint64 tokenID,
-                                    TFunction<void(const FString &)> callback) {
+void UNFTWrapper::setApprovalForAll(
+    const FString &address, uint64 tokenID,
+    TFunction<void(const TResult<FString> &)> callback) {
   this->stratisManager->sendCallContractTransaction(
       this->contractAddress, TEXT("SetApprovalForAll"),
       {USmartContractsParametersEncoder::encodeAddress(address),
        USmartContractsParametersEncoder::encodeULong(tokenID)},
-      0, [callback](const FString &transactionID) { callback(transactionID); });
+      0, [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::transferOwnership(
     const FString &address, const FNFTTransferOwnershipDelegate &delegate,
     const FErrorReceivedDelegate &errorDelegate) {
   this->transferOwnership(
-      address, [delegate, errorDelegate](const FString &transactionID) {
-        delegate.ExecuteIfBound(transactionID);
+      address, [delegate, errorDelegate](const TResult<FString> &result) {
+        if (result::isSuccessful(result))
+          delegate.ExecuteIfBound(result::getValue(result));
+        else
+          errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
       });
 }
 
-void UNFTWrapper::transferOwnership(const FString &address,
-                                    TFunction<void(const FString &)> callback) {
+void UNFTWrapper::transferOwnership(
+    const FString &address,
+    TFunction<void(const TResult<FString> &)> callback) {
   this->stratisManager->sendCallContractTransaction(
       this->contractAddress, TEXT("TransferOwnership"),
       {USmartContractsParametersEncoder::encodeAddress(address)}, 0,
-      [callback](const FString &transactionID) { callback(transactionID); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::mint(const FString &toAddress,
                        const FNFTMintDelegate &delegate,
                        const FErrorReceivedDelegate &errorDelegate) {
   this->mint(toAddress,
-             [delegate, errorDelegate](const FString &transactionID) {
-               delegate.ExecuteIfBound(transactionID);
+             [delegate, errorDelegate](const TResult<FString> &result) {
+               if (result::isSuccessful(result))
+                 delegate.ExecuteIfBound(result::getValue(result));
+               else
+                 errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
              });
 }
 
 void UNFTWrapper::mint(const FString &toAddress,
-                       TFunction<void(const FString &)> callback) {
+                       TFunction<void(const TResult<FString> &)> callback) {
   this->stratisManager->sendCallContractTransaction(
       this->contractAddress, TEXT("Mint"),
       {USmartContractsParametersEncoder::encodeAddress(toAddress)}, 0,
-      [callback](const FString &transactionID) { callback(transactionID); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::safeMint(const FString &toAddress, const TArray<uint8> &data,
                            const FNFTSafeMintDelegate &delegate,
                            const FErrorReceivedDelegate &errorDelegate) {
   this->safeMint(toAddress, data,
-                 [delegate, errorDelegate](const FString &transactionID) {
-                   delegate.ExecuteIfBound(transactionID);
+                 [delegate, errorDelegate](const TResult<FString> &result) {
+                   if (result::isSuccessful(result))
+                     delegate.ExecuteIfBound(result::getValue(result));
+                   else
+                     errorDelegate.ExecuteIfBound(
+                         result::getErrorMessage(result));
                  });
 }
 
 void UNFTWrapper::safeMint(const FString &toAddress, const TArray<uint8> &data,
-                           TFunction<void(const FString &)> callback) {
+                           TFunction<void(const TResult<FString> &)> callback) {
   this->stratisManager->sendCallContractTransaction(
       this->contractAddress, TEXT("SafeMint"),
       {USmartContractsParametersEncoder::encodeAddress(toAddress),
        USmartContractsParametersEncoder::encodeByteArray(data)},
-      0, [callback](const FString &transactionID) { callback(transactionID); });
+      0, [callback](const TResult<FString> &result) { callback(result); });
 }
 
 void UNFTWrapper::burn(const UInt64 &tokenID,
                        const FNFTSafeMintDelegate &delegate,
                        const FErrorReceivedDelegate &errorDelegate) {
-  this->burn(tokenID, [delegate, errorDelegate](const FString &transactionID) {
-    delegate.ExecuteIfBound(transactionID);
-  });
+  this->burn(tokenID,
+             [delegate, errorDelegate](const TResult<FString> &result) {
+               if (result::isSuccessful(result))
+                 delegate.ExecuteIfBound(result::getValue(result));
+               else
+                 errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+             });
 }
 
 void UNFTWrapper::burn(uint64 tokenID,
-                       TFunction<void(const FString &)> callback) {
+                       TFunction<void(const TResult<FString> &)> callback) {
   this->stratisManager->sendCallContractTransaction(
       this->contractAddress, TEXT("Burn"),
       {USmartContractsParametersEncoder::encodeULong(tokenID)}, 0,
-      [callback](const FString &transactionID) { callback(transactionID); });
+      [callback](const TResult<FString> &result) { callback(result); });
 }

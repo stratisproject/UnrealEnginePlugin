@@ -150,20 +150,6 @@ public:
 
   UWorld *GetWorld() const override;
 
-  // Legacy method to provide compatibility with smart contract wrappers
-  void sendCreateContractTransaction(const FString &contractCode,
-                                     const TArray<FString> &parameters,
-                                     int64 money,
-                                     TFunction<void(const FString &)> callback);
-
-  void sendCallContractTransaction(const FString &contractAddress,
-                                   const FString &methodName,
-                                   const TArray<FString> &parameters,
-                                   uint64 money,
-                                   TFunction<void(const FString &)> callback);
-  void makeLocalCall(const FLocalCallData &localCallData,
-                     TFunction<void(const FString &)> callback);
-
 private:
   void notifyNetworkChanged();
 

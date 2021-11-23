@@ -48,46 +48,47 @@ public:
                            const FErrorReceivedDelegate &errorDelegate);
   void deployStandartToken(uint64 totalSupply, const FString &name,
                            const FString &symbols, uint32 decimals,
-                           TFunction<void(const FString &)> callback);
+                           TFunction<void(const TResult<FString> &)> callback);
 
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void getSymbol(const FGetSymbolDelegate &delegate,
                  const FErrorReceivedDelegate &errorDelegate);
-  void getSymbol(TFunction<void(const FString &)> callback);
+  void getSymbol(TFunction<void(const TResult<FString> &)> callback);
 
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void getName(const FGetNameDelegate &delegate,
                const FErrorReceivedDelegate &errorDelegate);
-  void getName(TFunction<void(const FString &)> callback);
+  void getName(TFunction<void(const TResult<FString> &)> callback);
 
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void getTotalSupply(const FGetTotalSupplyDelegate &delegate,
                       const FErrorReceivedDelegate &errorDelegate);
-  void getTotalSupply(TFunction<void(uint64)> callback);
+  void getTotalSupply(TFunction<void(const TResult<uint64> &)> callback);
 
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void getDecimals(const FGetDecimalsDelegate &delegate,
                    const FErrorReceivedDelegate &errorDelegate);
-  void getDecimals(TFunction<void(uint32)> callback);
+  void getDecimals(TFunction<void(const TResult<uint32> &)> callback);
 
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void getBalance(const FString &address, const FGetBalanceDelegate &delegate,
                   const FErrorReceivedDelegate &errorDelegate);
-  void getBalance(const FString &address, TFunction<void(uint64)> callback);
+  void getBalance(const FString &address,
+                  TFunction<void(const TResult<uint64> &)> callback);
 
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void getAllowance(const FString &ownerAddress, const FString &spenderAddress,
                     const FGetAllowanceDelegate &delegate,
                     const FErrorReceivedDelegate &errorDelegate);
   void getAllowance(const FString &ownerAddress, const FString &spenderAddress,
-                    TFunction<void(uint64)> callback);
+                    TFunction<void(const TResult<uint64> &)> callback);
 
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void transferTo(const FString &address, const FUInt64 &amount,
                   const FTransferToDelegate &delegate,
                   const FErrorReceivedDelegate &errorDelegate);
   void transferTo(const FString &address, uint64 amount,
-                  TFunction<void(const FString &)> callback);
+                  TFunction<void(const TResult<FString> &)> callback);
 
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void transferFrom(const FString &fromAddress, const FString &toAddress,
@@ -95,12 +96,13 @@ public:
                     const FTransferFromDelegate &delegate,
                     const FErrorReceivedDelegate &errorDelegate);
   void transferFrom(const FString &fromAddress, const FString &toAddress,
-                    uint64 amount, TFunction<void(const FString &)> callback);
+                    uint64 amount,
+                    TFunction<void(const TResult<FString> &)> callback);
 
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void approve(const FString &spender, const FUInt64 &currentAmount,
                const FUInt64 &amount, const FApproveDelegate &delegate,
                const FErrorReceivedDelegate &errorDelegate);
   void approve(const FString &spender, uint64 currentAmount, uint64 amount,
-               TFunction<void(const FString &)> callback);
+               TFunction<void(const TResult<FString> &)> callback);
 };
