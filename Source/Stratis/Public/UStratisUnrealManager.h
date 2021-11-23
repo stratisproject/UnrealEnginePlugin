@@ -148,6 +148,8 @@ public:
   void makeLocalCall(const FLocalCallData &localCallData,
                      TFunction<void(const TResult<FString> &)> callback);
 
+  UWorld *GetWorld() const override;
+
   // Legacy method to provide compatibility with smart contract wrappers
   void sendCreateContractTransaction(const FString &contractCode,
                                      const TArray<FString> &parameters,
@@ -163,7 +165,6 @@ public:
                      TFunction<void(const FString &)> callback);
 
 private:
-  UWorld *GetWorld() const;
   void notifyNetworkChanged();
 
   FString mnemonic_;

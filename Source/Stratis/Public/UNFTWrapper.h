@@ -56,6 +56,8 @@ public:
   UPROPERTY(EditAnywhere)
   FString contractAddress;
 
+  UWorld *GetWorld() const override;
+
   UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
   void deployNFTContract(const FString &name, const FString &symbol,
                          const FString &tokenURIFormat, bool ownerOnlyMinting,

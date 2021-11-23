@@ -39,6 +39,8 @@ public:
   UPROPERTY(EditAnywhere)
   FString contractAddress;
 
+  UWorld *GetWorld() const override;
+
   UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
   void deployStandartToken(const FUInt64 &totalSupply, const FString &name,
                            const FString &symbols, int64 decimals,

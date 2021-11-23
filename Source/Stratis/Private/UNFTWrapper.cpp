@@ -4,8 +4,11 @@
 #include "USmartContractsParametersEncoder.h"
 
 UNFTWrapper::UNFTWrapper() {
-  stratisManager = NewObject<UStratisUnrealManager>();
+  stratisManager =
+      CreateDefaultSubobject<UStratisUnrealManager>(TEXT("StratisManager"));
 }
+
+UWorld *UNFTWrapper::GetWorld() const { return GetOuter()->GetWorld(); }
 
 void UNFTWrapper::deployNFTContract(
     const FString &name, const FString &symbol, const FString &tokenURIFormat,

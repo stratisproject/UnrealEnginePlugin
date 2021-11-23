@@ -4,7 +4,12 @@
 #include "USmartContractsParametersEncoder.h"
 
 UStandartTokenWrapper::UStandartTokenWrapper() {
-  stratisManager = NewObject<UStratisUnrealManager>();
+  stratisManager =
+      CreateDefaultSubobject<UStratisUnrealManager>(TEXT("StratisManager"));
+}
+
+UWorld *UStandartTokenWrapper::GetWorld() const {
+  return GetOuter()->GetWorld();
 }
 
 void UStandartTokenWrapper::deployStandartToken(
