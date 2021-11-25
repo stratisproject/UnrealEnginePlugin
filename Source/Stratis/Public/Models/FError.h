@@ -6,12 +6,12 @@
 
 USTRUCT(BlueprintType)
 struct STRATIS_API FError {
-  GENERATED_USTRUCT_BODY()
+    GENERATED_USTRUCT_BODY()
 
-  UPROPERTY(EditAnywhere, BlueprintReadWrite)
-  FString message;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FString message;
 
-  FError() {}
+    FError() {}
 
-  FError(const FString &errorMessage) : message(errorMessage) {}
+    FError(const FString& errorMessage) : message(errorMessage) {}
 };
