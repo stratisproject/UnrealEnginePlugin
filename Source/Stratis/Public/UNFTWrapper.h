@@ -163,7 +163,7 @@ public:
                   TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void burn(const UInt64& tokenID, const FNFTSafeMintDelegate& delegate,
+    void burn(const FUInt64& tokenID, const FNFTSafeMintDelegate& delegate,
               const FErrorReceivedDelegate& errorDelegate);
     void burn(uint64 tokenID, TFunction<void(const TResult<FString>&)> callback);
 };

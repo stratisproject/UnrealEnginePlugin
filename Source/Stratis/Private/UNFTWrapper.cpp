@@ -500,7 +500,7 @@ void UNFTWrapper::safeMint(const FString& toAddress, const TArray<uint8>& data,
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
-void UNFTWrapper::burn(const UInt64& tokenID,
+void UNFTWrapper::burn(const FUInt64& tokenID,
                        const FNFTSafeMintDelegate& delegate,
                        const FErrorReceivedDelegate& errorDelegate)
 {
