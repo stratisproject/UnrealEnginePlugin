@@ -7,7 +7,7 @@ namespace converters {
 
 inline UTXO convertUTXO(const FUTXO& utxo)
 {
-    return {.hash = utxo.hash, .n = (uint32)utxo.n, .satoshis = (uint64)utxo.satoshis};
+    return {utxo.hash, (uint32)utxo.n, (uint64)utxo.satoshis};
 }
 
 

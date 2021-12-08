@@ -99,10 +99,10 @@ Transaction TransactionBuilderImpl::buildCreateContractTransaction(
         &&parameters) const {
   std::vector<uint8_t> scriptBytes =
       smartContractScriptFactory_->makeCreateSmartContractScript(
-          {.gasPrice = gasPrice,
-           .gasLimit = gasLimit,
-           .contractCode = utils::asTArray(utils::hexAsBytes(contractCode)),
-           .methodParameters = MoveTemp(parameters)});
+          {gasPrice,
+           gasLimit,
+           utils::asTArray(utils::hexAsBytes(contractCode)),
+           MoveTemp(parameters)});
 
   chain::script createContractScript(std::move(scriptBytes), false);
 
@@ -129,11 +129,11 @@ Transaction TransactionBuilderImpl::buildCallContractTransaction(
         &&parameters) const {
   std::vector<uint8_t> scriptBytes =
       smartContractScriptFactory_->makeCallSmartContractScript(
-          {.gasPrice = gasPrice,
-           .gasLimit = gasLimit,
-           .contractAddress = contractAddress,
-           .methodName = methodName,
-           .methodParameters = MoveTemp(parameters)});
+          {gasPrice,
+           gasLimit,
+           contractAddress,
+           methodName,
+           MoveTemp(parameters)});
 
   chain::script createContractScript(std::move(scriptBytes), false);
 

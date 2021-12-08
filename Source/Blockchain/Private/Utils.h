@@ -33,8 +33,8 @@ namespace utils
     Transaction transformTransaction(const libbitcoin::system::chain::transaction &transaction)
     {
         return {
-            .transactionHex = encodeTransaction(transaction),
-            .transactionId = hashDigestAsString(transaction.hash())};
+            encodeTransaction(transaction),
+            hashDigestAsString(transaction.hash())};
     }
 
     template <typename T>

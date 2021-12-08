@@ -4,5 +4,5 @@
 
 StratisNetwork adapters::fromFNetwork(FNetwork network)
 {
-    return {.base58_pubkey_address_prefix = network.base58_pubkey_address_prefix};
+    return {network.base58_pubkey_address_prefix};
 }

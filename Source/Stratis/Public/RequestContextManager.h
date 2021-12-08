@@ -37,12 +37,12 @@ inline FString RequestContextManager::createContext(const RequestType& request, 
             this->disposeContext(contextID);
         });
 
-    contextStorage_.Add(id, {.delegate = delegatePtr, .request = requestMethod(request, delegate)});
+    contextStorage_.Add(id, {requestMethod(request, delegate), delegatePtr});
 
     return id;
 }
 
-bool RequestContextManager::disposeContext(const FString& id)
+inline bool RequestContextManager::disposeContext(const FString& id)
 {
     if (contextStorage_.Contains(id)) {
         contextStorage_.Remove(id);
@@ -52,12 +52,12 @@ bool RequestContextManager::disposeContext(const FString& id)
     return false;
 }
 
-RequestContext& RequestContextManager::getContext(const FString& id)
+inline RequestContext& RequestContextManager::getContext(const FString& id)
 {
     return contextStorage_[id];
 }
 
-const RequestContext& RequestContextManager::getContext(const FString& id) const
+inline const RequestContext& RequestContextManager::getContext(const FString& id) const
 {
     return contextStorage_[id];
 }
