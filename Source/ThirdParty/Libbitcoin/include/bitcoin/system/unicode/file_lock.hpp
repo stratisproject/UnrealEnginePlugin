@@ -27,6 +27,10 @@
 // Includes <windows.h> from bitcoin/unicode.hpp under _MSC_VER.
 #include <bitcoin/system/unicode/unicode.hpp>
 
+#ifdef _MSC_VER
+#include <boost/winapi/file_management.hpp>
+#endif
+
 //!\file
 //!Describes a class that wraps file locking capabilities.
 
@@ -151,13 +155,11 @@ class file_lock
 
 #ifdef _MSC_VER
 
-extern "C" __declspec(dllimport) void * __stdcall CreateFileW(const wchar_t *, unsigned long, unsigned long, struct boost::interprocess::winapi::interprocess_security_attributes*, unsigned long, unsigned long, void *);
-
 // ENABLE UNICODE PATHS ON WINDOWS FROM UTF8 STRING REGARDLESS OF BUILD CONFIGURATION.
 inline void* CreateFileUTF8(const std::string& name, unsigned long access, unsigned long mode,
     struct boost::interprocess::winapi::interprocess_security_attributes *psec, unsigned long creation, unsigned long attributes, void *ptemplate)
 {
-    return CreateFileW(bc::system::to_utf16(name).c_str(), access, mode, psec, creation, attributes, ptemplate);
+    return boost::winapi::CreateFileW(bc::system::to_utf16(name).c_str(), access, mode, reinterpret_cast< boost::winapi::SECURITY_ATTRIBUTES_* >(psec), creation, attributes, ptemplate);
 }
 
 // ADAPTED FROM boost/interprocess/winapi/win32_api.hpp UNDER SAME LICENSE AS ABOVE.
