@@ -33,6 +33,9 @@ class STRATIS_API UStratisUnrealManager : public UObject
 public:
     UStratisUnrealManager();
 
+    UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
+    static UStratisUnrealManager* createInstance(const FString& mnemonic, const FString& baseUrl, ENetwork network);
+
     UPROPERTY(EditAnywhere)
     uint64 gasPrice;
 
