@@ -16,7 +16,7 @@ This plugin provides functionallity for creating a wallet, building different ty
 
 `UStratisUnrealManager` should be used as the main entry-point for all Stratis-related actions (except StandartToken & NFT interaction).
 
-`UStandartTokenWrapper` is a high-level wrapper for a [standart token](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/) contracts.
+`UStandardTokenWrapper` is a high-level wrapper for a [standart token](https://ethereum.org/en/developers/docs/standards/tokens/erc-20/) contracts.
 
 `UNFTWrapper` is a high-level wrapper for [non-fungible token](https://ethereum.org/en/developers/docs/standards/tokens/erc-721/) contracts.
 
