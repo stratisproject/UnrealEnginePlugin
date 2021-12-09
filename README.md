@@ -20,5 +20,3 @@ This plugin provides functionallity for creating a wallet, building different ty
 
 `UNFTWrapper` is a high-level wrapper for [non-fungible token](https://ethereum.org/en/developers/docs/standards/tokens/erc-721/) contracts.
 
-### Examples
-`Work In Progress`
