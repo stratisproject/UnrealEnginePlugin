@@ -40,9 +40,9 @@ UStratisUnrealManager::UStratisUnrealManager()
     unrealApi_->AddHeaderParam(TEXT("Accept"), TEXT("application/json"));
 }
 
-UStratisUnrealManager* UStratisUnrealManager::createInstance(const FString& mnemonic, const FString& baseUrl, ENetwork network)
+UStratisUnrealManager* UStratisUnrealManager::createInstance(const FString& mnemonic, const FString& baseUrl, ENetwork network, UObject* outer)
 {
-    UStratisUnrealManager* manager = NewObject<UStratisUnrealManager>();
+    UStratisUnrealManager* manager = NewObject<UStratisUnrealManager>(outer);
     manager->setMnemonic(mnemonic);
     manager->setBaseUrl(baseUrl);
     manager->setPredefinedNetwork(network);

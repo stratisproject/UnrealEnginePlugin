@@ -34,7 +34,7 @@ public:
     UStratisUnrealManager();
 
     UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
-    static UStratisUnrealManager* createInstance(const FString& mnemonic, const FString& baseUrl, ENetwork network);
+    static UStratisUnrealManager* createInstance(const FString& mnemonic, const FString& baseUrl, ENetwork network, UObject* outer);
 
     UPROPERTY(EditAnywhere)
     uint64 gasPrice;
