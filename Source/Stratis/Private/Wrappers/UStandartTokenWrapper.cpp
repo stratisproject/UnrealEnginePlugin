@@ -1,7 +1,7 @@
-#include "UStandartTokenWrapper.h"
+#include "Wrappers/UStandartTokenWrapper.h"
 
-#include "SmartContracts.h"
 #include "USmartContractsParametersEncoder.h"
+#include "WhitelistedSmartContracts.h"
 
 UStandartTokenWrapper::UStandartTokenWrapper()
 {
@@ -40,7 +40,7 @@ void UStandartTokenWrapper::deployStandartToken(
         USmartContractsParametersEncoder::encodeUInt(decimals)};
 
     this->stratisManager->sendCreateContractTransaction(
-        FString(smart_contracts::StandartTokenContractCode), parameters, 0,
+        FString(UWhitelistedSmartContracts::StandartTokenContractCode), parameters, 0,
         [callback](const TResult<FString>& result) { callback(result); });
 }
 

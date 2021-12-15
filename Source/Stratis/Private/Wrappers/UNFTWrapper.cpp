@@ -1,7 +1,7 @@
-#include "UNFTWrapper.h"
+#include "Wrappers/UNFTWrapper.h"
 
-#include "SmartContracts.h"
 #include "USmartContractsParametersEncoder.h"
+#include "WhitelistedSmartContracts.h"
 
 UNFTWrapper::UNFTWrapper()
 {
@@ -37,7 +37,7 @@ void UNFTWrapper::deployNFTContract(
         USmartContractsParametersEncoder::encodeBoolean(ownerOnlyMinting)};
 
     this->stratisManager->sendCreateContractTransaction(
-        FString(smart_contracts::NFTContractCode), parameters, 0,
+        FString(UWhitelistedSmartContracts::NFTContractCode), parameters, 0,
         [callback](const TResult<FString>& result) { callback(result); });
 }
 
