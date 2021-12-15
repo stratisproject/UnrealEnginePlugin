@@ -5,8 +5,20 @@
 
 UNFTWrapper::UNFTWrapper()
 {
-    stratisManager =
-        CreateDefaultSubobject<UStratisUnrealManager>(TEXT("StratisManager"));
+}
+
+UNFTWrapper* UNFTWrapper::createInstance(const FString& contractAddress, UStratisUnrealManager* manager, UObject* outer)
+{
+    UNFTWrapper* wrapper = NewObject<UNFTWrapper>(outer);
+    wrapper->stratisManager = manager;
+    wrapper->contractAddress = contractAddress;
+    
+    return wrapper;
+}
+
+UNFTWrapper* UNFTWrapper::createDefaultInstance(UStratisUnrealManager* manager, UObject* outer)
+{
+    return UNFTWrapper::createInstance(UWhitelistedSmartContracts::NFTContractAddress, manager, outer);
 }
 
 UWorld* UNFTWrapper::GetWorld() const { return GetOuter()->GetWorld(); }

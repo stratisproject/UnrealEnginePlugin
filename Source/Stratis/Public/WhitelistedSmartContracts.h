@@ -47,4 +47,10 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
     static FWhitelistedSmartContract StandartTokenContract();
+
+    static const TCHAR* StandartToken256ContractCode;
+    static const TCHAR* StandartToken256ContractAddress;
+
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FWhitelistedSmartContract StandartToken256Contract();
 };

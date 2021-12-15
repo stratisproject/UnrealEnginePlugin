@@ -4,6 +4,7 @@
 
 #include "Models/FUInt64.h"
 #include "UStratisUnrealManager.h"
+#include "WhitelistedSmartContracts.h"
 
 #include "UStandartTokenWrapper.generated.h"
 
@@ -26,6 +27,12 @@ class STRATIS_API UStandartTokenWrapper : public UObject
 public:
     UStandartTokenWrapper();
 
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
+    static UStandartTokenWrapper* createInstance(const FString& contractAddress, UStratisUnrealManager* manager, UObject* outer);
+    
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
+    static UStandartTokenWrapper* createDefaultInstance(UStratisUnrealManager* manager, UObject* outer);
+    
     UPROPERTY(EditAnywhere)
     UStratisUnrealManager* stratisManager;
 

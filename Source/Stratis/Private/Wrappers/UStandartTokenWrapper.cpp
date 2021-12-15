@@ -5,8 +5,20 @@
 
 UStandartTokenWrapper::UStandartTokenWrapper()
 {
-    stratisManager =
-        CreateDefaultSubobject<UStratisUnrealManager>(TEXT("StratisManager"));
+}
+
+UStandartTokenWrapper* UStandartTokenWrapper::createInstance(const FString& contractAddress, UStratisUnrealManager* manager, UObject* outer)
+{
+    UStandartTokenWrapper* wrapper = NewObject<UStandartTokenWrapper>(outer);
+    wrapper->stratisManager = manager;
+    wrapper->contractAddress = contractAddress;
+    
+    return wrapper;
+}
+
+UStandartTokenWrapper* UStandartTokenWrapper::createDefaultInstance(UStratisUnrealManager* manager, UObject* outer)
+{
+    return UStandartTokenWrapper::createInstance(UWhitelistedSmartContracts::StandartTokenContractAddress, manager, outer);
 }
 
 UWorld* UStandartTokenWrapper::GetWorld() const

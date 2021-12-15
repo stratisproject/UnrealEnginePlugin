@@ -4,6 +4,7 @@
 
 #include "Models/FUInt64.h"
 #include "UStratisUnrealManager.h"
+#include "WhitelistedSmartContracts.h"
 
 #include "UNFTWrapper.generated.h"
 
@@ -34,6 +35,12 @@ class STRATIS_API UNFTWrapper : public UObject
 public:
     UNFTWrapper();
 
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    static UNFTWrapper* createInstance(const FString& contractAddress, UStratisUnrealManager* manager, UObject* outer);
+    
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    static UNFTWrapper* createDefaultInstance(UStratisUnrealManager* manager, UObject* outer);
+    
     UPROPERTY(EditAnywhere)
     UStratisUnrealManager* stratisManager;
 
