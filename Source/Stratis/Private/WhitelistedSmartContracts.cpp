@@ -1,5 +1,7 @@
 #include "WhitelistedSmartContracts.h"
 
+#include "Projects.h"
+
 #define PLUGIN_NAME "Stratis"
 
 // https://github.com/stratisproject/CirrusSmartContracts/tree/master/Mainnet/DAOContract
@@ -65,8 +67,7 @@ FString UWhitelistedSmartContracts::loadContractCodeByName(const TCHAR* contract
 
     FString result;
 
-    if (FPaths::FileExists(contractFile))
-    {
+    if (FPaths::FileExists(contractFile)) {
         FFileHelper::LoadFileToString(result, *contractFile, FFileHelper::EHashOptions::None);
     }
 
