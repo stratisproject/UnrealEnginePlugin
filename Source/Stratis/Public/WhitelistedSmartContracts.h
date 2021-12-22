@@ -4,53 +4,41 @@
 
 #include "WhitelistedSmartContracts.generated.h"
 
-USTRUCT(BlueprintType)
-struct FWhitelistedSmartContract {
-    GENERATED_BODY()
-
-    UPROPERTY(EditAnywhere)
-    FString code;
-
-    UPROPERTY(EditAnywhere)
-    FString address;
-};
-
 UCLASS(BlueprintType)
 class UWhitelistedSmartContracts : public UObject
 {
     GENERATED_BODY()
 
 public:
-    static const TCHAR* DaoContractCode;
     static const TCHAR* DaoContractAddress;
-
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
-    static FWhitelistedSmartContract DaoContract();
+    static FString GetDaoContractAddress();
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FString GetDaoContractCode();
 
-
-    static const TCHAR* YesNoVoteContractCode;
     static const TCHAR* YesNoVoteContractAddress;
-
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
-    static FWhitelistedSmartContract YesNoVoteContract();
+    static FString GetYesNoVoteContractAddress();
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FString GetYesNoVoteContractCode();
 
-
-    static const TCHAR* NFTContractCode;
     static const TCHAR* NFTContractAddress;
-
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
-    static FWhitelistedSmartContract NFTContract();
+    static FString GetNFTContractAddress();
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FString GetNFTContractCode();
 
-
-    static const TCHAR* StandartTokenContractCode;
     static const TCHAR* StandartTokenContractAddress;
-
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
-    static FWhitelistedSmartContract StandartTokenContract();
+    static FString GetStandartTokenContractAddress();
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FString GetStandartTokenContractCode();
 
-    static const TCHAR* StandartToken256ContractCode;
     static const TCHAR* StandartToken256ContractAddress;
-
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
-    static FWhitelistedSmartContract StandartToken256Contract();
+    static FString GetStandartToken256ContractAddress();
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FString GetStandartToken256ContractCode();
+private:
+    static FString loadContractCodeByName(const TCHAR* contractName);
 };

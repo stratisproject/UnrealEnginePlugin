@@ -52,7 +52,7 @@ void UStandartTokenWrapper256::deployStandartToken(
         USmartContractsParametersEncoder::encodeByte(decimals)};
 
     this->stratisManager->sendCreateContractTransaction(
-        FString(UWhitelistedSmartContracts::StandartTokenContractCode), parameters, 0,
+        UWhitelistedSmartContracts::GetStandartTokenContractCode(), parameters, 0,
         [callback](const TResult<FString>& result) { callback(result); });
 }
 

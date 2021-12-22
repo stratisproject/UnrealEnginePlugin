@@ -16,7 +16,8 @@ public class Stratis : ModuleRules
                 "StratisAPI",
                 "CoreUObject",
                 "Blockchain",
-                "Json"
+                "Json",
+                "Projects"
             }
             );
     }

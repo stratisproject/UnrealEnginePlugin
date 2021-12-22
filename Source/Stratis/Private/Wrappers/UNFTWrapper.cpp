@@ -49,7 +49,7 @@ void UNFTWrapper::deployNFTContract(
         USmartContractsParametersEncoder::encodeBoolean(ownerOnlyMinting)};
 
     this->stratisManager->sendCreateContractTransaction(
-        FString(UWhitelistedSmartContracts::NFTContractCode), parameters, 0,
+        UWhitelistedSmartContracts::GetNFTContractCode(), parameters, 0,
         [callback](const TResult<FString>& result) { callback(result); });
 }
 
