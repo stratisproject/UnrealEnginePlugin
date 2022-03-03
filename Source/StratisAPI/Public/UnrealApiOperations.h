@@ -1,3 +1,9 @@
+// Copyright © 2022 Stratis Platform.
+//
+// This file is part of Stratis Plugin for Unreal Engine. The full copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+
 /**
  * Stratis Node API
  * Access to the Stratis Node's api.
@@ -35,224 +41,244 @@ namespace api {
 
 */
 class STRATISAPI_API UnrealApi::Unity3dApiUnity3dLocalCallPostRequest
-    : public Request {
+    : public Request
+{
 public:
-  virtual ~Unity3dApiUnity3dLocalCallPostRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dApiUnity3dLocalCallPostRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 
-  TOptional<LocalCallContractRequest> LocalCallContractRequest;
+    TOptional<LocalCallContractRequest> LocalCallContractRequest;
 };
 
 class STRATISAPI_API UnrealApi::Unity3dApiUnity3dLocalCallPostResponse
-    : public Response {
+    : public Response
+{
 public:
-  virtual ~Unity3dApiUnity3dLocalCallPostResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dApiUnity3dLocalCallPostResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-  LocalExecutionResult Content;
+    LocalExecutionResult Content;
 };
 
 /*
 
 */
 class STRATISAPI_API UnrealApi::Unity3dApiUnity3dReceiptGetRequest
-    : public Request {
+    : public Request
+{
 public:
-  virtual ~Unity3dApiUnity3dReceiptGetRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dApiUnity3dReceiptGetRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 
-  TOptional<FString> TxHash;
+    TOptional<FString> TxHash;
 };
 
 class STRATISAPI_API UnrealApi::Unity3dApiUnity3dReceiptGetResponse
-    : public Response {
+    : public Response
+{
 public:
-  virtual ~Unity3dApiUnity3dReceiptGetResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dApiUnity3dReceiptGetResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-  ReceiptResponse Content;
+    ReceiptResponse Content;
 };
 
 /*
 
 */
-class STRATISAPI_API UnrealApi::Unity3dBlockGetRequest : public Request {
+class STRATISAPI_API UnrealApi::Unity3dBlockGetRequest : public Request
+{
 public:
-  virtual ~Unity3dBlockGetRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dBlockGetRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 
-  FString Hash;
-  TOptional<bool> ShowTransactionDetails;
-  TOptional<bool> OutputJson;
+    FString Hash;
+    TOptional<bool> ShowTransactionDetails;
+    TOptional<bool> OutputJson;
 };
 
-class STRATISAPI_API UnrealApi::Unity3dBlockGetResponse : public Response {
+class STRATISAPI_API UnrealApi::Unity3dBlockGetResponse : public Response
+{
 public:
-  virtual ~Unity3dBlockGetResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dBlockGetResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-  BlockModel Content;
+    BlockModel Content;
 };
 
 /*
 
 */
 class STRATISAPI_API UnrealApi::Unity3dGetaddressbalanceGetRequest
-    : public Request {
+    : public Request
+{
 public:
-  virtual ~Unity3dGetaddressbalanceGetRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dGetaddressbalanceGetRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 
-  TOptional<FString> Address;
+    TOptional<FString> Address;
 };
 
 class STRATISAPI_API UnrealApi::Unity3dGetaddressbalanceGetResponse
-    : public Response {
+    : public Response
+{
 public:
-  virtual ~Unity3dGetaddressbalanceGetResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dGetaddressbalanceGetResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-  BalanceModel Content;
+    BalanceModel Content;
 };
 
 /*
 
 */
 class STRATISAPI_API UnrealApi::Unity3dGetblockheaderGetRequest
-    : public Request {
+    : public Request
+{
 public:
-  virtual ~Unity3dGetblockheaderGetRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dGetblockheaderGetRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 
-  TOptional<FString> Hash;
+    TOptional<FString> Hash;
 };
 
 class STRATISAPI_API UnrealApi::Unity3dGetblockheaderGetResponse
-    : public Response {
+    : public Response
+{
 public:
-  virtual ~Unity3dGetblockheaderGetResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dGetblockheaderGetResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-  BlockHeaderModel Content;
+    BlockHeaderModel Content;
 };
 
 /*
 
 */
 class STRATISAPI_API UnrealApi::Unity3dGetrawtransactionGetRequest
-    : public Request {
+    : public Request
+{
 public:
-  virtual ~Unity3dGetrawtransactionGetRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dGetrawtransactionGetRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 
-  TOptional<FString> Trxid;
+    TOptional<FString> Trxid;
 };
 
 class STRATISAPI_API UnrealApi::Unity3dGetrawtransactionGetResponse
-    : public Response {
+    : public Response
+{
 public:
-  virtual ~Unity3dGetrawtransactionGetResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dGetrawtransactionGetResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-  RawTxModel Content;
+    RawTxModel Content;
 };
 
 /*
 
 */
 class STRATISAPI_API UnrealApi::Unity3dGetutxosforaddressGetRequest
-    : public Request {
+    : public Request
+{
 public:
-  virtual ~Unity3dGetutxosforaddressGetRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dGetutxosforaddressGetRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 
-  TOptional<FString> Address;
+    TOptional<FString> Address;
 };
 
 class STRATISAPI_API UnrealApi::Unity3dGetutxosforaddressGetResponse
-    : public Response {
+    : public Response
+{
 public:
-  virtual ~Unity3dGetutxosforaddressGetResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dGetutxosforaddressGetResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-  GetUTXOsResponseModel Content;
+    GetUTXOsResponseModel Content;
 };
 
 /*
 
 */
 class STRATISAPI_API UnrealApi::Unity3dSendTransactionPostRequest
-    : public Request {
+    : public Request
+{
 public:
-  virtual ~Unity3dSendTransactionPostRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dSendTransactionPostRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 
-  TOptional<SendTransactionRequest> SendTransactionRequest;
+    TOptional<SendTransactionRequest> SendTransactionRequest;
 };
 
 class STRATISAPI_API UnrealApi::Unity3dSendTransactionPostResponse
-    : public Response {
+    : public Response
+{
 public:
-  virtual ~Unity3dSendTransactionPostResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dSendTransactionPostResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 };
 
 /*
 
 */
-class STRATISAPI_API UnrealApi::Unity3dTipGetRequest : public Request {
+class STRATISAPI_API UnrealApi::Unity3dTipGetRequest : public Request
+{
 public:
-  virtual ~Unity3dTipGetRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dTipGetRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 };
 
-class STRATISAPI_API UnrealApi::Unity3dTipGetResponse : public Response {
+class STRATISAPI_API UnrealApi::Unity3dTipGetResponse : public Response
+{
 public:
-  virtual ~Unity3dTipGetResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dTipGetResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-  TipModel Content;
+    TipModel Content;
 };
 
 /*
 
 */
 class STRATISAPI_API UnrealApi::Unity3dValidateaddressGetRequest
-    : public Request {
+    : public Request
+{
 public:
-  virtual ~Unity3dValidateaddressGetRequest() {}
-  void SetupHttpRequest(const FHttpRequestRef &HttpRequest) const final;
-  FString ComputePath() const final;
+    virtual ~Unity3dValidateaddressGetRequest() {}
+    void SetupHttpRequest(const FHttpRequestRef& HttpRequest) const final;
+    FString ComputePath() const final;
 
-  TOptional<FString> Address;
+    TOptional<FString> Address;
 };
 
 class STRATISAPI_API UnrealApi::Unity3dValidateaddressGetResponse
-    : public Response {
+    : public Response
+{
 public:
-  virtual ~Unity3dValidateaddressGetResponse() {}
-  void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
-  bool FromJson(const TSharedPtr<FJsonValue> &JsonValue) final;
+    virtual ~Unity3dValidateaddressGetResponse() {}
+    void SetHttpResponseCode(EHttpResponseCodes::Type InHttpResponseCode) final;
+    bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
 
-  ValidatedAddress Content;
+    ValidatedAddress Content;
 };
 
 } // namespace api
