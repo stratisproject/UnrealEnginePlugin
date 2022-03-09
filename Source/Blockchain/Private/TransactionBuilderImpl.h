@@ -9,8 +9,9 @@
 #include "TransactionBuilder.h"
 #include <CoreMinimal.h>
 
-#include "HDWallet.h"
-#include "SigningInput.h"
+#include "TWCoinType.h"
+#include "Wallet.h"
+#include "WalletUTXO.h"
 
 class TransactionBuilderImpl : public TransactionBuilder
 {
@@ -44,17 +45,12 @@ public:
         TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters) const override;
 
 private:
-    StratisNetwork network_;
+    static TWCoinType coinType(StratisNetwork network);
+    static WalletUTXOs convertUTXOs(const TArray<UTXO>& utxos);
+    static Transaction convertTransaction(const BuiltTransaction& transaction);
 
-    std::string address() const;
+    TSharedPtr<Wallet> wallet_;
 
     TUniquePtr<smart_contracts::SmartContractScriptFactory>
         smartContractScriptFactory_;
-
-    TW::HDWallet wallet_;
-
-    TWCoinType coinType() const;
-
-    TW::Bitcoin::SigningInput buildSigningInput(const TArray<UTXO>& utxos) const;
-    Transaction signTransaction(const TW::Bitcoin::SigningInput& input) const;
 };

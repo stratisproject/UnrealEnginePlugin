@@ -13,38 +13,27 @@
 #include <string>
 #include <vector>
 
-#include "Coin.h"
-#include "Signer.h"
-
-constexpr uint32_t DEFAULT_SEQUENCE = std::numeric_limits<uint32_t>::max();
-
 TransactionBuilderImpl::TransactionBuilderImpl(const std::string& mnemonic,
                                                const StratisNetwork& network)
-    : network_(network),
+    : wallet_(createWallet(mnemonic, coinType(network))),
       smartContractScriptFactory_(
-          smart_contracts::createSmartContractScriptFactory()),
-      wallet_(TW::HDWallet(mnemonic, "", false))
+          smart_contracts::createSmartContractScriptFactory())
 {
 }
 
 void TransactionBuilderImpl::setMnemonic(const FString& mnemonic)
 {
-    wallet_ = TW::HDWallet(TO_STD_STRING(mnemonic), "", false);
+    wallet_->setMnemonic(TO_STD_STRING(mnemonic));
 }
 
 void TransactionBuilderImpl::setNetwork(const StratisNetwork& network)
 {
-    network_ = network;
+    wallet_->setCoinType(coinType(network));
 }
 
 FString TransactionBuilderImpl::paymentAddress() const
 {
-    return TO_FSTRING(this->address());
-}
-
-std::string TransactionBuilderImpl::address() const
-{
-    return wallet_.deriveAddress(this->coinType());
+    return TO_FSTRING(this->wallet_->getAddress());
 }
 
 Transaction
@@ -52,29 +41,14 @@ TransactionBuilderImpl::buildSendTransaction(const FString& destinationAddress,
                                              const TArray<UTXO>& utxos,
                                              uint64 amount, uint64 fee) const
 {
-    TW::Bitcoin::SigningInput signingInput(this->buildSigningInput(utxos));
-
-    signingInput.amount = amount;
-    signingInput.toAddress = TO_STD_STRING(destinationAddress);
-
-    return this->signTransaction(signingInput);
+    return convertTransaction(
+        this->wallet_->createSendCoinsTransaction(convertUTXOs(utxos), TO_STD_STRING(destinationAddress), amount));
 }
 
 Transaction TransactionBuilderImpl::buildOpReturnTransaction(
     const TArray<uint8>& data, const TArray<UTXO>& utxos, uint64 fee) const
 {
-    TW::Bitcoin::SigningInput signingInput(this->buildSigningInput(utxos));
-
-    TW::Data dataChunk;
-    dataChunk.reserve(data.Num());
-
-    for (uint8 dataByte : data) {
-        dataChunk.push_back(dataByte);
-    }
-
-    signingInput.outputOpReturn = dataChunk;
-
-    return this->signTransaction(signingInput);
+    return convertTransaction(this->wallet_->createOpReturnTransaction(convertUTXOs(utxos), utils::asData(data)));
 }
 
 Transaction TransactionBuilderImpl::buildCreateContractTransaction(
@@ -89,12 +63,7 @@ Transaction TransactionBuilderImpl::buildCreateContractTransaction(
              utils::asTArray(utils::hexAsBytes(contractCode)),
              MoveTemp(parameters)});
 
-    TW::Bitcoin::SigningInput signingInput(this->buildSigningInput(utxos));
-
-    signingInput.amount = amount;
-    signingInput.outputCustomScript = TW::Bitcoin::Script(scriptBytes);
-
-    return this->signTransaction(signingInput);
+    return convertTransaction(this->wallet_->createCustomScriptTransaction(convertUTXOs(utxos), scriptBytes, amount));
 }
 
 Transaction TransactionBuilderImpl::buildCallContractTransaction(
@@ -111,54 +80,12 @@ Transaction TransactionBuilderImpl::buildCallContractTransaction(
              methodName,
              MoveTemp(parameters)});
 
-    TW::Bitcoin::SigningInput signingInput(this->buildSigningInput(utxos));
-
-    signingInput.amount = amount;
-    signingInput.outputCustomScript = TW::Bitcoin::Script(scriptBytes);
-
-    return this->signTransaction(signingInput);
+    return convertTransaction(this->wallet_->createCustomScriptTransaction(convertUTXOs(utxos), scriptBytes, amount));
 }
 
-TW::Bitcoin::SigningInput TransactionBuilderImpl::buildSigningInput(const TArray<UTXO>& utxos) const
+TWCoinType TransactionBuilderImpl::coinType(StratisNetwork network)
 {
-    TW::Bitcoin::SigningInput signingInput;
-
-    auto coin = this->coinType();
-
-    signingInput.changeAddress = this->address();
-    signingInput.coinType = coin;
-
-    signingInput.privateKeys = {wallet_.getKey(coin, TW::derivationPath(coin))};
-
-    TW::Bitcoin::UTXOs convertedUtxos;
-    convertedUtxos.reserve(utxos.Num());
-
-    for (const auto& utxo : utxos) {
-        TW::Bitcoin::OutPoint outpoint{
-            TW::parse_hex(TO_STD_STRING(utxo.hash)), // TODO: check hex decoding and check reversed order (decode_hash)
-            utxo.n,
-            DEFAULT_SEQUENCE};
-
-        convertedUtxos.push_back({outpoint, TW::Bitcoin::Script(), static_cast<TW::Bitcoin::Amount>(utxo.satoshis)});
-    }
-
-    signingInput.utxos = convertedUtxos;
-
-    return signingInput;
-}
-
-Transaction TransactionBuilderImpl::signTransaction(const TW::Bitcoin::SigningInput& input) const
-{
-    auto signedOutput = TW::Bitcoin::Signer::sign(input);
-
-    return Transaction{
-        TO_FSTRING(TW::hex(signedOutput.encoded)), // TODO: check encode transaction
-        TO_FSTRING(signedOutput.transactionId)};
-}
-
-TWCoinType TransactionBuilderImpl::coinType() const
-{
-    switch (network_) {
+    switch (network) {
     case STRAX:
         return TWCoinType::TWCoinTypeStrax;
     case STRAX_TEST:
@@ -171,6 +98,24 @@ TWCoinType TransactionBuilderImpl::coinType() const
         return TWCoinType::TWCoinTypeStrax;
     }
 }
+
+WalletUTXOs TransactionBuilderImpl::convertUTXOs(const TArray<UTXO>& utxos)
+{
+    WalletUTXOs convertedUTXOs;
+    convertedUTXOs.reserve(utxos.Num());
+
+    for (const auto& utxo : utxos) {
+        convertedUTXOs.push_back({TO_STD_STRING(utxo.hash), utxo.n, utxo.satoshis});
+    }
+
+    return convertedUTXOs;
+}
+
+Transaction TransactionBuilderImpl::convertTransaction(const BuiltTransaction& transaction)
+{
+    return {TO_FSTRING(transaction.transactionHex), TO_FSTRING(transaction.transactionID)};
+}
+
 
 TSharedPtr<TransactionBuilder>
 createTransactionBuilder(const FString& mnemonic,

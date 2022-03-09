@@ -10,7 +10,9 @@
 #include "CoreMinimal.h"
 #include "Transaction.h"
 
+#include "Data.h"
 #include "HexCoding.h"
+
 
 #include <string>
 #include <vector>
@@ -41,6 +43,11 @@ std::vector<T> asVector(const TArray<T>& value)
     }
 
     return result;
+}
+
+TW::Data asData(const TArray<uint8>& value)
+{
+    return asVector(value);
 }
 
 FString bytesAsHexString(const std::vector<uint8_t>& bytes)

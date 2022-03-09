@@ -4,14 +4,11 @@
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
-#include "UWallet.h"
+#pragma once
 
-#include "WalletChecker.h"
+#include <string>
 
-UWallet::UWallet() {}
-
-FString UWallet::getAddress()
-{
-    WalletChecker walletChecker;
-    return walletChecker.checkWallet();
-}
+struct BuiltTransaction {
+    std::string transactionID;
+    std::string transactionHex;
+};
