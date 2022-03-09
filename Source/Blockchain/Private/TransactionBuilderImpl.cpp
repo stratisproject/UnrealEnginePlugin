@@ -1,3 +1,9 @@
+// Copyright © 2022 Stratis Platform.
+//
+// This file is part of Stratis Plugin for Unreal Engine. The full copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+
 #include "TransactionBuilderImpl.h"
 
 #include <TransactionBuilderFactory.h>
@@ -7,211 +13,113 @@
 #include <string>
 #include <vector>
 
-#include "LibbitcoinConverters.h"
-#include "Utils.h"
-
-#include <boost/algorithm/string.hpp>
-
-using namespace libbitcoin::system;
-
-constexpr uint32_t DEFAULT_SEQUENCE = std::numeric_limits<uint32_t>::max();
-
-TransactionBuilderImpl::TransactionBuilderImpl(const std::string &mnemonic,
-                                               const StratisNetwork &network)
-    : network_(network),
+TransactionBuilderImpl::TransactionBuilderImpl(const std::string& mnemonic,
+                                               const StratisNetwork& network)
+    : wallet_(createWallet(mnemonic, coinType(network))),
       smartContractScriptFactory_(
-          smart_contracts::createSmartContractScriptFactory()) {
-  this->setupKeysFromMnemonic(mnemonic);
+          smart_contracts::createSmartContractScriptFactory())
+{
 }
 
-void TransactionBuilderImpl::setMnemonic(const FString &mnemonic) {
-  this->setupKeysFromMnemonic(TO_STD_STRING(mnemonic));
+void TransactionBuilderImpl::setMnemonic(const FString& mnemonic)
+{
+    wallet_->setMnemonic(TO_STD_STRING(mnemonic));
 }
 
-void TransactionBuilderImpl::setNetwork(const StratisNetwork &network) {
-  network_ = network;
+void TransactionBuilderImpl::setNetwork(const StratisNetwork& network)
+{
+    wallet_->setCoinType(coinType(network));
 }
 
-libbitcoin::system::wallet::payment_address
-TransactionBuilderImpl::address() const {
-  return ecPublicKey_.to_payment_address(network_.base58_pubkey_address_prefix);
-}
-
-FString TransactionBuilderImpl::paymentAddress() const {
-  return TO_FSTRING(this->address().encoded());
+FString TransactionBuilderImpl::paymentAddress() const
+{
+    return TO_FSTRING(this->wallet_->getAddress());
 }
 
 Transaction
-TransactionBuilderImpl::buildSendTransaction(const FString &destinationAddress,
-                                             const TArray<UTXO> &utxos,
-                                             uint64 amount, uint64 fee) const {
-  wallet::payment_address destinationPaymentAddress(
-      converters::makeAddress(destinationAddress));
-
-  uint64 currentBalance = 0;
-
-  chain::input::list inputs(buildInputs(utxos, currentBalance));
-
-  chain::script paybackScript(converters::makeP2PKH(this->address()));
-
-  chain::output::list outputs{
-      {currentBalance - amount - fee, paybackScript},
-      {amount, converters::makeP2PKH(destinationPaymentAddress)}};
-
-  chain::transaction transaction(1, 0, std::move(inputs), std::move(outputs));
-
-  signTransaction(transaction, paybackScript);
-
-  return utils::transformTransaction(transaction);
+TransactionBuilderImpl::buildSendTransaction(const FString& destinationAddress,
+                                             const TArray<UTXO>& utxos,
+                                             uint64 amount, uint64 fee) const
+{
+    return convertTransaction(
+        this->wallet_->createSendCoinsTransaction(convertUTXOs(utxos), TO_STD_STRING(destinationAddress), amount));
 }
 
 Transaction TransactionBuilderImpl::buildOpReturnTransaction(
-    const TArray<uint8> &data, const TArray<UTXO> &utxos, uint64 fee) const {
-  data_chunk dataChunk;
-  dataChunk.reserve(data.Num());
-
-  for (uint8 dataByte : data) {
-    dataChunk.push_back(dataByte);
-  }
-
-  chain::script opReturnScript({machine::operation(machine::opcode::return_),
-                                machine::operation(dataChunk, true)});
-
-  chain::script paybackScript(converters::makeP2PKH(this->address()));
-
-  uint64 currentBalance = 0;
-  chain::input::list inputs(buildInputs(utxos, currentBalance));
-
-  chain::output::list outputs{{0, opReturnScript},
-                              {currentBalance - fee, paybackScript}};
-
-  chain::transaction transaction(1, 0, std::move(inputs), std::move(outputs));
-
-  signTransaction(transaction, paybackScript);
-
-  return utils::transformTransaction(transaction);
+    const TArray<uint8>& data, const TArray<UTXO>& utxos, uint64 fee) const
+{
+    return convertTransaction(this->wallet_->createOpReturnTransaction(convertUTXOs(utxos), utils::asData(data)));
 }
 
 Transaction TransactionBuilderImpl::buildCreateContractTransaction(
-    const FString &contractCode, const TArray<UTXO> &utxos, uint64 fee,
+    const FString& contractCode, const TArray<UTXO>& utxos, uint64 fee,
     uint64 gasPrice, uint64 gasLimit, uint64 amount,
-    TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>
-        &&parameters) const {
-  std::vector<uint8_t> scriptBytes =
-      smartContractScriptFactory_->makeCreateSmartContractScript(
-          {gasPrice,
-           gasLimit,
-           utils::asTArray(utils::hexAsBytes(contractCode)),
-           MoveTemp(parameters)});
+    TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters) const
+{
+    std::vector<uint8_t> scriptBytes =
+        smartContractScriptFactory_->makeCreateSmartContractScript(
+            {gasPrice,
+             gasLimit,
+             utils::asTArray(utils::hexAsBytes(contractCode)),
+             MoveTemp(parameters)});
 
-  chain::script createContractScript(std::move(scriptBytes), false);
-
-  chain::script paybackScript(converters::makeP2PKH(this->address()));
-
-  uint64 currentBalance = 0;
-  chain::input::list inputs(buildInputs(utxos, currentBalance));
-
-  chain::output::list outputs{{currentBalance - fee - amount, paybackScript},
-                              {amount, std::move(createContractScript)}};
-
-  chain::transaction transaction(1, 0, std::move(inputs), std::move(outputs));
-
-  signTransaction(transaction, paybackScript);
-
-  return utils::transformTransaction(transaction);
+    return convertTransaction(this->wallet_->createCustomScriptTransaction(convertUTXOs(utxos), scriptBytes, amount));
 }
 
 Transaction TransactionBuilderImpl::buildCallContractTransaction(
-    const FString &methodName, const Address &contractAddress,
-    const TArray<UTXO> &utxos, uint64 fee, uint64 gasPrice, uint64 gasLimit,
+    const FString& methodName, const Address& contractAddress,
+    const TArray<UTXO>& utxos, uint64 fee, uint64 gasPrice, uint64 gasLimit,
     uint64 amount,
-    TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>
-        &&parameters) const {
-  std::vector<uint8_t> scriptBytes =
-      smartContractScriptFactory_->makeCallSmartContractScript(
-          {gasPrice,
-           gasLimit,
-           contractAddress,
-           methodName,
-           MoveTemp(parameters)});
+    TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters) const
+{
+    std::vector<uint8_t> scriptBytes =
+        smartContractScriptFactory_->makeCallSmartContractScript(
+            {gasPrice,
+             gasLimit,
+             contractAddress,
+             methodName,
+             MoveTemp(parameters)});
 
-  chain::script createContractScript(std::move(scriptBytes), false);
-
-  chain::script paybackScript(converters::makeP2PKH(this->address()));
-
-  uint64 currentBalance = 0;
-  chain::input::list inputs(buildInputs(utxos, currentBalance));
-
-  chain::output::list outputs{{currentBalance - fee - amount, paybackScript},
-                              {amount, std::move(createContractScript)}};
-
-  chain::transaction transaction(1, 0, std::move(inputs), std::move(outputs));
-
-  signTransaction(transaction, paybackScript);
-
-  return utils::transformTransaction(transaction);
+    return convertTransaction(this->wallet_->createCustomScriptTransaction(convertUTXOs(utxos), scriptBytes, amount));
 }
 
-void TransactionBuilderImpl::setupKeysFromMnemonic(
-    const std::string &mnemonic) {
-  std::vector<std::string> words;
-  boost::split(words, mnemonic, boost::is_any_of("\t"));
-
-  long_hash wallet_generation_seed = wallet::decode_mnemonic(words);
-  data_chunk seed(std::begin(wallet_generation_seed),
-                  std::end(wallet_generation_seed));
-  privateKey_ = wallet::hd_private(seed);
-  ecPublicKey_ = wallet::ec_public(privateKey_);
+TWCoinType TransactionBuilderImpl::coinType(StratisNetwork network)
+{
+    switch (network) {
+    case STRAX:
+        return TWCoinType::TWCoinTypeStrax;
+    case STRAX_TEST:
+        return TWCoinType::TWCoinTypeStraxTest;
+    case CIRRUS:
+        return TWCoinType::TWCoinTypeCirrus;
+    case CIRRUS_TEST:
+        return TWCoinType::TWCoinTypeCirrusTest;
+    default:
+        return TWCoinType::TWCoinTypeStrax;
+    }
 }
 
-chain::input::list
-TransactionBuilderImpl::buildInputs(const TArray<UTXO> &utxos,
-                                    uint64 &totalBalance) const {
-  chain::input::list inputs;
-  inputs.reserve(utxos.Num());
+WalletUTXOs TransactionBuilderImpl::convertUTXOs(const TArray<UTXO>& utxos)
+{
+    WalletUTXOs convertedUTXOs;
+    convertedUTXOs.reserve(utxos.Num());
 
-  uint64 currentBalance = 0;
+    for (const auto& utxo : utxos) {
+        convertedUTXOs.push_back({TO_STD_STRING(utxo.hash), utxo.n, utxo.satoshis});
+    }
 
-  for (auto &utxo : utxos) {
-    currentBalance += utxo.satoshis;
-
-    hash_digest hash;
-    decode_hash(hash, TO_STD_STRING(utxo.hash));
-
-    chain::input currentInput;
-
-    currentInput.set_sequence(DEFAULT_SEQUENCE);
-    currentInput.set_previous_output({std::move(hash), utxo.n});
-
-    inputs.push_back(std::move(currentInput));
-  }
-
-  totalBalance += currentBalance;
-  return inputs;
+    return convertedUTXOs;
 }
 
-void TransactionBuilderImpl::signTransaction(
-    chain::transaction &transaction, const chain::script &paybackScript) const {
-  data_chunk publicKeyData = to_chunk(ecPublicKey_.point());
-
-  auto &transaction_inputs = transaction.inputs();
-  for (size_t i = 0; i < transaction_inputs.size(); i++) {
-    auto &input = transaction_inputs[i];
-
-    endorsement signature;
-    chain::script::create_endorsement(signature, privateKey_, paybackScript,
-                                      transaction, i,
-                                      machine::sighash_algorithm::all);
-
-    machine::operation::list ops{machine::operation(signature),
-                                 machine::operation(publicKeyData)};
-
-    input.set_script({std::move(ops)});
-  }
+Transaction TransactionBuilderImpl::convertTransaction(const BuiltTransaction& transaction)
+{
+    return {TO_FSTRING(transaction.transactionHex), TO_FSTRING(transaction.transactionID)};
 }
+
 
 TSharedPtr<TransactionBuilder>
-createTransactionBuilder(const FString &mnemonic,
-                         const StratisNetwork &network) {
-  return MakeShared<TransactionBuilderImpl>(TO_STD_STRING(mnemonic), network);
+createTransactionBuilder(const FString& mnemonic,
+                         const StratisNetwork& network)
+{
+    return MakeShared<TransactionBuilderImpl>(TO_STD_STRING(mnemonic), network);
 }

@@ -1,59 +1,56 @@
+// Copyright © 2022 Stratis Platform.
+//
+// This file is part of Stratis Plugin for Unreal Engine. The full copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+
 #pragma once
 
-#include "LibbitcoinSafeImports.h"
-
+#include "TransactionBuilder.h"
 #include <CoreMinimal.h>
 
-#include "TransactionBuilder.h"
+#include "TWCoinType.h"
+#include "Wallet.h"
+#include "WalletUTXO.h"
 
-class TransactionBuilderImpl : public TransactionBuilder {
+class TransactionBuilderImpl : public TransactionBuilder
+{
 public:
-  TransactionBuilderImpl(const std::string &mnemonic,
-                         const StratisNetwork &network);
-  virtual ~TransactionBuilderImpl() {}
+    TransactionBuilderImpl(const std::string& mnemonic,
+                           const StratisNetwork& network);
+    virtual ~TransactionBuilderImpl() {}
 
-  void setMnemonic(const FString &mnemonic) override;
-  void setNetwork(const StratisNetwork &network) override;
+    void setMnemonic(const FString& mnemonic) override;
+    void setNetwork(const StratisNetwork& network) override;
 
-  FString paymentAddress() const override;
+    FString paymentAddress() const override;
 
-  Transaction buildSendTransaction(const FString &destinationAddress,
-                                   const TArray<UTXO> &utxos, uint64 amount,
-                                   uint64 fee) const override;
+    Transaction buildSendTransaction(const FString& destinationAddress,
+                                     const TArray<UTXO>& utxos, uint64 amount,
+                                     uint64 fee) const override;
 
-  Transaction buildOpReturnTransaction(const TArray<uint8> &data,
-                                       const TArray<UTXO> &utxos,
-                                       uint64 fee) const override;
+    Transaction buildOpReturnTransaction(const TArray<uint8>& data,
+                                         const TArray<UTXO>& utxos,
+                                         uint64 fee) const override;
 
-  Transaction buildCreateContractTransaction(
-      const FString &contractCode, const TArray<UTXO> &utxos, uint64 fee,
-      uint64 gasPrice, uint64 gasLimit, uint64 amount,
-      TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>
-          &&parameters) const override;
+    Transaction buildCreateContractTransaction(
+        const FString& contractCode, const TArray<UTXO>& utxos, uint64 fee,
+        uint64 gasPrice, uint64 gasLimit, uint64 amount,
+        TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters) const override;
 
-  Transaction buildCallContractTransaction(
-      const FString &methodName, const Address &contractAddress,
-      const TArray<UTXO> &utxos, uint64 fee, uint64 gasPrice, uint64 gasLimit,
-      uint64 amount,
-      TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>
-          &&parameters) const override;
+    Transaction buildCallContractTransaction(
+        const FString& methodName, const Address& contractAddress,
+        const TArray<UTXO>& utxos, uint64 fee, uint64 gasPrice, uint64 gasLimit,
+        uint64 amount,
+        TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters) const override;
 
 private:
-  StratisNetwork network_;
+    static TWCoinType coinType(StratisNetwork network);
+    static WalletUTXOs convertUTXOs(const TArray<UTXO>& utxos);
+    static Transaction convertTransaction(const BuiltTransaction& transaction);
 
-  libbitcoin::system::wallet::hd_private privateKey_;
-  libbitcoin::system::wallet::ec_public ecPublicKey_;
+    TSharedPtr<Wallet> wallet_;
 
-  libbitcoin::system::wallet::payment_address address() const;
-
-  TUniquePtr<smart_contracts::SmartContractScriptFactory>
-      smartContractScriptFactory_;
-
-  void setupKeysFromMnemonic(const std::string &mnemonic);
-
-  libbitcoin::system::chain::input::list
-  buildInputs(const TArray<UTXO> &utxos, uint64 &totalBalance) const;
-  void
-  signTransaction(libbitcoin::system::chain::transaction &transaction,
-                  const libbitcoin::system::chain::script &paybackScript) const;
+    TUniquePtr<smart_contracts::SmartContractScriptFactory>
+        smartContractScriptFactory_;
 };

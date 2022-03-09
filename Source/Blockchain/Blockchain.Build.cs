@@ -4,19 +4,20 @@ using UnrealBuildTool;
 
 public class Blockchain : ModuleRules
 {
-	public Blockchain(ReadOnlyTargetRules Target) : base(Target)
-	{
-		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;		
-		
-		PublicDependencyModuleNames.AddRange(
-			new string[]
-			{
-				"Core",
-				"Libbitcoin"			}
-			);
+    public Blockchain(ReadOnlyTargetRules Target) : base(Target)
+    {
+        PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
-		bUseRTTI = true;
-		bEnableExceptions = true;
-		bEnableUndefinedIdentifierWarnings = true;
-	}
+        PublicDependencyModuleNames.AddRange(
+            new string[]
+            {
+                "Core", "Wallet"}
+            );
+
+        bUseRTTI = true;
+        bEnableExceptions = true;
+        bEnableUndefinedIdentifierWarnings = true;
+
+        CppStandard = CppStandardVersion.Cpp17;
+    }
 }

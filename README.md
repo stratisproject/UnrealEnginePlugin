@@ -10,7 +10,7 @@ This plugin provides functionallity for creating a wallet, building different ty
 * **BlockchainTests** - tests for Blockchain module, nothing interesting.
 * **Stratis** - entrypoint module, provides `C++`- & `Blueprints`- friendly interfaces for plugin's users. This module should be considered as the only module you need to depend on.
 * **StratisAPI** - contains HTTP- & JSON parsing- related code used to interact with [FullNode's lightweight API](https://github.com/stratisproject/StratisFullNode/tree/master/src/Stratis.Features.Unity3dApi). This module was auto-generated using [OpenAPI generator for UE4](https://openapi-generator.tech/docs/generators/cpp-ue4/).
-* **ThirdParty** - contains statically-linked [libbitcoin-system](https://github.com/libbitcoin/libbitcoin-system) library and its headers, which is used to build transactions under the hood.
+* **Wallet** - contains a modified version of [Trustwallet's Core library](https://github.com/trustwallet/wallet-core).
 
 ### Basic usage
 

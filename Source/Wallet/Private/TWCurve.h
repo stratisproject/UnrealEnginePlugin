@@ -1,0 +1,18 @@
+// Copyright © 2017-2020 Trust Wallet.
+//
+// This file is part of Trust. The full Trust copyright notice, including
+// terms governing use, modification, and redistribution, is contained in the
+// file LICENSE at the root of the source code distribution tree.
+
+#pragma once
+
+/// Elliptic cruves
+enum TWCurve {
+    TWCurveSECP256k1 /* "secp256k1" */,
+    TWCurveED25519 /* "ed25519" */,
+    TWCurveED25519Blake2bNano /* "ed25519-blake2b-nano" */,
+    TWCurveCurve25519 /* "curve25519" */,
+    TWCurveNIST256p1 /* "nist256p1" */,
+    TWCurveED25519Extended /* "ed25519-cardano-seed" */,
+    TWCurveNone
+};
