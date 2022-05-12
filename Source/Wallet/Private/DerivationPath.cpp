@@ -11,7 +11,8 @@
 
 using namespace TW;
 
-DerivationPath::DerivationPath(const std::string& string) {
+DerivationPath::DerivationPath(const std::string& string)
+{
     const auto* it = string.data();
     const auto* end = string.data() + string.size();
 
@@ -24,7 +25,14 @@ DerivationPath::DerivationPath(const std::string& string) {
 
     while (it != end) {
         uint32_t value;
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#endif
         if (std::sscanf(it, "%ud", &value) != 1) {
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
             throw std::invalid_argument("Invalid component");
         }
         while (it != end && isdigit(*it)) {
@@ -47,7 +55,8 @@ DerivationPath::DerivationPath(const std::string& string) {
     }
 }
 
-std::string DerivationPath::string() const noexcept {
+std::string DerivationPath::string() const noexcept
+{
     std::string result = "m/";
     for (auto& index : indices) {
         result += index.string();

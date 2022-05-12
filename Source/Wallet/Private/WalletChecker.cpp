@@ -30,7 +30,7 @@ FString WalletChecker::checkWallet()
     signingInput.privateKeys = {wallet.getKey(coin, TW::derivationPath(coin))};
 
     TW::Bitcoin::OutPoint outpoint{
-        "0f310ab28945ae86989a19b1f85da4d951604d4cb430c6244f7b42727e373bbd",
+        TW::parse_hex("0f310ab28945ae86989a19b1f85da4d951604d4cb430c6244f7b42727e373bbd"),
         1,
         4294967295};
 

@@ -21,5 +21,7 @@ public class Wallet : ModuleRules
 
         CppStandard = CppStandardVersion.Cpp17;
         ShadowVariableWarningLevel = WarningLevel.Off;
+
+        PublicDefinitions.Add("__STDC_WANT_SECURE_LIB__=1");
     }
 }

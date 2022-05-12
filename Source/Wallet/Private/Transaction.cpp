@@ -165,6 +165,7 @@ Data Transaction::getSignatureHash(const Script& scriptCode, size_t index,
     case WITNESS_V0:
         return getSignatureHashWitnessV0(scriptCode, index, hashType, amount);
     }
+    return {};
 }
 
 /// Generates the signature hash for Witness version 0 scripts.

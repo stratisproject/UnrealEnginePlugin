@@ -112,7 +112,7 @@ TransactionPlan TransactionBuilder::plan(const SigningInput& input)
 
         // if amount requested is the same or more than available amount, it cannot be satisifed, but
         // treat this case as MaxAmount, and send maximum available (which will be less)
-        if (!maxAmount && input.amount >= inputSum) {
+        if (!maxAmount && (uint64_t)input.amount >= inputSum) {
             maxAmount = true;
         }
 

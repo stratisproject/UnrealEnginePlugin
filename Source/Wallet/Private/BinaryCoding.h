@@ -14,21 +14,28 @@
 #include <tuple>
 #include <vector>
 
+#ifdef _MSC_VER
+#define _Nonnull
+#endif
+
 namespace TW {
 
 /// Encodes a 16-bit little-endian value into the provided buffer.
-inline void encode16LE(uint16_t val, std::vector<uint8_t>& data) {
+inline void encode16LE(uint16_t val, std::vector<uint8_t>& data)
+{
     data.push_back(static_cast<uint8_t>(val));
     data.push_back(static_cast<uint8_t>(val >> 8));
 }
 
 /// Decodes a 16-bit little-endian value from the provided buffer.
-inline uint16_t decode16LE(const uint8_t* _Nonnull src) {
+inline uint16_t decode16LE(const uint8_t* _Nonnull src)
+{
     return static_cast<uint16_t>((src[0]) | ((uint16_t)(src[1]) << 8));
 }
 
 /// Encodes a 32-bit little-endian value into the provided buffer.
-inline void encode32LE(uint32_t val, std::vector<uint8_t>& data) {
+inline void encode32LE(uint32_t val, std::vector<uint8_t>& data)
+{
     data.push_back(static_cast<uint8_t>(val));
     data.push_back(static_cast<uint8_t>((val >> 8)));
     data.push_back(static_cast<uint8_t>((val >> 16)));
@@ -36,7 +43,8 @@ inline void encode32LE(uint32_t val, std::vector<uint8_t>& data) {
 }
 
 /// Decodes a 32-bit little-endian value from the provided buffer.
-inline uint32_t decode32LE(const uint8_t* _Nonnull src) {
+inline uint32_t decode32LE(const uint8_t* _Nonnull src)
+{
     // clang-format off
     return static_cast<uint32_t>(src[0])
         | (static_cast<uint32_t>(src[1]) << 8)
@@ -71,18 +79,21 @@ uint8_t encodeVarInt(uint64_t size, std::vector<uint8_t>& data);
 std::tuple<bool, uint64_t> decodeVarInt(const Data& in, size_t& indexInOut);
 
 /// Encodes a 16-bit big-endian value into the provided buffer.
-inline void encode16BE(uint16_t val, std::vector<uint8_t>& data) {
+inline void encode16BE(uint16_t val, std::vector<uint8_t>& data)
+{
     data.push_back(static_cast<uint8_t>(val >> 8));
     data.push_back(static_cast<uint8_t>(val));
 }
 
 /// Decodes a 16-bit big-endian value from the provided buffer.
-inline uint16_t decode16BE(const uint8_t* _Nonnull src) {
+inline uint16_t decode16BE(const uint8_t* _Nonnull src)
+{
     return static_cast<uint16_t>((src[1]) | ((uint16_t)(src[0]) << 8));
 }
 
 /// Encodes a 32-bit big-endian value into the provided buffer.
-inline void encode32BE(uint32_t val, std::vector<uint8_t>& data) {
+inline void encode32BE(uint32_t val, std::vector<uint8_t>& data)
+{
     data.push_back(static_cast<uint8_t>((val >> 24)));
     data.push_back(static_cast<uint8_t>((val >> 16)));
     data.push_back(static_cast<uint8_t>((val >> 8)));
@@ -90,7 +101,8 @@ inline void encode32BE(uint32_t val, std::vector<uint8_t>& data) {
 }
 
 /// Decodes a 32-bit big-endian value from the provided buffer.
-inline uint32_t decode32BE(const uint8_t* _Nonnull src) {
+inline uint32_t decode32BE(const uint8_t* _Nonnull src)
+{
     // clang-format off
     return static_cast<uint32_t>(src[3])
         | (static_cast<uint32_t>(src[2]) << 8)
@@ -108,7 +120,7 @@ uint64_t decode64BE(const uint8_t* _Nonnull src);
 /// Encodes an ASCII string prefixed by the length (varInt)
 void encodeString(const std::string& str, std::vector<uint8_t>& data);
 
-/// Decodes an ASCII string prefixed by its length (varInt) 
+/// Decodes an ASCII string prefixed by its length (varInt)
 /// @returns a tuple with a success indicator and the decoded string.
 std::tuple<bool, std::string> decodeString(const Data& in, size_t& indexInOut);
 

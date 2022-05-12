@@ -11,6 +11,8 @@
 
 #include "UintTypes.h"
 
+#include <iterator>
+
 namespace smart_contracts {
 
 namespace method_parameter {

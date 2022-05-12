@@ -38,7 +38,7 @@ std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::filterThreshold(const
 {
     std::vector<TypeWithAmount> filtered;
     for (auto& i : inputsList) {
-        if (i.amount > minimumAmount) {
+        if ((uint64_t)i.amount > minimumAmount) {
             filtered.push_back(i);
         }
     }
@@ -73,7 +73,7 @@ std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::select(int64_t target
     }
 
     // total values of utxos should be greater than targetValue
-    if (inputs.empty() || sum(inputs) < targetValue) {
+    if (inputs.empty() || sum(inputs) < (uint64_t)targetValue) {
         return {};
     }
     assert(inputs.size() >= 1);
@@ -114,7 +114,7 @@ std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::select(int64_t target
     //    (3) and does not produce dust change.
     for (size_t numInputs = 1; numInputs <= n; ++numInputs) {
         const auto fee = feeCalculator.calculate(numInputs, numOutputs, byteFee);
-        const auto targetWithFeeAndDust = targetValue + fee + dustThreshold;
+        const uint64_t targetWithFeeAndDust = targetValue + fee + dustThreshold;
         if (maxWithXInputs[numInputs] < targetWithFeeAndDust) {
             // no way to satisfy with only numInputs inputs, skip
             continue;
@@ -139,7 +139,7 @@ std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::select(int64_t target
     // 2. If not, find a valid combination of outputs even if they produce dust change.
     for (size_t numInputs = 1; numInputs <= n; ++numInputs) {
         const auto fee = feeCalculator.calculate(numInputs, numOutputs, byteFee);
-        const auto targetWithFee = targetValue + fee;
+        const uint64_t targetWithFee = targetValue + fee;
         if (maxWithXInputs[numInputs] < targetWithFee) {
             // no way to satisfy with only numInputs inputs, skip
             continue;

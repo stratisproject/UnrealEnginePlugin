@@ -17,6 +17,8 @@
 #include "trezor/bip39.h"
 #include "trezor/curves.h"
 #include "trezor/memzero.h"
+#include <trezor/rand.h>
+
 
 #include <array>
 #include <cstring>
@@ -40,8 +42,12 @@ HDWallet::HDWallet(int strength, const std::string& passphrase)
     : passphrase(passphrase)
 {
     char buf[MnemonicBufLength];
+    if (!random_init()) {
+        throw std::runtime_error("Failed to initialize random number generator");
+    }
     const char* mnemonic_chars = mnemonic_generate(strength, buf, MnemonicBufLength);
     if (mnemonic_chars == nullptr) {
+        random_release();
         throw std::invalid_argument("Invalid strength");
     }
     mnemonic = mnemonic_chars;
@@ -56,6 +62,9 @@ HDWallet::HDWallet(const std::string& mnemonic, const std::string& passphrase, c
         (check && !Mnemonic::isValid(mnemonic))) {
         throw std::invalid_argument("Invalid mnemonic");
     }
+    if (!random_init()) {
+        throw std::runtime_error("Failed to initialize random number generator");
+    }
     updateSeedAndEntropy(check);
 }
 
@@ -69,11 +78,15 @@ HDWallet::HDWallet(const Data& entropy, const std::string& passphrase)
     }
     mnemonic = mnemonic_chars;
     memzero(buf, MnemonicBufLength);
+    if (!random_init()) {
+        throw std::runtime_error("Failed to initialize random number generator");
+    }
     updateSeedAndEntropy();
 }
 
 HDWallet::~HDWallet()
 {
+    random_release();
     std::fill(seed.begin(), seed.end(), 0);
     std::fill(mnemonic.begin(), mnemonic.end(), 0);
     std::fill(passphrase.begin(), passphrase.end(), 0);

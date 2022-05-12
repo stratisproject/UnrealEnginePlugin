@@ -125,6 +125,7 @@ PublicKey PublicKey::extended() const
     case TWPublicKeyTypeED25519Extended:
         return *this;
     }
+    return *this;
 }
 
 bool PublicKey::verifySignature(const Data& signature, const Data& message) const
@@ -158,6 +159,7 @@ bool PublicKey::verifySignature(const Data& signature, const Data& message) cons
         return ed25519_sign_open(message.data(), message.size(), ed25519PublicKey.data(),
                                  verifyBuffer.data()) == 0;
     }
+    return false;
 }
 
 bool PublicKey::verifyAsDER(const Data& signature, const Data& message) const
