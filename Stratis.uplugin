@@ -15,7 +15,7 @@
 	"IsExperimentalVersion": true,
 	"Installed": false,
 	"EngineVersion" : "4.27.0",
-	"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ]
+	"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ],
 	"Modules": [
 		{
 			"Name": "Stratis",

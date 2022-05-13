@@ -9,7 +9,7 @@
 constexpr uint32_t DEFAULT_SEQUENCE = std::numeric_limits<uint32_t>::max();
 
 WalletImpl::WalletImpl(const std::string& mnemonic, TWCoinType coinType)
-    : hdWallet_(TW::HDWallet(mnemonic, "", true)),
+    : hdWallet_(TW::HDWallet(mnemonic, "", false)),
       coinType_(coinType)
 {
 }
@@ -100,7 +100,7 @@ BuiltTransaction WalletImpl::signTransaction(const TW::Bitcoin::SigningInput& in
     };
 }
 
-TSharedPtr<Wallet> createWallet(std::string mnemonic, TWCoinType coinType)
+TSharedPtr<Wallet> createWallet(const std::string& mnemonic, TWCoinType coinType)
 {
     return MakeShared<WalletImpl>(mnemonic, coinType);
 }

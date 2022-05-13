@@ -35,6 +35,7 @@ using API = stratis::api::UnrealApi;
 
 UStratisUnrealManager::UStratisUnrealManager()
     : gasPrice(100), gasLimit(150000), defaultFee(10000),
+      mnemonic_(TEXT("legal door leopard fire attract stove similar response photo prize seminar frown")),
       baseUrl_(TEXT("http://localhost:44336"))
 {
     setPredefinedNetwork(ENetwork::CIRRUS);

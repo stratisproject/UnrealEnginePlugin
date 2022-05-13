@@ -22,6 +22,10 @@ public class Wallet : ModuleRules
         CppStandard = CppStandardVersion.Cpp17;
         ShadowVariableWarningLevel = WarningLevel.Off;
 
-        PublicDefinitions.Add("__STDC_WANT_SECURE_LIB__=1");
+        if (Target.Platform == UnrealTargetPlatform.Win32 || Target.Platform == UnrealTargetPlatform.Win64)
+		{
+            PublicDefinitions.Add("__STDC_WANT_SECURE_LIB__=1");
+            PublicAdditionalLibraries.Add("bcrypt.lib");		
+        }
     }
 }

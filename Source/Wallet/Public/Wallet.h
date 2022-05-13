@@ -33,4 +33,4 @@ public:
     virtual BuiltTransaction createCustomScriptTransaction(const WalletUTXOs& utxos, const TW::Data& customScript, uint64_t amount) const = 0;
 };
 
-WALLET_API TSharedPtr<Wallet> createWallet(std::string mnemonic, TWCoinType coinType);
+WALLET_API TSharedPtr<Wallet> createWallet(const std::string& mnemonic, TWCoinType coinType);
