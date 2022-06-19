@@ -8,22 +8,24 @@
 
 #include "CoreMinimal.h"
 
+#include "Models/FLargeUInt.h"
 #include "Models/FUInt64.h"
+
 #include "UStratisUnrealManager.h"
 #include "WhitelistedSmartContracts.h"
 
 #include "UStandartTokenWrapper.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE_OneParam(FDeployStandartTokenDelegate, const FString&, transactionId);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FGetSymbolDelegate, const FString&, symbol);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FGetNameDelegate, const FString&, name);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FGetTotalSupplyDelegate, const FUInt64&, totalSupply);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FGetDecimalsDelegate, int64, decimals);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FGetBalanceDelegate, const FUInt64&, balance);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FGetAllowanceDelegate, const FUInt64&, allowance);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FTransferToDelegate, const FString&, transactionID);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FTransferFromDelegate, const FString&, transactionID);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FApproveDelegate, const FString&, transactionID);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FDeployStandartToken256Delegate, const FString&, transactionId);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSTGetSymbolDelegate, const FString&, symbol);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSTGetNameDelegate, const FString&, name);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSTGetTotalSupplyDelegate, const FUInt256&, totalSupply);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSTGetDecimalsDelegate, uint8, decimals);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSTGetBalanceDelegate, const FUInt256&, balance);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSTGetAllowanceDelegate, const FUInt256&, allowance);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSTTransferToDelegate, const FString&, transactionID);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSTTransferFromDelegate, const FString&, transactionID);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSTApproveDelegate, const FString&, transactionID);
 
 UCLASS(BlueprintType, Blueprintable)
 class STRATIS_API UStandartTokenWrapper : public UObject
@@ -33,12 +35,12 @@ class STRATIS_API UStandartTokenWrapper : public UObject
 public:
     UStandartTokenWrapper();
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
     static UStandartTokenWrapper* createInstance(const FString& contractAddress, UStratisUnrealManager* manager, UObject* outer);
-    
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
+
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
     static UStandartTokenWrapper* createDefaultInstance(UStratisUnrealManager* manager, UObject* outer);
-    
+
     UPROPERTY(EditAnywhere)
     UStratisUnrealManager* stratisManager;
 
@@ -47,68 +49,68 @@ public:
 
     UWorld* GetWorld() const override;
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
-    void deployStandartToken(const FUInt64& totalSupply, const FString& name,
-                             const FString& symbols, int64 decimals,
-                             const FDeployStandartTokenDelegate& delegate,
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
+    void deployStandartToken(const FUInt256& totalSupply, const FString& name,
+                             const FString& symbols, uint8 decimals,
+                             const FDeployStandartToken256Delegate& delegate,
                              const FErrorReceivedDelegate& errorDelegate);
-    void deployStandartToken(uint64 totalSupply, const FString& name,
-                             const FString& symbols, uint32 decimals,
+    void deployStandartToken(const FUInt256& totalSupply, const FString& name,
+                             const FString& symbols, uint8 decimals,
                              TFunction<void(const TResult<FString>&)> callback);
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
-    void getSymbol(const FGetSymbolDelegate& delegate,
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
+    void getSymbol(const FSTGetSymbolDelegate& delegate,
                    const FErrorReceivedDelegate& errorDelegate);
     void getSymbol(TFunction<void(const TResult<FString>&)> callback);
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
-    void getName(const FGetNameDelegate& delegate,
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
+    void getName(const FSTGetNameDelegate& delegate,
                  const FErrorReceivedDelegate& errorDelegate);
     void getName(TFunction<void(const TResult<FString>&)> callback);
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
-    void getTotalSupply(const FGetTotalSupplyDelegate& delegate,
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
+    void getTotalSupply(const FSTGetTotalSupplyDelegate& delegate,
                         const FErrorReceivedDelegate& errorDelegate);
-    void getTotalSupply(TFunction<void(const TResult<uint64>&)> callback);
+    void getTotalSupply(TFunction<void(const TResult<FUInt256>&)> callback);
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
-    void getDecimals(const FGetDecimalsDelegate& delegate,
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
+    void getDecimals(const FSTGetDecimalsDelegate& delegate,
                      const FErrorReceivedDelegate& errorDelegate);
-    void getDecimals(TFunction<void(const TResult<uint32>&)> callback);
+    void getDecimals(TFunction<void(const TResult<uint8>&)> callback);
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
-    void getBalance(const FString& address, const FGetBalanceDelegate& delegate,
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
+    void getBalance(const FString& address, const FSTGetBalanceDelegate& delegate,
                     const FErrorReceivedDelegate& errorDelegate);
     void getBalance(const FString& address,
-                    TFunction<void(const TResult<uint64>&)> callback);
+                    TFunction<void(const TResult<FUInt256>&)> callback);
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
     void getAllowance(const FString& ownerAddress, const FString& spenderAddress,
-                      const FGetAllowanceDelegate& delegate,
+                      const FSTGetAllowanceDelegate& delegate,
                       const FErrorReceivedDelegate& errorDelegate);
     void getAllowance(const FString& ownerAddress, const FString& spenderAddress,
-                      TFunction<void(const TResult<uint64>&)> callback);
+                      TFunction<void(const TResult<FUInt256>&)> callback);
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
-    void transferTo(const FString& address, const FUInt64& amount,
-                    const FTransferToDelegate& delegate,
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
+    void transferTo(const FString& address, const FUInt256& amount,
+                    const FSTTransferToDelegate& delegate,
                     const FErrorReceivedDelegate& errorDelegate);
-    void transferTo(const FString& address, uint64 amount,
+    void transferTo(const FString& address, const FUInt256& amount,
                     TFunction<void(const TResult<FString>&)> callback);
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
     void transferFrom(const FString& fromAddress, const FString& toAddress,
-                      const FUInt64& amount,
-                      const FTransferFromDelegate& delegate,
+                      const FUInt256& amount,
+                      const FSTTransferFromDelegate& delegate,
                       const FErrorReceivedDelegate& errorDelegate);
     void transferFrom(const FString& fromAddress, const FString& toAddress,
-                      uint64 amount,
+                      const FUInt256& amount,
                       TFunction<void(const TResult<FString>&)> callback);
 
-    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper")
-    void approve(const FString& spender, const FUInt64& currentAmount,
-                 const FUInt64& amount, const FApproveDelegate& delegate,
+    UFUNCTION(BlueprintCallable, Category = "StandartTokenWrapper256")
+    void approve(const FString& spender, const FUInt256& currentAmount,
+                 const FUInt256& amount, const FSTApproveDelegate& delegate,
                  const FErrorReceivedDelegate& errorDelegate);
-    void approve(const FString& spender, uint64 currentAmount, uint64 amount,
+    void approve(const FString& spender, const FUInt256& currentAmount, const FUInt256& amount,
                  TFunction<void(const TResult<FString>&)> callback);
 };

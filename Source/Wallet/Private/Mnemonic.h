@@ -11,13 +11,18 @@
 namespace TW {
 
 /// BIP39 Mnemonic recovery phrase handling.
-class Mnemonic {
+class Mnemonic
+{
 public:
     static constexpr int MaxWords = 24;
     static constexpr int MinWords = 12;
     static constexpr int BitsPerWord = 11; // each word encodes this many bits (there are 2^11=2048 different words)
 
 public:
+    // Generate new random mnemonic.
+    // Size may vary from 12 to 24 words.
+    static std::string generateMnemonic();
+
     /// Determines whether a BIP39 English mnemonic phrase is valid.
     // E.g. for a valid mnemonic: "credit expect life fade cover suit response wash pear what skull force"
     static bool isValid(const std::string& mnemonic);

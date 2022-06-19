@@ -56,6 +56,14 @@ UStratisUnrealManager* UStratisUnrealManager::createInstance(const FString& mnem
     return manager;
 }
 
+FString UStratisUnrealManager::generateMnemonic()
+{
+    if (transactionBuilder_.IsValid()) {
+        transactionBuilder_->generateMnemonic();
+    }
+    return "";
+}
+
 void UStratisUnrealManager::setMnemonic(const FString& mnemonic)
 {
     mnemonic_ = mnemonic;
