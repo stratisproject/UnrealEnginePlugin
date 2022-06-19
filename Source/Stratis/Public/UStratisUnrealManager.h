@@ -52,6 +52,9 @@ public:
     uint64 defaultFee;
 
     UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
+    FString generateMnemonic();
+
+    UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
     void setMnemonic(const FString& mnemonic);
 
     UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")

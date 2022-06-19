@@ -34,17 +34,24 @@ public:
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
     static FString GetNFTContractCode();
 
+    static const TCHAR* ManualIdNFTContractAddress;
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FString GetManualIdNFTContractAddress();
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FString GetManualIdNFTContractCode();
+
+    static const TCHAR* RoyaltyNFTContractAddress;
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FString GetRoyaltyNFTContractAddress();
+    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
+    static FString GetRoyaltyNFTContractCode();
+
     static const TCHAR* StandartTokenContractAddress;
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
     static FString GetStandartTokenContractAddress();
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
     static FString GetStandartTokenContractCode();
 
-    static const TCHAR* StandartToken256ContractAddress;
-    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
-    static FString GetStandartToken256ContractAddress();
-    UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
-    static FString GetStandartToken256ContractCode();
 private:
     static FString loadContractCodeByName(const TCHAR* contractName);
 };

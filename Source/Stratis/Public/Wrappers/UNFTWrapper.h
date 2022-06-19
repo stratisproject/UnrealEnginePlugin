@@ -8,18 +8,36 @@
 
 #include "CoreMinimal.h"
 
+#include "Models/FLargeUInt.h"
 #include "Models/FUInt64.h"
 #include "UStratisUnrealManager.h"
 #include "WhitelistedSmartContracts.h"
 
 #include "UNFTWrapper.generated.h"
 
+USTRUCT(BlueprintType)
+struct STRATIS_API RoyaltyInfo {
+    GENERATED_USTRUCT_BODY()
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FString royaltyRecipient;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    FUInt64 royaltyAmount;
+
+    RoyaltyInfo() {}
+
+    RoyaltyInfo(const FString& royaltyRecipientArg, const FUInt64& royaltyAmountArg)
+        : royaltyRecipient(royaltyRecipientArg), royaltyAmount(royaltyAmountArg) {}
+};
+
 DECLARE_DYNAMIC_DELEGATE_OneParam(FDeployNFTContractDelegate, const FString&, transactionId);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetOwnerDelegate, const FString&, owner);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetPendingOwnerDelegate, const FString&, owner);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetNameDelegate, const FString&, name);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetSymbolDelegate, const FString&, symbol);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTSupportsInterfaceDelegate, bool, supports);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetBalanceOfDelegate, const FUInt64&, balance);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetBalanceOfDelegate, const FUInt256&, balance);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetOwnerOfDelegate, const FString&, owner);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetApprovedDelegate, const FString&, address);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetApprovedForAllDelegate, bool, approved);
@@ -32,6 +50,9 @@ DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTTransferOwnershipDelegate, const FString&,
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTMintDelegate, const FString&, transactionID);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTSafeMintDelegate, const FString&, transactionID);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTBurnDelegate, const FString&, transactionID);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTSetPendingOwnerDelegate, const FString&, transactionID);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTClaimOwnershipDelegate, const FString&, transactionID);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetRoyaltyInfoDelegate, const RoyaltyInfo&, royaltyInfo);
 
 UCLASS(BlueprintType, Blueprintable)
 class STRATIS_API UNFTWrapper : public UObject
@@ -43,10 +64,16 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
     static UNFTWrapper* createInstance(const FString& contractAddress, UStratisUnrealManager* manager, UObject* outer);
-    
+
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
     static UNFTWrapper* createDefaultInstance(UStratisUnrealManager* manager, UObject* outer);
-    
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    static UNFTWrapper* createDefaultManualIdInstance(UStratisUnrealManager* manager, UObject* outer);
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    static UNFTWrapper* createDefaultRoyaltyInstance(UStratisUnrealManager* manager, UObject* outer);
+
     UPROPERTY(EditAnywhere)
     UStratisUnrealManager* stratisManager;
 
@@ -56,18 +83,49 @@ public:
     UWorld* GetWorld() const override;
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void deployNFTContract(const FString& name, const FString& symbol,
-                           const FString& tokenURIFormat, bool ownerOnlyMinting,
+    void deployNFTContract(const FString& name,
+                           const FString& symbol,
+                           bool ownerOnlyMinting,
                            const FDeployNFTContractDelegate& delegate,
                            const FErrorReceivedDelegate& errorDelegate);
     void deployNFTContract(const FString& name, const FString& symbol,
-                           const FString& tokenURIFormat, bool ownerOnlyMinting,
+                           bool ownerOnlyMinting,
                            TFunction<void(const TResult<FString>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    void deployManualIdNFTContract(const FString& name,
+                                   const FString& symbol,
+                                   bool ownerOnlyMinting,
+                                   const FDeployNFTContractDelegate& delegate,
+                                   const FErrorReceivedDelegate& errorDelegate);
+    void deployManualIdNFTContract(const FString& name, const FString& symbol,
+                                   bool ownerOnlyMinting,
+                                   TFunction<void(const TResult<FString>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    void deployRoyaltyNFTContract(const FString& name,
+                                  const FString& symbol,
+                                  bool ownerOnlyMinting,
+                                  const FString& royaltyRecipient,
+                                  int32 royaltyPercent,
+                                  const FDeployNFTContractDelegate& delegate,
+                                  const FErrorReceivedDelegate& errorDelegate);
+    void deployRoyaltyNFTContract(const FString& name,
+                                  const FString& symbol,
+                                  bool ownerOnlyMinting,
+                                  const FString& royaltyRecipient,
+                                  uint32 royaltyPercent,
+                                  TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
     void getOwner(const FNFTGetOwnerDelegate& delegate,
                   const FErrorReceivedDelegate& errorDelegate);
     void getOwner(TFunction<void(const TResult<FString>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    void getPendingOwner(const FNFTGetOwnerDelegate& delegate,
+                         const FErrorReceivedDelegate& errorDelegate);
+    void getPendingOwner(TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
     void getName(const FNFTGetNameDelegate& delegate,
@@ -94,65 +152,65 @@ public:
                       TFunction<void(const TResult<uint64>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void getOwnerOf(const FUInt64& tokenID,
+    void getOwnerOf(const FUInt256& tokenID,
                     const FNFTGetOwnerOfDelegate& delegate,
                     const FErrorReceivedDelegate& errorDelegate);
-    void getOwnerOf(uint64 tokenID,
+    void getOwnerOf(const FUInt256& tokenID,
                     TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void getApproved(const FUInt64& tokenID,
+    void getApproved(const FUInt256& tokenID,
                      const FNFTGetApprovedDelegate& delegate,
                      const FErrorReceivedDelegate& errorDelegate);
-    void getApproved(uint64 tokenID,
+    void getApproved(const FUInt256& tokenID,
                      TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void getApprovedForAll(const FString& ownderAddress,
+    void getApprovedForAll(const FString& ownerAddress,
                            const FString& operatorAddress,
                            const FNFTGetApprovedForAllDelegate& delegate,
                            const FErrorReceivedDelegate& errorDelegate);
-    void getApprovedForAll(const FString& ownderAddress,
+    void getApprovedForAll(const FString& ownerAddress,
                            const FString& operatorAddress,
                            TFunction<void(const TResult<bool>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void getTokenURI(const FUInt64& tokenID,
+    void getTokenURI(const FUInt256& tokenID,
                      const FNFTGetTokenURIDelegate& delegate,
                      const FErrorReceivedDelegate& errorDelegate);
-    void getTokenURI(uint64 tokenID,
+    void getTokenURI(const FUInt256& tokenID,
                      TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
     void safeTransferFrom(const FString& fromAddress, const FString& toAddress,
-                          const FUInt64& tokenID, TArray<uint8> data,
+                          const FUInt256& tokenID, TArray<uint8> data,
                           const FNFTSafeTransferFromDelegate& delegate,
                           const FErrorReceivedDelegate& errorDelegate);
     void safeTransferFrom(const FString& fromAddress, const FString& toAddress,
-                          uint64 tokenID, TArray<uint8> data,
+                          const FUInt256& tokenID, TArray<uint8> data,
                           TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
     void transferFrom(const FString& fromAddress, const FString& toAddress,
-                      const FUInt64& tokenID,
+                      const FUInt256& tokenID,
                       const FNFTTransferFromDelegate& delegate,
                       const FErrorReceivedDelegate& errorDelegate);
     void transferFrom(const FString& fromAddress, const FString& toAddress,
-                      uint64 tokenID,
+                      const FUInt256& tokenID,
                       TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void approve(const FString& address, const FUInt64& tokenID,
+    void approve(const FString& address, const FUInt256& tokenID,
                  const FNFTApproveDelegate& delegate,
                  const FErrorReceivedDelegate& errorDelegate);
-    void approve(const FString& address, uint64 tokenID,
+    void approve(const FString& address, const FUInt256& tokenID,
                  TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void setApprovalForAll(const FString& address, const FUInt64& tokenID,
+    void setApprovalForAll(const FString& address, bool approved,
                            const FNFTSetApprovalForAllDelegate& delegate,
                            const FErrorReceivedDelegate& errorDelegate);
-    void setApprovalForAll(const FString& address, uint64 tokenID,
+    void setApprovalForAll(const FString& address, bool approved,
                            TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
@@ -163,20 +221,64 @@ public:
                            TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void mint(const FString& toAddress, const FNFTMintDelegate& delegate,
+    void mint(const FString& toAddress, const FString& metadataUri,
+              const FNFTMintDelegate& delegate,
               const FErrorReceivedDelegate& errorDelegate);
-    void mint(const FString& toAddress,
+    void mint(const FString& toAddress, const FString& metadataUri,
               TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void safeMint(const FString& toAddress, const TArray<uint8>& data,
+    void safeMint(const FString& toAddress, const FString& metadataUri,
+                  const TArray<uint8>& data,
                   const FNFTSafeMintDelegate& delegate,
                   const FErrorReceivedDelegate& errorDelegate);
-    void safeMint(const FString& toAddress, const TArray<uint8>& data,
+    void safeMint(const FString& toAddress, const FString& metadataUri,
+                  const TArray<uint8>& data,
                   TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void burn(const FUInt64& tokenID, const FNFTSafeMintDelegate& delegate,
+    void mintWithManualID(const FString& toAddress,
+                          const FUInt256& tokenID,
+                          const FString& metadataUri,
+                          const FNFTMintDelegate& delegate,
+                          const FErrorReceivedDelegate& errorDelegate);
+    void mintWithManualID(const FString& toAddress,
+                          const FUInt256& tokenID,
+                          const FString& metadataUri,
+                          TFunction<void(const TResult<FString>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    void safeMintWithManualID(const FString& toAddress,
+                              const FUInt256& tokenID,
+                              const FString& metadataUri,
+                              const TArray<uint8>& data,
+                              const FNFTSafeMintDelegate& delegate,
+                              const FErrorReceivedDelegate& errorDelegate);
+    void safeMintWithManualID(const FString& toAddress,
+                              const FUInt256& tokenID,
+                              const FString& metadataUri,
+                              const TArray<uint8>& data,
+                              TFunction<void(const TResult<FString>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    void burn(const FUInt256& tokenID, const FNFTSafeMintDelegate& delegate,
               const FErrorReceivedDelegate& errorDelegate);
-    void burn(uint64 tokenID, TFunction<void(const TResult<FString>&)> callback);
+    void burn(const FUInt256& tokenID, TFunction<void(const TResult<FString>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    void setPendingOwner(const FString& newOwner,
+                         const FNFTSetPendingOwnerDelegate& delegate,
+                         const FErrorReceivedDelegate& errorDelegate);
+    void setPendingOwner(const FString& newOwner, TFunction<void(const TResult<FString>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    void claimOwnership(const FNFTClaimOwnershipDelegate& delegate,
+                        const FErrorReceivedDelegate& errorDelegate);
+    void claimOwnership(TFunction<void(const TResult<FString>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
+    void royaltyInfo(const UInt64& salePrice,
+                     const FNFTGetRoyaltyInfoDelegate& delegate,
+                     const FErrorReceivedDelegate& errorDelegate);
+    void royaltyInfo(uint64 salePrice, TFunction<void(const TResult<RoyaltyInfo>&)> callback);
 };

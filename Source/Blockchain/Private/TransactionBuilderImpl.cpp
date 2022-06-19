@@ -21,6 +21,11 @@ TransactionBuilderImpl::TransactionBuilderImpl(const std::string& mnemonic,
 {
 }
 
+FString TransactionBuilderImpl::generateMnemonic()
+{
+    return TO_FSTRING(wallet_->generateMnemonic());
+}
+
 void TransactionBuilderImpl::setMnemonic(const FString& mnemonic)
 {
     wallet_->setMnemonic(TO_STD_STRING(mnemonic));

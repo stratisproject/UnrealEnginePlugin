@@ -19,6 +19,13 @@ namespace TW {
 
 const int Mnemonic::SuggestMaxCount = 10;
 
+std::string Mnemonic::generateMnemonic()
+{
+    char buffer[BIP39_MAX_WORDS * (BIP39_MAX_WORD_LENGTH + 1)];
+    mnemonic_generate(128, buffer, sizeof(buffer));
+    return std::string(buffer);
+}
+
 bool Mnemonic::isValid(const std::string& mnemonic)
 {
     return mnemonic_check(mnemonic.c_str()) != 0;

@@ -20,6 +20,8 @@ class WALLET_API Wallet
 public:
     virtual ~Wallet() = 0;
 
+    virtual std::string generateMnemonic() const = 0;
+
     virtual std::string getMnemonic() const = 0;
     virtual void setMnemonic(const std::string& mnemonic) = 0;
 

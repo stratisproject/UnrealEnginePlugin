@@ -6,12 +6,19 @@
 
 #include <WalletImpl.h>
 
+#include "Mnemonic.h"
+
 constexpr uint32_t DEFAULT_SEQUENCE = std::numeric_limits<uint32_t>::max();
 
 WalletImpl::WalletImpl(const std::string& mnemonic, TWCoinType coinType)
     : hdWallet_(TW::HDWallet(mnemonic, "", false)),
       coinType_(coinType)
 {
+}
+
+std::string WalletImpl::generateMnemonic() const
+{
+    return Mnemonic::generateMnemonic();
 }
 
 std::string WalletImpl::getMnemonic() const

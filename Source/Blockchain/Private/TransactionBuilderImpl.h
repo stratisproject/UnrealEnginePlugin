@@ -20,6 +20,8 @@ public:
                            const StratisNetwork& network);
     virtual ~TransactionBuilderImpl() {}
 
+    FString generateMnemonic() override;
+
     void setMnemonic(const FString& mnemonic) override;
     void setNetwork(const StratisNetwork& network) override;
 
