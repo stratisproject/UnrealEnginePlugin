@@ -17,6 +17,8 @@ public:
 
     virtual ~WalletImpl() {}
 
+    std::string generateMnemonic() const override;
+
     std::string getMnemonic() const override;
     void setMnemonic(const std::string& mnemonic) override;
 

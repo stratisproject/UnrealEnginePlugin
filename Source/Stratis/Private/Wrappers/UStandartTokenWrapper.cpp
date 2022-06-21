@@ -18,13 +18,13 @@ UStandartTokenWrapper* UStandartTokenWrapper::createInstance(const FString& cont
     UStandartTokenWrapper* wrapper = NewObject<UStandartTokenWrapper>(outer);
     wrapper->stratisManager = manager;
     wrapper->contractAddress = contractAddress;
-    
+
     return wrapper;
 }
 
 UStandartTokenWrapper* UStandartTokenWrapper::createDefaultInstance(UStratisUnrealManager* manager, UObject* outer)
 {
-    return UStandartTokenWrapper::createInstance(UWhitelistedSmartContracts::StandartTokenContractAddress, manager, outer);
+    return UStandartTokenWrapper::createInstance(UWhitelistedSmartContracts::GetStandartTokenContractAddress, manager, outer);
 }
 
 UWorld* UStandartTokenWrapper::GetWorld() const
@@ -33,12 +33,12 @@ UWorld* UStandartTokenWrapper::GetWorld() const
 }
 
 void UStandartTokenWrapper::deployStandartToken(
-    const FUInt64& totalSupply, const FString& name, const FString& symbols,
-    int64 decimals, const FDeployStandartTokenDelegate& delegate,
+    const FUInt256& totalSupply, const FString& name, const FString& symbols,
+    uint8 decimals, const FDeployStandartToken256Delegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
     this->deployStandartToken(
-        (uint64)totalSupply, name, symbols, (uint32)decimals,
+        totalSupply, name, symbols, decimals,
         [delegate, errorDelegate](const TResult<FString>& result) {
             if (result::isSuccessful(result))
                 delegate.ExecuteIfBound(result::getValue(result));
@@ -48,14 +48,14 @@ void UStandartTokenWrapper::deployStandartToken(
 }
 
 void UStandartTokenWrapper::deployStandartToken(
-    uint64 totalSupply, const FString& name, const FString& symbols,
-    uint32 decimals, TFunction<void(const TResult<FString>&)> callback)
+    const FUInt256& totalSupply, const FString& name, const FString& symbols,
+    uint8 decimals, TFunction<void(const TResult<FString>&)> callback)
 {
     TArray<FString> parameters{
-        USmartContractsParametersEncoder::encodeULong(totalSupply),
+        USmartContractsParametersEncoder::encodeUInt256(totalSupply.value),
         USmartContractsParametersEncoder::encodeString(name),
         USmartContractsParametersEncoder::encodeString(symbols),
-        USmartContractsParametersEncoder::encodeUInt(decimals)};
+        USmartContractsParametersEncoder::encodeByte(decimals)};
 
     this->stratisManager->sendCreateContractTransaction(
         UWhitelistedSmartContracts::GetStandartTokenContractCode(), parameters, 0,
@@ -63,7 +63,7 @@ void UStandartTokenWrapper::deployStandartToken(
 }
 
 void UStandartTokenWrapper::getSymbol(
-    const FGetSymbolDelegate& delegate,
+    const FSTGetSymbolDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
     this->getSymbol([delegate, errorDelegate](const TResult<FString>& result) {
@@ -92,7 +92,7 @@ void UStandartTokenWrapper::getSymbol(
 }
 
 void UStandartTokenWrapper::getName(
-    const FGetNameDelegate& delegate,
+    const FSTGetNameDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
     this->getName([delegate, errorDelegate](const TResult<FString>& result) {
@@ -121,11 +121,11 @@ void UStandartTokenWrapper::getName(
 }
 
 void UStandartTokenWrapper::getTotalSupply(
-    const FGetTotalSupplyDelegate& delegate,
+    const FSTGetTotalSupplyDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
     this->getTotalSupply(
-        [delegate, errorDelegate](const TResult<uint64>& result) {
+        [delegate, errorDelegate](const TResult<FUInt256>& result) {
             if (result::isSuccessful(result))
                 delegate.ExecuteIfBound(result::getValue(result));
             else
@@ -134,7 +134,7 @@ void UStandartTokenWrapper::getTotalSupply(
 }
 
 void UStandartTokenWrapper::getTotalSupply(
-    TFunction<void(const TResult<uint64>&)> callback)
+    TFunction<void(const TResult<FUInt256>&)> callback)
 {
     FLocalCallData localCallData;
     localCallData.gasPrice = 10000;
@@ -146,18 +146,18 @@ void UStandartTokenWrapper::getTotalSupply(
 
     this->stratisManager->makeLocalCall(
         localCallData, [callback](const TResult<FString>& result) {
-            callback(result::transformValue<FString, uint64>(
+            callback(result::transformValue<FString, FUInt256>(
                 result, [](const FString& returnValue) {
-                    return FCString::Strtoui64(*returnValue, nullptr, 10);
+                    return FUInt256(returnValue);
                 }));
         });
 }
 
 void UStandartTokenWrapper::getDecimals(
-    const FGetDecimalsDelegate& delegate,
+    const FSTGetDecimalsDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
-    this->getDecimals([delegate, errorDelegate](const TResult<uint32>& result) {
+    this->getDecimals([delegate, errorDelegate](const TResult<uint8>& result) {
         if (result::isSuccessful(result))
             delegate.ExecuteIfBound(result::getValue(result));
         else
@@ -166,7 +166,7 @@ void UStandartTokenWrapper::getDecimals(
 }
 
 void UStandartTokenWrapper::getDecimals(
-    TFunction<void(const TResult<uint32>&)> callback)
+    TFunction<void(const TResult<uint8>&)> callback)
 {
     FLocalCallData localCallData;
     localCallData.gasPrice = 10000;
@@ -178,19 +178,19 @@ void UStandartTokenWrapper::getDecimals(
 
     this->stratisManager->makeLocalCall(
         localCallData, [callback](const TResult<FString>& result) {
-            callback(result::transformValue<FString, uint32>(
+            callback(result::transformValue<FString, uint8>(
                 result, [](const FString& returnValue) {
-                    return (uint32)FCString::Strtoui64(*returnValue, nullptr, 10);
+                    return (uint8)FCString::Strtoi(*returnValue, nullptr, 10);
                 }));
         });
 }
 
 void UStandartTokenWrapper::getBalance(
-    const FString& address, const FGetBalanceDelegate& delegate,
+    const FString& address, const FSTGetBalanceDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
     this->getBalance(
-        address, [delegate, errorDelegate](const TResult<uint64>& result) {
+        address, [delegate, errorDelegate](const TResult<FUInt256>& result) {
             if (result::isSuccessful(result))
                 delegate.ExecuteIfBound(result::getValue(result));
             else
@@ -199,7 +199,7 @@ void UStandartTokenWrapper::getBalance(
 }
 
 void UStandartTokenWrapper::getBalance(
-    const FString& address, TFunction<void(const TResult<uint64>&)> callback)
+    const FString& address, TFunction<void(const TResult<FUInt256>&)> callback)
 {
     FLocalCallData localCallData;
     localCallData.gasPrice = 10000;
@@ -213,20 +213,20 @@ void UStandartTokenWrapper::getBalance(
 
     this->stratisManager->makeLocalCall(
         localCallData, [callback](const TResult<FString>& result) {
-            callback(result::transformValue<FString, uint64>(
+            callback(result::transformValue<FString, FUInt256>(
                 result, [](const FString& returnValue) {
-                    return FCString::Strtoui64(*returnValue, nullptr, 10);
+                    return FUInt256(returnValue);
                 }));
         });
 }
 
 void UStandartTokenWrapper::getAllowance(
     const FString& ownerAddress, const FString& spenderAddress,
-    const FGetAllowanceDelegate& delegate,
+    const FSTGetAllowanceDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
     this->getAllowance(ownerAddress, spenderAddress,
-                       [delegate, errorDelegate](const TResult<uint64>& result) {
+                       [delegate, errorDelegate](const TResult<FUInt256>& result) {
                            if (result::isSuccessful(result))
                                delegate.ExecuteIfBound(result::getValue(result));
                            else
@@ -237,7 +237,7 @@ void UStandartTokenWrapper::getAllowance(
 
 void UStandartTokenWrapper::getAllowance(
     const FString& ownerAddress, const FString& spenderAddress,
-    TFunction<void(const TResult<uint64>&)> callback)
+    TFunction<void(const TResult<FUInt256>&)> callback)
 {
     FLocalCallData localCallData;
     localCallData.gasPrice = 10000;
@@ -252,15 +252,15 @@ void UStandartTokenWrapper::getAllowance(
 
     this->stratisManager->makeLocalCall(
         localCallData, [callback](const TResult<FString>& result) {
-            callback(result::transformValue<FString, uint64>(
+            callback(result::transformValue<FString, FUInt256>(
                 result, [](const FString& returnValue) {
-                    return FCString::Strtoui64(*returnValue, nullptr, 10);
+                    return FUInt256(returnValue);
                 }));
         });
 }
 void UStandartTokenWrapper::transferTo(
-    const FString& address, const FUInt64& amount,
-    const FTransferToDelegate& delegate,
+    const FString& address, const FUInt256& amount,
+    const FSTTransferToDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
     this->transferTo(address, amount,
@@ -274,19 +274,19 @@ void UStandartTokenWrapper::transferTo(
 }
 
 void UStandartTokenWrapper::transferTo(
-    const FString& address, uint64 amount,
+    const FString& address, const FUInt256& amount,
     TFunction<void(const TResult<FString>&)> callback)
 {
     this->stratisManager->sendCallContractTransaction(
         this->contractAddress, TEXT("TransferTo"),
         {USmartContractsParametersEncoder::encodeAddress(address),
-         USmartContractsParametersEncoder::encodeULong(amount)},
+         USmartContractsParametersEncoder::encodeUInt256(amount.value)},
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
 void UStandartTokenWrapper::transferFrom(
-    const FString& fromAddress, const FString& toAddress, const FUInt64& amount,
-    const FTransferFromDelegate& delegate,
+    const FString& fromAddress, const FString& toAddress, const FUInt256& amount,
+    const FSTTransferFromDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
     this->transferFrom(fromAddress, toAddress, amount,
@@ -300,20 +300,20 @@ void UStandartTokenWrapper::transferFrom(
 }
 
 void UStandartTokenWrapper::transferFrom(
-    const FString& fromAddress, const FString& toAddress, uint64 amount,
+    const FString& fromAddress, const FString& toAddress, const FUInt256& amount,
     TFunction<void(const TResult<FString>&)> callback)
 {
     this->stratisManager->sendCallContractTransaction(
         this->contractAddress, TEXT("TransferFrom"),
         {USmartContractsParametersEncoder::encodeAddress(fromAddress),
          USmartContractsParametersEncoder::encodeAddress(toAddress),
-         USmartContractsParametersEncoder::encodeULong(amount)},
+         USmartContractsParametersEncoder::encodeUInt256(amount.value)},
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
 void UStandartTokenWrapper::approve(
-    const FString& spender, const FUInt64& currentAmount, const FUInt64& amount,
-    const FApproveDelegate& delegate,
+    const FString& spender, const FUInt256& currentAmount, const FUInt256& amount,
+    const FSTApproveDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
     this->approve(spender, currentAmount, amount,
@@ -327,13 +327,13 @@ void UStandartTokenWrapper::approve(
 }
 
 void UStandartTokenWrapper::approve(
-    const FString& spender, uint64 currentAmount, uint64 amount,
+    const FString& spender, const FUInt256& currentAmount, const FUInt256& amount,
     TFunction<void(const TResult<FString>&)> callback)
 {
     this->stratisManager->sendCallContractTransaction(
         this->contractAddress, TEXT("Approve"),
         {USmartContractsParametersEncoder::encodeAddress(spender),
-         USmartContractsParametersEncoder::encodeULong(currentAmount),
-         USmartContractsParametersEncoder::encodeULong(amount)},
+         USmartContractsParametersEncoder::encodeUInt256(currentAmount.value),
+         USmartContractsParametersEncoder::encodeUInt256(amount.value)},
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
