@@ -28,21 +28,19 @@ public:
     FString paymentAddress() const override;
 
     Transaction buildSendTransaction(const FString& destinationAddress,
-                                     const TArray<UTXO>& utxos, uint64 amount,
-                                     uint64 fee) const override;
+                                     const TArray<UTXO>& utxos, uint64 amount) const override;
 
     Transaction buildOpReturnTransaction(const TArray<uint8>& data,
-                                         const TArray<UTXO>& utxos,
-                                         uint64 fee) const override;
+                                         const TArray<UTXO>& utxos) const override;
 
     Transaction buildCreateContractTransaction(
-        const FString& contractCode, const TArray<UTXO>& utxos, uint64 fee,
+        const FString& contractCode, const TArray<UTXO>& utxos,
         uint64 gasPrice, uint64 gasLimit, uint64 amount,
         TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters) const override;
 
     Transaction buildCallContractTransaction(
         const FString& methodName, const Address& contractAddress,
-        const TArray<UTXO>& utxos, uint64 fee, uint64 gasPrice, uint64 gasLimit,
+        const TArray<UTXO>& utxos, uint64 gasPrice, uint64 gasLimit,
         uint64 amount,
         TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters) const override;
 

@@ -96,8 +96,7 @@ private:
 
 //////////////////////////////////////////////////////////////////////////
 
-// Decodes Base64Url encoded strings, see
-// https://en.wikipedia.org/wiki/Base64#Variants_summary_table
+// Decodes Base64Url encoded strings, see https://en.wikipedia.org/wiki/Base64#Variants_summary_table
 template <typename T>
 bool Base64UrlDecode(const FString& Base64String, T& Value)
 {
@@ -108,8 +107,7 @@ bool Base64UrlDecode(const FString& Base64String, T& Value)
     return FBase64::Decode(TmpCopy, Value);
 }
 
-// Encodes strings in Base64Url, see
-// https://en.wikipedia.org/wiki/Base64#Variants_summary_table
+// Encodes strings in Base64Url, see https://en.wikipedia.org/wiki/Base64#Variants_summary_table
 template <typename T>
 FString Base64UrlEncode(const T& Value)
 {
@@ -140,14 +138,16 @@ inline FStringFormatArg ToStringFormatArg(const TArray<uint8>& Value)
     return FStringFormatArg(Base64UrlEncode(Value));
 }
 
-template <typename T, typename std::enable_if<!std::is_base_of<Model, T>::value,
-                                              int>::type = 0>
+template <typename T, typename std::enable_if<!std::is_base_of<Model, T>::value, int>::type = 0>
 inline FString ToString(const T& Value)
 {
     return FString::Format(TEXT("{0}"), {ToStringFormatArg(Value)});
 }
 
-inline FString ToString(const FString& Value) { return Value; }
+inline FString ToString(const FString& Value)
+{
+    return Value;
+}
 
 inline FString ToString(bool Value)
 {
@@ -180,8 +180,7 @@ inline FString ToUrlString(const T& Value)
 }
 
 template <typename T>
-inline FString CollectionToUrlString(const TArray<T>& Collection,
-                                     const TCHAR* Separator)
+inline FString CollectionToUrlString(const TArray<T>& Collection, const TCHAR* Separator)
 {
     FString Output;
     if (Collection.Num() == 0)
@@ -189,61 +188,52 @@ inline FString CollectionToUrlString(const TArray<T>& Collection,
 
     Output += ToUrlString(Collection[0]);
     for (int i = 1; i < Collection.Num(); i++) {
-        Output += FString::Format(TEXT("{0}{1}"),
-                                  {Separator, *ToUrlString(Collection[i])});
+        Output += FString::Format(TEXT("{0}{1}"), {Separator, *ToUrlString(Collection[i])});
     }
     return Output;
 }
 
 template <typename T>
-inline FString CollectionToUrlString_csv(const TArray<T>& Collection,
-                                         const TCHAR* BaseName)
+inline FString CollectionToUrlString_csv(const TArray<T>& Collection, const TCHAR* BaseName)
 {
     return CollectionToUrlString(Collection, TEXT(","));
 }
 
 template <typename T>
-inline FString CollectionToUrlString_ssv(const TArray<T>& Collection,
-                                         const TCHAR* BaseName)
+inline FString CollectionToUrlString_ssv(const TArray<T>& Collection, const TCHAR* BaseName)
 {
     return CollectionToUrlString(Collection, TEXT(" "));
 }
 
 template <typename T>
-inline FString CollectionToUrlString_tsv(const TArray<T>& Collection,
-                                         const TCHAR* BaseName)
+inline FString CollectionToUrlString_tsv(const TArray<T>& Collection, const TCHAR* BaseName)
 {
-    return CollectionToUrlString(Collection, TEXT("	"));
+    return CollectionToUrlString(Collection, TEXT("\t"));
 }
 
 template <typename T>
-inline FString CollectionToUrlString_pipes(const TArray<T>& Collection,
-                                           const TCHAR* BaseName)
+inline FString CollectionToUrlString_pipes(const TArray<T>& Collection, const TCHAR* BaseName)
 {
     return CollectionToUrlString(Collection, TEXT("|"));
 }
 
 template <typename T>
-inline FString CollectionToUrlString_multi(const TArray<T>& Collection,
-                                           const TCHAR* BaseName)
+inline FString CollectionToUrlString_multi(const TArray<T>& Collection, const TCHAR* BaseName)
 {
     FString Output;
     if (Collection.Num() == 0)
         return Output;
 
-    Output += FString::Format(TEXT("{0}={1}"), {FStringFormatArg(BaseName),
-                                                ToUrlString(Collection[0])});
+    Output += FString::Format(TEXT("{0}={1}"), {FStringFormatArg(BaseName), ToUrlString(Collection[0])});
     for (int i = 1; i < Collection.Num(); i++) {
-        Output += FString::Format(TEXT("&{0}={1}"), {FStringFormatArg(BaseName),
-                                                     ToUrlString(Collection[i])});
+        Output += FString::Format(TEXT("&{0}={1}"), {FStringFormatArg(BaseName), ToUrlString(Collection[i])});
     }
     return Output;
 }
 
 //////////////////////////////////////////////////////////////////////////
 
-inline void WriteJsonValue(JsonWriter& Writer,
-                           const TSharedPtr<FJsonValue>& Value)
+inline void WriteJsonValue(JsonWriter& Writer, const TSharedPtr<FJsonValue>& Value)
 {
     if (Value.IsValid()) {
         FJsonSerializer::Serialize(Value.ToSharedRef(), "", Writer, false);
@@ -253,8 +243,7 @@ inline void WriteJsonValue(JsonWriter& Writer,
     }
 }
 
-inline void WriteJsonValue(JsonWriter& Writer,
-                           const TSharedPtr<FJsonObject>& Value)
+inline void WriteJsonValue(JsonWriter& Writer, const TSharedPtr<FJsonObject>& Value)
 {
     if (Value.IsValid()) {
         FJsonSerializer::Serialize(Value.ToSharedRef(), Writer, false);
@@ -284,8 +273,17 @@ inline void WriteJsonValue(JsonWriter& Writer, const Model& Value)
     Value.WriteJson(Writer);
 }
 
-template <typename T, typename std::enable_if<!std::is_base_of<Model, T>::value,
-                                              int>::type = 0>
+template <typename T>
+inline void WriteJsonValue(JsonWriter& Writer, const TSet<T>& Value)
+{
+    Writer->WriteArrayStart();
+    for (const auto& Element : Value) {
+        WriteJsonValue(Writer, Element);
+    }
+    Writer->WriteArrayEnd();
+}
+
+template <typename T, typename std::enable_if<!std::is_base_of<Model, T>::value, int>::type = 0>
 inline void WriteJsonValue(JsonWriter& Writer, const T& Value)
 {
     Writer->WriteValue(Value);
@@ -314,8 +312,7 @@ inline void WriteJsonValue(JsonWriter& Writer, const TMap<FString, T>& Value)
 
 //////////////////////////////////////////////////////////////////////////
 
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            FString& Value)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, FString& Value)
 {
     FString TmpValue;
     if (JsonValue->TryGetString(TmpValue)) {
@@ -325,11 +322,9 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
         return false;
 }
 
-STRATISAPI_API bool ParseDateTime(const FString& DateTimeString,
-                                  FDateTime& OutDateTime);
+STRATISAPI_API bool ParseDateTime(const FString& DateTimeString, FDateTime& OutDateTime);
 
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            FDateTime& Value)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, FDateTime& Value)
 {
     FString TmpValue;
     if (JsonValue->TryGetString(TmpValue)) {
@@ -338,8 +333,7 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
         return false;
 }
 
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            FGuid& Value)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, FGuid& Value)
 {
     FString TmpValue;
     if (JsonValue->TryGetString(TmpValue)) {
@@ -348,8 +342,7 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
         return false;
 }
 
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            bool& Value)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, bool& Value)
 {
     bool TmpValue;
     if (JsonValue->TryGetBool(TmpValue)) {
@@ -359,15 +352,13 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
         return false;
 }
 
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            TSharedPtr<FJsonValue>& JsonObjectValue)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, TSharedPtr<FJsonValue>& JsonObjectValue)
 {
     JsonObjectValue = JsonValue;
     return true;
 }
 
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            TSharedPtr<FJsonObject>& JsonObjectValue)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, TSharedPtr<FJsonObject>& JsonObjectValue)
 {
     const TSharedPtr<FJsonObject>* Object;
     if (JsonValue->TryGetObject(Object)) {
@@ -377,8 +368,7 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
     return false;
 }
 
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            TArray<uint8>& Value)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, TArray<uint8>& Value)
 {
     FString TmpValue;
     if (JsonValue->TryGetString(TmpValue)) {
@@ -388,14 +378,12 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
         return false;
 }
 
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            Model& Value)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, Model& Value)
 {
     return Value.FromJson(JsonValue);
 }
 
-template <typename T, typename std::enable_if<!std::is_base_of<Model, T>::value,
-                                              int>::type = 0>
+template <typename T, typename std::enable_if<!std::is_base_of<Model, T>::value, int>::type = 0>
 inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, T& Value)
 {
     T TmpValue;
@@ -407,8 +395,7 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, T& Value)
 }
 
 template <typename T>
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            TArray<T>& ArrayValue)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, TArray<T>& ArrayValue)
 {
     const TArray<TSharedPtr<FJsonValue>>* JsonArray;
     if (JsonValue->TryGetArray(JsonArray)) {
@@ -426,8 +413,25 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
 }
 
 template <typename T>
-inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
-                            TMap<FString, T>& MapValue)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, TSet<T>& SetValue)
+{
+    const TArray<TSharedPtr<FJsonValue>>* JsonArray;
+    if (JsonValue->TryGetArray(JsonArray)) {
+        bool ParseSuccess = true;
+        const int32 Count = JsonArray->Num();
+        SetValue.Reserve(Count);
+        for (int i = 0; i < Count; i++) {
+            T TmpValue;
+            ParseSuccess &= TryGetJsonValue((*JsonArray)[i], TmpValue);
+            SetValue.Add(MoveTemp(TmpValue));
+        }
+        return ParseSuccess;
+    }
+    return false;
+}
+
+template <typename T>
+inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue, TMap<FString, T>& MapValue)
 {
     const TSharedPtr<FJsonObject>* Object;
     if (JsonValue->TryGetObject(Object)) {
@@ -444,8 +448,7 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonValue>& JsonValue,
 }
 
 template <typename T>
-inline bool TryGetJsonValue(const TSharedPtr<FJsonObject>& JsonObject,
-                            const FString& Key, T& Value)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonObject>& JsonObject, const FString& Key, T& Value)
 {
     const TSharedPtr<FJsonValue> JsonValue = JsonObject->TryGetField(Key);
     if (JsonValue.IsValid() && !JsonValue->IsNull()) {
@@ -455,23 +458,18 @@ inline bool TryGetJsonValue(const TSharedPtr<FJsonObject>& JsonObject,
 }
 
 template <typename T>
-inline bool TryGetJsonValue(const TSharedPtr<FJsonObject>& JsonObject,
-                            const FString& Key, TOptional<T>& OptionalValue)
+inline bool TryGetJsonValue(const TSharedPtr<FJsonObject>& JsonObject, const FString& Key, TOptional<T>& OptionalValue)
 {
     if (JsonObject->HasField(Key)) {
-        const TSharedPtr<FJsonValue> JsonValue = JsonObject->TryGetField(Key);
-        if (JsonValue.IsValid()) {
-            T Value;
-            if (!JsonValue->IsNull()) {
-                bool parsedSuccessfully = TryGetJsonValue(JsonValue, Value);
-                if (parsedSuccessfully) {
-                    OptionalValue = Value;
-                }
-                return parsedSuccessfully;
-            } else {
+        T Value;
+        if (TryGetJsonValue(JsonObject, Key, Value)) {
+            OptionalValue = Value;
+            return true;
+        } else {
+            const TSharedPtr<FJsonValue> JsonValue = JsonObject->TryGetField(Key);
+            if (JsonValue.IsValid() && JsonValue->IsNull()) {
                 return true;
             }
-        } else {
             return false;
         }
     }

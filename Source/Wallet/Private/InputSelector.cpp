@@ -65,10 +65,10 @@ static inline std::vector<std::vector<TypeWithAmount>> slice(const std::vector<T
 }
 
 template <typename TypeWithAmount>
-std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::select(int64_t targetValue, int64_t byteFee, int64_t numOutputs)
+std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::select(int64_t targetValue, int64_t byteFee, int64_t gasPrice, int64_t gasLimit, int64_t numOutputs)
 {
-    // if target value is zero, no UTXOs are needed
-    if (targetValue == 0) {
+    // if target value less then zero, no UTXOs are needed
+    if (targetValue < 0) {
         return {};
     }
 
@@ -113,7 +113,7 @@ std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::select(int64_t target
     //    (2) closer to 2x the amount,
     //    (3) and does not produce dust change.
     for (size_t numInputs = 1; numInputs <= n; ++numInputs) {
-        const auto fee = feeCalculator.calculate(numInputs, numOutputs, byteFee);
+        const auto fee = feeCalculator.calculate(numInputs, numOutputs, byteFee, gasPrice, gasLimit);
         const uint64_t targetWithFeeAndDust = targetValue + fee + dustThreshold;
         if (maxWithXInputs[numInputs] < targetWithFeeAndDust) {
             // no way to satisfy with only numInputs inputs, skip
@@ -138,7 +138,7 @@ std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::select(int64_t target
 
     // 2. If not, find a valid combination of outputs even if they produce dust change.
     for (size_t numInputs = 1; numInputs <= n; ++numInputs) {
-        const auto fee = feeCalculator.calculate(numInputs, numOutputs, byteFee);
+        const auto fee = feeCalculator.calculate(numInputs, numOutputs, byteFee, gasPrice, gasLimit);
         const uint64_t targetWithFee = targetValue + fee;
         if (maxWithXInputs[numInputs] < targetWithFee) {
             // no way to satisfy with only numInputs inputs, skip
@@ -160,7 +160,7 @@ std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::select(int64_t target
 }
 
 template <typename TypeWithAmount>
-std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::selectSimple(int64_t targetValue, int64_t byteFee, int64_t numOutputs)
+std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::selectSimple(int64_t targetValue, int64_t byteFee, int64_t gasPrice, int64_t gasLimit, int64_t numOutputs)
 {
     // if target value is zero, no UTXOs are needed
     if (targetValue == 0) {
@@ -172,7 +172,7 @@ std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::selectSimple(int64_t 
     assert(inputs.size() >= 1);
 
     // target value is larger that original, but not by a factor of 2 (optioized for large UTXO cases)
-    const auto increasedTargetValue = (uint64_t)((double)targetValue * 1.1 + feeCalculator.calculate(inputs.size(), numOutputs, byteFee) + 1000);
+    const auto increasedTargetValue = (uint64_t)((double)targetValue * 1.1 + feeCalculator.calculate(inputs.size(), numOutputs, byteFee, gasPrice, gasLimit) + 1000);
 
     const int64_t dustThreshold = feeCalculator.calculateSingleInput(byteFee);
 

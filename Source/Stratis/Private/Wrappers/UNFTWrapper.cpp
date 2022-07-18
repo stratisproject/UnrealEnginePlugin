@@ -162,7 +162,7 @@ void UNFTWrapper::getOwner(TFunction<void(const TResult<FString>&)> callback)
         [callback](const TResult<FString>& result) { callback(result); });
 }
 
-void UNFTWrapper::getPendingOwner(const FNFTGetPendingOwnerDelegate& delegate,
+void UNFTWrapper::getPendingOwner(const FNFTGetOwnerDelegate& delegate,
                                   const FErrorReceivedDelegate& errorDelegate)
 {
     this->getPendingOwner([delegate, errorDelegate](const TResult<FString>& result) {
@@ -280,7 +280,7 @@ void UNFTWrapper::getBalanceOf(const FString& address,
                                const FErrorReceivedDelegate& errorDelegate)
 {
     this->getBalanceOf(
-        address, [delegate, errorDelegate](const TResult<uint64>& result) {
+        address, [delegate, errorDelegate](const TResult<FUInt256>& result) {
             if (result::isSuccessful(result))
                 delegate.ExecuteIfBound(result::getValue(result));
             else
@@ -289,7 +289,7 @@ void UNFTWrapper::getBalanceOf(const FString& address,
 }
 
 void UNFTWrapper::getBalanceOf(
-    const FString& address, TFunction<void(const TResult<uint64>&)> callback)
+    const FString& address, TFunction<void(const TResult<FUInt256>&)> callback)
 {
     FLocalCallData localCallData;
     localCallData.gasPrice = 10000;
@@ -303,9 +303,9 @@ void UNFTWrapper::getBalanceOf(
 
     this->stratisManager->makeLocalCall(
         localCallData, [callback](const TResult<FString>& result) {
-            callback(result::transformValue<FString, uint64>(
+            callback(result::transformValue<FString, FUInt256>(
                 result, [](const FString& value) {
-                    return FCString::Strtoui64(*value, nullptr, 10);
+                    return value;
                 }));
         });
 }
@@ -580,6 +580,7 @@ void UNFTWrapper::mint(const FString& toAddress,
                        const FNFTMintDelegate& delegate,
                        const FErrorReceivedDelegate& errorDelegate)
 {
+<<<<<<< HEAD
     this->mint(toAddress, metadataUri,
                [delegate, errorDelegate](const TResult<FString>& result) {
                    if (result::isSuccessful(result))
@@ -587,11 +588,26 @@ void UNFTWrapper::mint(const FString& toAddress,
                    else
                        errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
                });
+=======
+    this->mint(
+        toAddress, metadataUri,
+        [delegate, errorDelegate](const TResult<FString>& result) {
+            if (result::isSuccessful(result))
+                delegate.ExecuteIfBound(result::getValue(result));
+            else
+                errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+        });
+>>>>>>> demo
 }
 
 void UNFTWrapper::mint(const FString& toAddress,
                        const FString& metadataUri,
+<<<<<<< HEAD
                        TFunction<void(const TResult<FString>&)> callback)
+=======
+                       TFunction<void(const TResult<FString>&)>
+                           callback)
+>>>>>>> demo
 {
     this->stratisManager->sendCallContractTransaction(
         this->contractAddress, TEXT("Mint"),
@@ -630,6 +646,7 @@ void UNFTWrapper::safeMint(const FString& toAddress,
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
+<<<<<<< HEAD
 void UNFTWrapper::mintWithManualID(const FString& toAddress,
                                    const FUInt256& tokenID,
                                    const FString& metadataUri,
@@ -691,6 +708,8 @@ void UNFTWrapper::safeMintWithManualID(const FString& toAddress,
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
+=======
+>>>>>>> demo
 void UNFTWrapper::burn(const FUInt256& tokenID,
                        const FNFTSafeMintDelegate& delegate,
                        const FErrorReceivedDelegate& errorDelegate)
@@ -713,8 +732,13 @@ void UNFTWrapper::burn(const FUInt256& tokenID,
         [callback](const TResult<FString>& result) { callback(result); });
 }
 
+<<<<<<< HEAD
 void claimOwnership(const FNFTClaimOwnershipDelegate& delegate,
                     const FErrorReceivedDelegate& errorDelegate)
+=======
+void UNFTWrapper::claimOwnership(const FNFTClaimOwnershipDelegate& delegate,
+                                 const FErrorReceivedDelegate& errorDelegate)
+>>>>>>> demo
 {
     this->claimOwnership(
         [delegate, errorDelegate](const TResult<FString>& result) {
@@ -725,7 +749,11 @@ void claimOwnership(const FNFTClaimOwnershipDelegate& delegate,
         });
 }
 
+<<<<<<< HEAD
 void claimOwnership(TFunction<void(const TResult<FString>&)> callback)
+=======
+void UNFTWrapper::claimOwnership(TFunction<void(const TResult<FString>&)> callback)
+>>>>>>> demo
 {
     this->stratisManager->sendCallContractTransaction(
         this->contractAddress, TEXT("ClaimOwnership"),
@@ -733,6 +761,7 @@ void claimOwnership(TFunction<void(const TResult<FString>&)> callback)
         [callback](const TResult<FString>& result) { callback(result); });
 }
 
+<<<<<<< HEAD
 void royaltyInfo(const UInt64& salePrice,
                  const FNFTGetRoyaltyInfoDelegate& delegate,
                  const FErrorReceivedDelegate& errorDelegate)
@@ -740,6 +769,17 @@ void royaltyInfo(const UInt64& salePrice,
     this->royaltyInfo(
         salePrice,
         [delegate, errorDelegate](const TResult<RoyaltyInfo>& result) {
+=======
+void UNFTWrapper::mintWithManualID(const FString& toAddress,
+                                   const FUInt256& tokenID,
+                                   const FString& metadataUri,
+                                   const FNFTMintDelegate& delegate,
+                                   const FErrorReceivedDelegate& errorDelegate)
+{
+    this->mintWithManualID(
+        toAddress, tokenID, metadataUri,
+        [delegate, errorDelegate](const TResult<FString>& result) {
+>>>>>>> demo
             if (result::isSuccessful(result))
                 delegate.ExecuteIfBound(result::getValue(result));
             else
@@ -747,7 +787,93 @@ void royaltyInfo(const UInt64& salePrice,
         });
 }
 
+<<<<<<< HEAD
 void royaltyInfo(uint64 salePrice, TFunction<void(const TResult<RoyaltyInfo>&)> callback)
+=======
+void UNFTWrapper::mintWithManualID(const FString& toAddress,
+                                   const FUInt256& tokenID,
+                                   const FString& metadataUri,
+                                   TFunction<void(const TResult<FString>&)> callback)
+{
+    this->stratisManager->sendCallContractTransaction(
+        this->contractAddress, TEXT("Mint"),
+        {USmartContractsParametersEncoder::encodeAddress(toAddress),
+         USmartContractsParametersEncoder::encodeUInt256(tokenID.value),
+         USmartContractsParametersEncoder::encodeString(metadataUri)},
+        0,
+        [callback](const TResult<FString>& result) { callback(result); });
+}
+
+void UNFTWrapper::safeMintWithManualID(const FString& toAddress,
+                                       const FUInt256& tokenID,
+                                       const FString& metadataUri,
+                                       const TArray<uint8>& data,
+                                       const FNFTSafeMintDelegate& delegate,
+                                       const FErrorReceivedDelegate& errorDelegate)
+{
+    this->safeMintWithManualID(
+        toAddress, tokenID, metadataUri, data,
+        [delegate, errorDelegate](const TResult<FString>& result) {
+            if (result::isSuccessful(result))
+                delegate.ExecuteIfBound(result::getValue(result));
+            else
+                errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+        });
+}
+
+void UNFTWrapper::safeMintWithManualID(const FString& toAddress,
+                                       const FUInt256& tokenID,
+                                       const FString& metadataUri,
+                                       const TArray<uint8>& data,
+                                       TFunction<void(const TResult<FString>&)> callback)
+{
+    this->stratisManager->sendCallContractTransaction(
+        this->contractAddress, TEXT("SafeMint"),
+        {USmartContractsParametersEncoder::encodeAddress(toAddress),
+         USmartContractsParametersEncoder::encodeUInt256(tokenID.value),
+         USmartContractsParametersEncoder::encodeString(metadataUri),
+         USmartContractsParametersEncoder::encodeByteArray(data)},
+        0, [callback](const TResult<FString>& result) { callback(result); });
+}
+
+void UNFTWrapper::setPendingOwner(const FString& newOwner,
+                                  const FNFTSetPendingOwnerDelegate& delegate,
+                                  const FErrorReceivedDelegate& errorDelegate)
+{
+    this->setPendingOwner(
+        newOwner,
+        [delegate, errorDelegate](const TResult<FString>& result) {
+            if (result::isSuccessful(result))
+                delegate.ExecuteIfBound(result::getValue(result));
+            else
+                errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+        });
+}
+
+void UNFTWrapper::setPendingOwner(const FString& newOwner, TFunction<void(const TResult<FString>&)> callback)
+{
+    this->stratisManager->sendCallContractTransaction(
+        this->contractAddress, TEXT("SetPendingOwner"),
+        {USmartContractsParametersEncoder::encodeAddress(newOwner)},
+        0, [callback](const TResult<FString>& result) { callback(result); });
+}
+
+void UNFTWrapper::royaltyInfo(const UInt64& salePrice,
+                              const FNFTGetRoyaltyInfoDelegate& delegate,
+                              const FErrorReceivedDelegate& errorDelegate)
+{
+    this->royaltyInfo(
+        salePrice,
+        [delegate, errorDelegate](const TResult<FRoyaltyInfo>& result) {
+            if (result::isSuccessful(result))
+                delegate.ExecuteIfBound(result::getValue(result));
+            else
+                errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+        });
+}
+
+void UNFTWrapper::royaltyInfo(uint64 salePrice, TFunction<void(const TResult<FRoyaltyInfo>&)> callback)
+>>>>>>> demo
 {
     FLocalCallData localCallData;
     localCallData.gasPrice = 10000;
@@ -756,13 +882,17 @@ void royaltyInfo(uint64 salePrice, TFunction<void(const TResult<RoyaltyInfo>&)> 
     localCallData.contractAddress = this->contractAddress;
     localCallData.methodName = TEXT("RoyaltyInfo");
     localCallData.sender = stratisManager->getAddress();
+<<<<<<< HEAD
     localCallData.parameters = {
         USmartContractsParametersEncoder::encodeUInt256(TEXT("0")),
         USmartContractsParametersEncoder::encodeULong(salePrice)};
+=======
+>>>>>>> demo
 
     this->stratisManager->makeLocalCall(
         localCallData,
         [callback](const TResult<FString>& result) {
+<<<<<<< HEAD
             callback(TResult::transform(result), [](const FString& value) {
                 TSharedPtr<FJsonValue> JsonValue;
                 auto Reader = TJsonReaderFactory<>::Create(value);
@@ -788,5 +918,8 @@ void royaltyInfo(uint64 salePrice, TFunction<void(const TResult<RoyaltyInfo>&)> 
                     return TResult::error(TEXT("JSON is invalid."))
                 }
             });
+=======
+            // callback(result);
+>>>>>>> demo
         });
 }

@@ -114,6 +114,9 @@ void random_buffer(uint8_t *buf, size_t len) {
 
 #include <sys/uio.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
  // [wallet-core]
 void *random_init() {

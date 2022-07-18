@@ -37,7 +37,7 @@ public:
     void WriteJson(JsonWriter& Writer) const final;
 
     TOptional<int64> BalanceSat;
-    TOptional<TArray<UTXOModel>> UtxOs;
+    TOptional<TArray<UTXOModel>> UTXOs;
     TOptional<FString> Reason;
 };
 

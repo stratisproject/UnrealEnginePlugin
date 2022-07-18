@@ -61,11 +61,18 @@ BuiltTransaction WalletImpl::createOpReturnTransaction(const WalletUTXOs& utxos,
     return this->signTransaction(signingInput);
 }
 
-BuiltTransaction WalletImpl::createCustomScriptTransaction(const WalletUTXOs& utxos, const TW::Data& customScript, uint64_t amount) const
+BuiltTransaction WalletImpl::createCustomScriptTransaction(const WalletUTXOs& utxos,
+                                                           const TW::Data& customScript,
+                                                           uint64_t amount,
+                                                           uint64_t gasPrice,
+                                                           uint64_t gasLimit) const
 {
     auto signingInput(this->buildSigningInput(utxos));
     signingInput.amount = amount;
     signingInput.outputCustomScript = TW::Bitcoin::Script(customScript);
+    signingInput.gasPrice = gasPrice;
+    signingInput.gasLimit = gasLimit;
+
     return this->signTransaction(signingInput);
 }
 
@@ -85,11 +92,12 @@ TW::Bitcoin::SigningInput WalletImpl::buildSigningInput(const WalletUTXOs& utxos
 
     for (const auto& utxo : utxos) {
         TW::Bitcoin::OutPoint outpoint{
-            TW::parse_hex(utxo.hash), // TODO: check hex decoding and check reversed order (decode_hash)
+            TW::reverse(TW::parse_hex(utxo.hash)),
             utxo.n,
             DEFAULT_SEQUENCE};
 
-        convertedUtxos.push_back({outpoint, TW::Bitcoin::Script(), static_cast<TW::Bitcoin::Amount>(utxo.satoshis)});
+        convertedUtxos.push_back({outpoint, TW::Bitcoin::Script::lockScriptForAddress(this->getAddress(), coin),
+                                  static_cast<TW::Bitcoin::Amount>(utxo.satoshis)});
     }
 
     signingInput.utxos = convertedUtxos;
@@ -103,8 +111,7 @@ BuiltTransaction WalletImpl::signTransaction(const TW::Bitcoin::SigningInput& in
 
     return BuiltTransaction{
         signedOutput.transactionId,
-        TW::hex(signedOutput.encoded) // TODO: check transaction encoding
-    };
+        TW::hex(signedOutput.encoded)};
 }
 
 TSharedPtr<Wallet> createWallet(const std::string& mnemonic, TWCoinType coinType)

@@ -19,23 +19,25 @@
 #pragma once
 
 #include "BaseModel.h"
+#include "TransactionOutputModel.h"
 
 namespace stratis {
 namespace api {
 
 /*
- * BalanceModel
+ * WalletSendTransactionModel
  *
  *
  */
-class STRATISAPI_API BalanceModel : public Model
+class STRATISAPI_API WalletSendTransactionModel : public Model
 {
 public:
-    virtual ~BalanceModel() {}
+    virtual ~WalletSendTransactionModel() {}
     bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
     void WriteJson(JsonWriter& Writer) const final;
 
-    TOptional<int64> Balance;
+    TOptional<FString> TransactionId;
+    TOptional<TArray<TransactionOutputModel>> Outputs;
 };
 
 } // namespace api

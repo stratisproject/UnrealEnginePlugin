@@ -6,17 +6,29 @@
 
 #include "Data.h"
 
+#include <algorithm>
 namespace TW {
 
-Data subData(const Data& data, size_t startIndex, size_t length) {
+Data subData(const Data& data, size_t startIndex, size_t length)
+{
     size_t subLength = length;
-    if (startIndex + subLength > data.size()) { subLength = data.size() - startIndex; } // guard against over-length
+    if (startIndex + subLength > data.size()) {
+        subLength = data.size() - startIndex;
+    } // guard against over-length
     return TW::data(data.data() + startIndex, subLength);
 }
 
-Data subData(const Data& data, size_t startIndex) {
+Data subData(const Data& data, size_t startIndex)
+{
     size_t subLength = data.size() - startIndex;
     return TW::data(data.data() + startIndex, subLength);
+}
+
+Data reverse(const Data& data)
+{
+    Data buffer(data);
+    std::reverse(buffer.begin(), buffer.end());
+    return buffer;
 }
 
 } // namespace TW

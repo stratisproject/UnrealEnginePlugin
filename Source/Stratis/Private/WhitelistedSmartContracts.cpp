@@ -68,23 +68,35 @@ FString UWhitelistedSmartContracts::GetRoyaltyNFTContractCode()
 // https://github.com/stratisproject/CirrusSmartContracts/tree/master/Mainnet/StandardToken/StandardToken
 const TCHAR* UWhitelistedSmartContracts::StandartTokenContractAddress(TEXT("bd99879e992ea9d655f59f4b0f0b3bec08a34439459568f38f534e45e719d283"));
 FString UWhitelistedSmartContracts::GetStandartTokenContractAddress()
+
 {
-    return UWhitelistedSmartContracts::StandartTokenContractAddress;
+    return UWhitelistedSmartContracts::ManualIdNFTContractAddress;
 }
-FString UWhitelistedSmartContracts::GetStandartTokenContractCode()
+FString UWhitelistedSmartContracts::GetManualIdNFTContractCode()
 {
-    return UWhitelistedSmartContracts::loadContractCodeByName(TEXT("StandartToken"));
+    return UWhitelistedSmartContracts::loadContractCodeByName(TEXT("ManualIdNFT"));
 }
 
-// https://github.com/stratisproject/CirrusSmartContracts/tree/master/Testnet/StandardToken/StandardToken
-const TCHAR* UWhitelistedSmartContracts::StandartToken256ContractAddress(TEXT("8e73efc3b4b6a4ef42b195e0343f2a2c82c8ac68d7912afc59fd7ae1ce3c16a4"));
-FString UWhitelistedSmartContracts::GetStandartToken256ContractAddress()
+// https://github.com/stratisproject/CirrusSmartContracts/tree/master/Mainnet/NonFungibleToken-Royalties
+const TCHAR* UWhitelistedSmartContracts::RoyaltyNFTContractAddress(TEXT("9be6ead8318288d3a992a8fcc077be49fb8e672237da56852fb02b3d3999c0df"));
+FString UWhitelistedSmartContracts::GetRoyaltyNFTContractAddress()
 {
-    return UWhitelistedSmartContracts::StandartToken256ContractAddress;
+    return UWhitelistedSmartContracts::RoyaltyNFTContractAddress;
 }
-FString UWhitelistedSmartContracts::GetStandartToken256ContractCode()
+FString UWhitelistedSmartContracts::GetRoyaltyNFTContractCode()
 {
-    return UWhitelistedSmartContracts::loadContractCodeByName(TEXT("StandartToken256"));
+    return UWhitelistedSmartContracts::loadContractCodeByName(TEXT("RoyaltyNFT"));
+}
+
+// https://github.com/stratisproject/CirrusSmartContracts/tree/master/Mainnet/StandardToken/StandardToken
+const TCHAR* UWhitelistedSmartContracts::StandardTokenContractAddress(TEXT("bd99879e992ea9d655f59f4b0f0b3bec08a34439459568f38f534e45e719d283"));
+FString UWhitelistedSmartContracts::GetStandardTokenContractAddress()
+{
+    return UWhitelistedSmartContracts::StandardTokenContractAddress;
+}
+FString UWhitelistedSmartContracts::GetStandardTokenContractCode()
+{
+    return UWhitelistedSmartContracts::loadContractCodeByName(TEXT("StandardToken"));
 }
 
 FString UWhitelistedSmartContracts::loadContractCodeByName(const TCHAR* contractName)

@@ -9,9 +9,11 @@
 #include "Core.h"
 
 #include "Models/ENetwork.h"
+#include "Models/FEmptyValue.h"
 #include "Models/FError.h"
 #include "Models/FLocalCallData.h"
 #include "Models/FNetwork.h"
+#include "Models/FOwnedNFTs.h"
 #include "Models/FReceiptResponse.h"
 #include "Models/FUInt64.h"
 #include "Models/FUTXO.h"
@@ -20,6 +22,7 @@
 #include "Transaction.h"
 #include "UnrealApi.h"
 
+
 #include "UStratisUnrealManager.generated.h"
 
 DECLARE_DYNAMIC_DELEGATE_OneParam(FGetBalanceResponseReceivedDelegate, const FUInt64&, money);
@@ -27,9 +30,12 @@ DECLARE_DYNAMIC_DELEGATE_OneParam(FGetCoinsResponseReceivedDelegate, const TArra
 DECLARE_DYNAMIC_DELEGATE_OneParam(FSendTransactionResponseReceivedDelegate, const FString&, transactionID);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FWaitTillReceiptAvailableResponseReceivedDelegate, const FReceiptResponse&, response);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FLocalCallResponseReceivedDelegate, const FString&, returnValue); // TODO: feature -  extend return type
+DECLARE_DYNAMIC_DELEGATE_OneParam(FWatchNFTContractDelegate, const FEmptyValue&, nothing);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FGetOwnedNFTsResponseReceivedDelegate, const FOwnedNFTs&, ownedNFTs);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FErrorReceivedDelegate, const FError&, error);
 
 class TransactionBuilder;
+
 
 UCLASS(BlueprintType, Blueprintable)
 class STRATIS_API UStratisUnrealManager : public UObject
@@ -151,6 +157,20 @@ public:
                        const FErrorReceivedDelegate& errorDelegate);
     void makeLocalCall(const FLocalCallData& localCallData,
                        TFunction<void(const TResult<FString>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
+    void watchNFTContract(const FString& address,
+                          const FWatchNFTContractDelegate& delegate,
+                          const FErrorReceivedDelegate& errorDelegate);
+    void watchNFTContract(const FString& address,
+                          TFunction<void(const TResult<FEmptyValue>&)> callback);
+
+    UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
+    void getOwnedNFTs(const FString& address,
+                      const FGetOwnedNFTsResponseReceivedDelegate& delegate,
+                      const FErrorReceivedDelegate& errorDelegate);
+    void getOwnedNFTs(const FString& address,
+                      TFunction<void(const TResult<FOwnedNFTs>&)> callback);
 
     UWorld* GetWorld() const override;
 
