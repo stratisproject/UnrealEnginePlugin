@@ -35,16 +35,18 @@ buildSendTransactionRequest(const FString& transactionHex)
     return request;
 }
 
-stratis::api::UnrealApi::Unity3dApiUnity3dLocalCallPostRequest
+stratis::api::UnrealApi::Unity3dLocalCallPostRequest
 buildLocalCallRequest(const FLocalCallData& data)
 {
-    stratis::api::UnrealApi::Unity3dApiUnity3dLocalCallPostRequest request;
+    stratis::api::UnrealApi::Unity3dLocalCallPostRequest request;
     stratis::api::LocalCallContractRequest requestData;
 
     requestData.ContractAddress = data.contractAddress;
     requestData.MethodName = data.methodName;
 
-    if (!data.amount.IsEmpty()) {
+    if (data.amount.IsEmpty()) {
+        requestData.Amount = "0";
+    } else {
         requestData.Amount = data.amount;
     }
 
@@ -73,11 +75,28 @@ buildLocalCallRequest(const FLocalCallData& data)
     return request;
 }
 
-stratis::api::UnrealApi::Unity3dApiUnity3dReceiptGetRequest
+stratis::api::UnrealApi::Unity3dReceiptGetRequest
 buildGetReceiptRequest(const FString& transactionID)
 {
-    stratis::api::UnrealApi::Unity3dApiUnity3dReceiptGetRequest request;
+    stratis::api::UnrealApi::Unity3dReceiptGetRequest request;
     request.TxHash = transactionID;
     return request;
 }
+
+stratis::api::UnrealApi::Unity3dWatchNftContractGetRequest
+buildWatchNFTContractRequest(const FString& address)
+{
+    stratis::api::UnrealApi::Unity3dWatchNftContractGetRequest request;
+    request.ContractAddress = address;
+    return request;
+}
+
+stratis::api::UnrealApi::Unity3dGetOwnedNftsGetRequest
+buildGetOwnedNFTsRequest(const FString& address)
+{
+    stratis::api::UnrealApi::Unity3dGetOwnedNftsGetRequest request;
+    request.OwnerAddress = address;
+    return request;
+}
+
 } // namespace request_builders

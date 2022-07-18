@@ -14,7 +14,13 @@ namespace TW::Bitcoin {
 class FeeCalculator
 {
 public:
-    virtual int64_t calculate(int64_t inputs, int64_t outputs, int64_t byteFee) const = 0;
+    virtual int64_t calculate(
+        int64_t inputs,
+        int64_t outputs,
+        int64_t byteFee,
+        int64_t gasPrice,
+        int64_t gasLimit) const = 0;
+
     virtual int64_t calculateSingleInput(int64_t byteFee) const = 0;
 };
 
@@ -28,7 +34,13 @@ public:
     LinearFeeCalculator(double bytesPerInput, double bytesPerOutput, double bytesBase)
         : bytesPerInput(bytesPerInput), bytesPerOutput(bytesPerOutput), bytesBase(bytesBase) {}
 
-    virtual int64_t calculate(int64_t inputs, int64_t outputs, int64_t byteFee) const override;
+    virtual int64_t calculate(
+        int64_t inputs,
+        int64_t outputs,
+        int64_t byteFee,
+        int64_t gasPrice,
+        int64_t gasLimit) const override;
+
     virtual int64_t calculateSingleInput(int64_t byteFee) const override;
 };
 
@@ -39,15 +51,38 @@ public:
     const int64_t fee;
     ConstantFeeCalculator(int64_t fee) : fee(fee) {}
 
-    virtual int64_t calculate(int64_t inputs, int64_t outputs, int64_t byteFee) const override { return fee; }
+    virtual int64_t calculate(
+        int64_t inputs,
+        int64_t outputs,
+        int64_t byteFee,
+        int64_t gasPrice,
+        int64_t gasLimit) const override { return fee; }
+
+    virtual int64_t calculateSingleInput(int64_t byteFee) const override { return 0; }
+};
+
+/// Smart contract fee calculator
+class SmartContractsFeeCalculator : public FeeCalculator
+{
+public:
+    const int64_t fee;
+    SmartContractsFeeCalculator(int64_t fee) : fee(fee) {}
+
+    virtual int64_t calculate(
+        int64_t inputs,
+        int64_t outputs,
+        int64_t byteFee,
+        int64_t gasPrice,
+        int64_t gasLimit) const override { return fee + (gasPrice * gasLimit); }
+
     virtual int64_t calculateSingleInput(int64_t byteFee) const override { return 0; }
 };
 
 /// Default Bitcoin transaction fee calculator, non-segwit.
-class DefaultFeeCalculator : public LinearFeeCalculator
+class DefaultBitcoinFeeCalculator : public LinearFeeCalculator
 {
 public:
-    DefaultFeeCalculator() : LinearFeeCalculator(148, 34, 10) {}
+    DefaultBitcoinFeeCalculator() : LinearFeeCalculator(148, 34, 10) {}
 };
 
 /// Bitcoin Segwit transaction fee calculator

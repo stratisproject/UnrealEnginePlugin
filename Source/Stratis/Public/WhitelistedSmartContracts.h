@@ -46,11 +46,11 @@ public:
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
     static FString GetRoyaltyNFTContractCode();
 
-    static const TCHAR* StandartTokenContractAddress;
+    static const TCHAR* StandardTokenContractAddress;
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
-    static FString GetStandartTokenContractAddress();
+    static FString GetStandardTokenContractAddress();
     UFUNCTION(BlueprintCallable, Category = "WhitelistedSmartContracts")
-    static FString GetStandartTokenContractCode();
+    static FString GetStandardTokenContractCode();
 
 private:
     static FString loadContractCodeByName(const TCHAR* contractName);

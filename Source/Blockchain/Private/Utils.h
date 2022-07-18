@@ -13,6 +13,7 @@
 #include "Data.h"
 #include "HexCoding.h"
 
+#include "AddressUtils.h"
 
 #include <string>
 #include <vector>
@@ -62,7 +63,7 @@ std::vector<uint8_t> hexAsBytes(const FString& value)
 
 std::vector<uint8_t> asBytes(const Address& value)
 {
-    return hexAsBytes(value.value());
+    return TW::addressToHex(TO_STD_STRING(value.value()));
 }
 
 std::vector<uint8_t> asBytes(const FString& value)

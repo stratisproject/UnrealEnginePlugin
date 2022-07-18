@@ -19,8 +19,12 @@ stratis::api::UnrealApi::Unity3dGetutxosforaddressGetRequest
 buildGetUtxosRequest(const FString& address);
 stratis::api::UnrealApi::Unity3dSendTransactionPostRequest
 buildSendTransactionRequest(const Transaction& address);
-stratis::api::UnrealApi::Unity3dApiUnity3dLocalCallPostRequest
+stratis::api::UnrealApi::Unity3dLocalCallPostRequest
 buildLocalCallRequest(const FLocalCallData& data);
-stratis::api::UnrealApi::Unity3dApiUnity3dReceiptGetRequest
+stratis::api::UnrealApi::Unity3dReceiptGetRequest
 buildGetReceiptRequest(const FString& transactionID);
+stratis::api::UnrealApi::Unity3dWatchNftContractGetRequest
+buildWatchNFTContractRequest(const FString& address);
+stratis::api::UnrealApi::Unity3dGetOwnedNftsGetRequest
+buildGetOwnedNFTsRequest(const FString& address);
 } // namespace request_builders

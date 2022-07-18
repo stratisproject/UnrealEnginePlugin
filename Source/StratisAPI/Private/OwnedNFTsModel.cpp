@@ -16,7 +16,7 @@
  * Do not edit the class manually.
  */
 
-#include "BalanceModel.h"
+#include "OwnedNFTsModel.h"
 
 #include "Helpers.h"
 #include "StratisAPIModule.h"
@@ -26,23 +26,27 @@
 namespace stratis {
 namespace api {
 
-void BalanceModel::WriteJson(JsonWriter &Writer) const {
-  Writer->WriteObjectStart();
-  Writer->WriteIdentifierPrefix(TEXT("balance"));
-  WriteJsonValue(Writer, Balance.GetValue());
-  Writer->WriteObjectEnd();
+void OwnedNFTsModel::WriteJson(JsonWriter& Writer) const
+{
+    Writer->WriteObjectStart();
+    if (OwnedIDsByContractAddress.IsSet()) {
+        Writer->WriteIdentifierPrefix(TEXT("OwnedIDsByContractAddress"));
+        WriteJsonValue(Writer, OwnedIDsByContractAddress.GetValue());
+    }
+    Writer->WriteObjectEnd();
 }
 
-bool BalanceModel::FromJson(const TSharedPtr<FJsonValue> &JsonValue) {
-  const TSharedPtr<FJsonObject> *Object;
-  if (!JsonValue->TryGetObject(Object))
-    return false;
+bool OwnedNFTsModel::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
+{
+    const TSharedPtr<FJsonObject>* Object;
+    if (!JsonValue->TryGetObject(Object))
+        return false;
 
-  bool ParseSuccess = true;
+    bool ParseSuccess = true;
 
-  ParseSuccess &= TryGetJsonValue(*Object, TEXT("balance"), Balance);
+    ParseSuccess &= TryGetJsonValue(*Object, TEXT("OwnedIDsByContractAddress"), OwnedIDsByContractAddress);
 
-  return ParseSuccess;
+    return ParseSuccess;
 }
 
 } // namespace api

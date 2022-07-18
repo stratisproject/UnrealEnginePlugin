@@ -154,7 +154,7 @@ Result<std::vector<Data>, SigningError> SignatureBuilder<Transaction>::signStep(
         return Result<std::vector<Data>, SigningError>::success({data});
     }
     if (script.isWitnessProgram()) {
-        // Error: Invalid sutput script
+        // Error: Invalid output script
         return Result<std::vector<Data>, SigningError>::failure("Error_script_output");
     }
     if (script.matchMultisig(keys, required)) {

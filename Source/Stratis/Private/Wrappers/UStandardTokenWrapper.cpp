@@ -4,40 +4,40 @@
 // terms governing use, modification, and redistribution, is contained in the
 // file LICENSE at the root of the source code distribution tree.
 
-#include "Wrappers/Testnet/UStandartTokenWrapper.h"
+#include "Wrappers/UStandardTokenWrapper.h"
 
 #include "USmartContractsParametersEncoder.h"
 #include "WhitelistedSmartContracts.h"
 
-UStandartTokenWrapper::UStandartTokenWrapper()
+UStandardTokenWrapper::UStandardTokenWrapper()
 {
 }
 
-UStandartTokenWrapper* UStandartTokenWrapper::createInstance(const FString& contractAddress, UStratisUnrealManager* manager, UObject* outer)
+UStandardTokenWrapper* UStandardTokenWrapper::createInstance(const FString& contractAddress, UStratisUnrealManager* manager, UObject* outer)
 {
-    UStandartTokenWrapper* wrapper = NewObject<UStandartTokenWrapper>(outer);
+    UStandardTokenWrapper* wrapper = NewObject<UStandardTokenWrapper>(outer);
     wrapper->stratisManager = manager;
     wrapper->contractAddress = contractAddress;
 
     return wrapper;
 }
 
-UStandartTokenWrapper* UStandartTokenWrapper::createDefaultInstance(UStratisUnrealManager* manager, UObject* outer)
+UStandardTokenWrapper* UStandardTokenWrapper::createDefaultInstance(UStratisUnrealManager* manager, UObject* outer)
 {
-    return UStandartTokenWrapper::createInstance(UWhitelistedSmartContracts::GetStandartTokenContractAddress, manager, outer);
+    return UStandardTokenWrapper::createInstance(UWhitelistedSmartContracts::GetStandardTokenContractAddress(), manager, outer);
 }
 
-UWorld* UStandartTokenWrapper::GetWorld() const
+UWorld* UStandardTokenWrapper::GetWorld() const
 {
     return GetOuter()->GetWorld();
 }
 
-void UStandartTokenWrapper::deployStandartToken(
+void UStandardTokenWrapper::deployStandardToken(
     const FUInt256& totalSupply, const FString& name, const FString& symbols,
-    uint8 decimals, const FDeployStandartToken256Delegate& delegate,
+    uint8 decimals, const FDeployStandardToken256Delegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
-    this->deployStandartToken(
+    this->deployStandardToken(
         totalSupply, name, symbols, decimals,
         [delegate, errorDelegate](const TResult<FString>& result) {
             if (result::isSuccessful(result))
@@ -47,7 +47,7 @@ void UStandartTokenWrapper::deployStandartToken(
         });
 }
 
-void UStandartTokenWrapper::deployStandartToken(
+void UStandardTokenWrapper::deployStandardToken(
     const FUInt256& totalSupply, const FString& name, const FString& symbols,
     uint8 decimals, TFunction<void(const TResult<FString>&)> callback)
 {
@@ -58,11 +58,11 @@ void UStandartTokenWrapper::deployStandartToken(
         USmartContractsParametersEncoder::encodeByte(decimals)};
 
     this->stratisManager->sendCreateContractTransaction(
-        UWhitelistedSmartContracts::GetStandartTokenContractCode(), parameters, 0,
+        UWhitelistedSmartContracts::GetStandardTokenContractCode(), parameters, 0,
         [callback](const TResult<FString>& result) { callback(result); });
 }
 
-void UStandartTokenWrapper::getSymbol(
+void UStandardTokenWrapper::getSymbol(
     const FSTGetSymbolDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
@@ -74,7 +74,7 @@ void UStandartTokenWrapper::getSymbol(
     });
 }
 
-void UStandartTokenWrapper::getSymbol(
+void UStandardTokenWrapper::getSymbol(
     TFunction<void(const TResult<FString>&)> callback)
 {
     FLocalCallData localCallData;
@@ -91,7 +91,7 @@ void UStandartTokenWrapper::getSymbol(
         });
 }
 
-void UStandartTokenWrapper::getName(
+void UStandardTokenWrapper::getName(
     const FSTGetNameDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
@@ -103,7 +103,7 @@ void UStandartTokenWrapper::getName(
     });
 }
 
-void UStandartTokenWrapper::getName(
+void UStandardTokenWrapper::getName(
     TFunction<void(const TResult<FString>&)> callback)
 {
     FLocalCallData localCallData;
@@ -120,7 +120,7 @@ void UStandartTokenWrapper::getName(
         });
 }
 
-void UStandartTokenWrapper::getTotalSupply(
+void UStandardTokenWrapper::getTotalSupply(
     const FSTGetTotalSupplyDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
@@ -133,7 +133,7 @@ void UStandartTokenWrapper::getTotalSupply(
         });
 }
 
-void UStandartTokenWrapper::getTotalSupply(
+void UStandardTokenWrapper::getTotalSupply(
     TFunction<void(const TResult<FUInt256>&)> callback)
 {
     FLocalCallData localCallData;
@@ -153,7 +153,7 @@ void UStandartTokenWrapper::getTotalSupply(
         });
 }
 
-void UStandartTokenWrapper::getDecimals(
+void UStandardTokenWrapper::getDecimals(
     const FSTGetDecimalsDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
@@ -165,7 +165,7 @@ void UStandartTokenWrapper::getDecimals(
     });
 }
 
-void UStandartTokenWrapper::getDecimals(
+void UStandardTokenWrapper::getDecimals(
     TFunction<void(const TResult<uint8>&)> callback)
 {
     FLocalCallData localCallData;
@@ -185,7 +185,7 @@ void UStandartTokenWrapper::getDecimals(
         });
 }
 
-void UStandartTokenWrapper::getBalance(
+void UStandardTokenWrapper::getBalance(
     const FString& address, const FSTGetBalanceDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
 {
@@ -198,7 +198,7 @@ void UStandartTokenWrapper::getBalance(
         });
 }
 
-void UStandartTokenWrapper::getBalance(
+void UStandardTokenWrapper::getBalance(
     const FString& address, TFunction<void(const TResult<FUInt256>&)> callback)
 {
     FLocalCallData localCallData;
@@ -220,7 +220,7 @@ void UStandartTokenWrapper::getBalance(
         });
 }
 
-void UStandartTokenWrapper::getAllowance(
+void UStandardTokenWrapper::getAllowance(
     const FString& ownerAddress, const FString& spenderAddress,
     const FSTGetAllowanceDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
@@ -235,7 +235,7 @@ void UStandartTokenWrapper::getAllowance(
                        });
 }
 
-void UStandartTokenWrapper::getAllowance(
+void UStandardTokenWrapper::getAllowance(
     const FString& ownerAddress, const FString& spenderAddress,
     TFunction<void(const TResult<FUInt256>&)> callback)
 {
@@ -258,7 +258,7 @@ void UStandartTokenWrapper::getAllowance(
                 }));
         });
 }
-void UStandartTokenWrapper::transferTo(
+void UStandardTokenWrapper::transferTo(
     const FString& address, const FUInt256& amount,
     const FSTTransferToDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
@@ -273,7 +273,7 @@ void UStandartTokenWrapper::transferTo(
                      });
 }
 
-void UStandartTokenWrapper::transferTo(
+void UStandardTokenWrapper::transferTo(
     const FString& address, const FUInt256& amount,
     TFunction<void(const TResult<FString>&)> callback)
 {
@@ -284,7 +284,7 @@ void UStandartTokenWrapper::transferTo(
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
-void UStandartTokenWrapper::transferFrom(
+void UStandardTokenWrapper::transferFrom(
     const FString& fromAddress, const FString& toAddress, const FUInt256& amount,
     const FSTTransferFromDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
@@ -299,7 +299,7 @@ void UStandartTokenWrapper::transferFrom(
                        });
 }
 
-void UStandartTokenWrapper::transferFrom(
+void UStandardTokenWrapper::transferFrom(
     const FString& fromAddress, const FString& toAddress, const FUInt256& amount,
     TFunction<void(const TResult<FString>&)> callback)
 {
@@ -311,7 +311,7 @@ void UStandartTokenWrapper::transferFrom(
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
-void UStandartTokenWrapper::approve(
+void UStandardTokenWrapper::approve(
     const FString& spender, const FUInt256& currentAmount, const FUInt256& amount,
     const FSTApproveDelegate& delegate,
     const FErrorReceivedDelegate& errorDelegate)
@@ -326,7 +326,7 @@ void UStandartTokenWrapper::approve(
                   });
 }
 
-void UStandartTokenWrapper::approve(
+void UStandardTokenWrapper::approve(
     const FString& spender, const FUInt256& currentAmount, const FUInt256& amount,
     TFunction<void(const TResult<FString>&)> callback)
 {

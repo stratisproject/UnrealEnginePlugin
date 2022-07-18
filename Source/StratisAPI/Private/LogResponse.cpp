@@ -30,19 +30,19 @@ void LogResponse::WriteJson(JsonWriter& Writer) const
 {
     Writer->WriteObjectStart();
     if (Address.IsSet()) {
-        Writer->WriteIdentifierPrefix(TEXT("address"));
+        Writer->WriteIdentifierPrefix(TEXT("Address"));
         WriteJsonValue(Writer, Address.GetValue());
     }
     if (Topics.IsSet()) {
-        Writer->WriteIdentifierPrefix(TEXT("topics"));
+        Writer->WriteIdentifierPrefix(TEXT("Topics"));
         WriteJsonValue(Writer, Topics.GetValue());
     }
     if (Data.IsSet()) {
-        Writer->WriteIdentifierPrefix(TEXT("data"));
+        Writer->WriteIdentifierPrefix(TEXT("Data"));
         WriteJsonValue(Writer, Data.GetValue());
     }
     if (Log.IsSet()) {
-        Writer->WriteIdentifierPrefix(TEXT("log"));
+        Writer->WriteIdentifierPrefix(TEXT("Log"));
         WriteJsonValue(Writer, Log.GetValue());
     }
     Writer->WriteObjectEnd();
@@ -56,10 +56,10 @@ bool LogResponse::FromJson(const TSharedPtr<FJsonValue>& JsonValue)
 
     bool ParseSuccess = true;
 
-    ParseSuccess &= TryGetJsonValue(*Object, TEXT("address"), Address);
-    ParseSuccess &= TryGetJsonValue(*Object, TEXT("topics"), Topics);
-    ParseSuccess &= TryGetJsonValue(*Object, TEXT("data"), Data);
-    ParseSuccess &= TryGetJsonValue(*Object, TEXT("log"), Log);
+    ParseSuccess &= TryGetJsonValue(*Object, TEXT("Address"), Address);
+    ParseSuccess &= TryGetJsonValue(*Object, TEXT("Topics"), Topics);
+    ParseSuccess &= TryGetJsonValue(*Object, TEXT("Data"), Data);
+    ParseSuccess &= TryGetJsonValue(*Object, TEXT("Log"), Log);
 
     return ParseSuccess;
 }

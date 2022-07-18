@@ -35,8 +35,8 @@ public:
     bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
     void WriteJson(JsonWriter& Writer) const final;
 
-    TOptional<TArray<uint8>> From;
-    TOptional<TArray<uint8>> To;
+    TOptional<FString> From;
+    TOptional<FString> To;
     TOptional<int64> Value;
 };
 

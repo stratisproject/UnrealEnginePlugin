@@ -33,6 +33,12 @@ public:
     // Transaction fee per byte
     Amount byteFee = 0;
 
+    // Transaction fee per gas unit
+    Amount gasPrice = 0;
+
+    // Max gas amount per transaction
+    Amount gasLimit = 0;
+
     // Recipient's address
     std::string toAddress;
 

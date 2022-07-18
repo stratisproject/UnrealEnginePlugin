@@ -29,7 +29,7 @@ public:
 
     BuiltTransaction createSendCoinsTransaction(const WalletUTXOs& utxos, std::string destinationAddress, uint64_t amount) const override;
     BuiltTransaction createOpReturnTransaction(const WalletUTXOs& utxos, const TW::Data& opReturnData) const override;
-    BuiltTransaction createCustomScriptTransaction(const WalletUTXOs& utxos, const TW::Data& customScript, uint64_t amount) const override;
+    BuiltTransaction createCustomScriptTransaction(const WalletUTXOs& utxos, const TW::Data& customScript, uint64_t amount, uint64_t gasPrice, uint64_t gasLimit) const override;
 
 private:
     TW::HDWallet hdWallet_;

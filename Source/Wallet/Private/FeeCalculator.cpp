@@ -12,7 +12,11 @@ using namespace TW;
 
 namespace TW::Bitcoin {
 
-int64_t LinearFeeCalculator::calculate(int64_t inputs, int64_t outputs, int64_t byteFee) const
+int64_t LinearFeeCalculator::calculate(int64_t inputs,
+                                       int64_t outputs,
+                                       int64_t byteFee,
+                                       int64_t gasPrice,
+                                       int64_t gasLimit) const
 {
     const auto txsize = int64_t(std::ceil(bytesPerInput * (double)inputs + bytesPerOutput * (double)outputs + bytesBase));
     return txsize * byteFee;
@@ -29,7 +33,7 @@ public:
     DecredFeeCalculator() : LinearFeeCalculator(166, 38, 12) {}
 };
 
-ConstantFeeCalculator defaultFeeCalculator(10000);
+SmartContractsFeeCalculator defaultFeeCalculator(10000);
 SegwitFeeCalculator segwitFeeCalculator;
 
 FeeCalculator& getFeeCalculator(TWCoinType coinType)

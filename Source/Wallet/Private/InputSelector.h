@@ -21,13 +21,13 @@ public:
     /// Selects unspent transactions to use given a target transaction value, using complete logic.
     ///
     /// \returns the list of indices of selected inputs, or an empty list if there are insufficient funds.
-    std::vector<TypeWithAmount> select(int64_t targetValue, int64_t byteFee, int64_t numOutputs = 2);
+    std::vector<TypeWithAmount> select(int64_t targetValue, int64_t byteFee, int64_t gasPrice, int64_t gasLimit, int64_t numOutputs = 2);
 
     /// Selects unspent transactions to use given a target transaction value;
     /// Simplified version suitable for large number of inputs
     ///
     /// \returns the list of indices of selected inputs, or an empty list if there are insufficient funds.
-    std::vector<TypeWithAmount> selectSimple(int64_t targetValue, int64_t byteFee, int64_t numOutputs = 2);
+    std::vector<TypeWithAmount> selectSimple(int64_t targetValue, int64_t byteFee, int64_t gasPrice, int64_t gasLimit, int64_t numOutputs = 2);
 
     /// Selects UTXOs for max amount; select all except those which would reduce output (dust). Return indIces.
     /// One output and no change is assumed.

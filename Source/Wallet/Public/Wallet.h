@@ -32,7 +32,7 @@ public:
 
     virtual BuiltTransaction createSendCoinsTransaction(const WalletUTXOs& utxos, std::string destinationAddress, uint64_t amount) const = 0;
     virtual BuiltTransaction createOpReturnTransaction(const WalletUTXOs& utxos, const TW::Data& opReturnData) const = 0;
-    virtual BuiltTransaction createCustomScriptTransaction(const WalletUTXOs& utxos, const TW::Data& customScript, uint64_t amount) const = 0;
+    virtual BuiltTransaction createCustomScriptTransaction(const WalletUTXOs& utxos, const TW::Data& customScript, uint64_t amount, uint64_t gasPrice, uint64_t gasLimit) const = 0;
 };
 
 WALLET_API TSharedPtr<Wallet> createWallet(const std::string& mnemonic, TWCoinType coinType);

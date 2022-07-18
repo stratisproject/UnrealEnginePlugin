@@ -59,7 +59,7 @@ UStratisUnrealManager* UStratisUnrealManager::createInstance(const FString& mnem
 FString UStratisUnrealManager::generateMnemonic()
 {
     if (transactionBuilder_.IsValid()) {
-        transactionBuilder_->generateMnemonic();
+        return transactionBuilder_->generateMnemonic();
     }
     return "";
 }
@@ -174,7 +174,7 @@ void UStratisUnrealManager::getCoins(
                     return;
                 }
 
-                const auto& itemsOptional = response.Content.UtxOs;
+                const auto& itemsOptional = response.Content.UTXOs;
                 if (itemsOptional.IsSet()) {
                     convert(utxos, itemsOptional.GetValue());
                 }
@@ -250,7 +250,7 @@ void UStratisUnrealManager::sendCoinsTransaction(
         Algo::Transform(utxos, mappedUTXOs, converters::convertUTXO);
 
         Transaction transaction(this->transactionBuilder_->buildSendTransaction(
-            destinationAddress, mappedUTXOs, (uint64)money, this->defaultFee));
+            destinationAddress, mappedUTXOs, (uint64)money));
 
         this->sendRawTransaction(
             transaction.transactionHex, transaction.transactionId,
@@ -308,7 +308,7 @@ void UStratisUnrealManager::sendOpReturnArrayTransaction(
         Algo::Transform(utxos, mappedUTXOs, converters::convertUTXO);
 
         Transaction transaction(this->transactionBuilder_->buildOpReturnTransaction(
-            opReturnData, mappedUTXOs, this->defaultFee));
+            opReturnData, mappedUTXOs));
 
         this->sendRawTransaction(transaction.transactionHex,
                                  transaction.transactionId,
@@ -356,7 +356,6 @@ void UStratisUnrealManager::sendCreateContractTransaction(
         Transaction transaction(
             this->transactionBuilder_->buildCreateContractTransaction(
                 contractCode, mappedUTXOs,
-                (this->gasPrice * this->gasLimit) + this->defaultFee,
                 this->gasPrice, this->gasLimit, (uint64)money,
                 MoveTemp(wrappedParameters)));
 
@@ -409,9 +408,11 @@ void UStratisUnrealManager::sendCallContractTransaction(
         Transaction transaction(
             this->transactionBuilder_->buildCallContractTransaction(
                 methodName, Address(contractAddress), mappedUTXOs,
-                (this->gasPrice * this->gasLimit) + this->defaultFee,
                 this->gasPrice, this->gasLimit, money,
                 MoveTemp(wrappedParameters)));
+
+        UE_LOG(LogTemp, Error, TEXT("HEX: %s"), *(transaction.transactionHex));
+        UE_LOG(LogTemp, Error, TEXT("TXID: %s"), *(transaction.transactionId));
 
         this->sendRawTransaction(transaction.transactionHex,
                                  transaction.transactionId,
@@ -441,30 +442,32 @@ void UStratisUnrealManager::waitTillReceiptAvailable(
     TFunction<void(const TResult<FReceiptResponse>&)> callback)
 {
     this->requestContextManager_
-        .createContext<API::FUnity3dApiUnity3dReceiptGetDelegate,
-                       API::Unity3dApiUnity3dReceiptGetRequest>(
+        .createContext<API::FUnity3dReceiptGetDelegate,
+                       API::Unity3dReceiptGetRequest>(
             request_builders::buildGetReceiptRequest(transactionID),
-            std::bind(&API::Unity3dApiUnity3dReceiptGet, unrealApi_.Get(),
+            std::bind(&API::Unity3dReceiptGet, unrealApi_.Get(),
                       std::placeholders::_1, std::placeholders::_2),
             [this, transactionID, callback](const auto& response) {
-                if (response.IsSuccessful()) {
-                    if (response.GetHttpResponseCode() ==
-                        EHttpResponseCodes::Type::NoContent) {
-                        auto& timerManager = this->GetWorld()->GetTimerManager();
-                        auto handle = FTimerHandle();
-                        timerManager.SetTimer(
-                            handle,
-                            [this, transactionID, callback]() {
-                                this->waitTillReceiptAvailable(transactionID, callback);
-                            },
-                            10.0f, false);
-                    } else {
-                        callback(result::ok(convert(response.Content)));
-                    }
+                EHttpResponseCodes::Type code = response.GetHttpResponseCode();
+                bool requiresRepeat = (code == EHttpResponseCodes::RequestTimeout) ||
+                                      (code == EHttpResponseCodes::Type::NoContent);
 
+                if (requiresRepeat) {
+                    auto& timerManager = this->GetWorld()->GetTimerManager();
+                    auto handle = FTimerHandle();
+                    timerManager.SetTimer(
+                        handle,
+                        [this, transactionID, callback]() {
+                            this->waitTillReceiptAvailable(transactionID, callback);
+                        },
+                        10.0f, false);
                 } else {
-                    callback(result::error<FReceiptResponse>(
-                        response.GetResponseString()));
+                    if (response.IsSuccessful()) {
+                        callback(result::ok(convert(response.Content)));
+                    } else {
+                        callback(result::error<FReceiptResponse>(
+                            response.GetResponseString()));
+                    }
                 }
             });
 }
@@ -488,10 +491,10 @@ void UStratisUnrealManager::makeLocalCall(
     TFunction<void(const TResult<FString>&)> callback)
 {
     this->requestContextManager_
-        .createContext<API::FUnity3dApiUnity3dLocalCallPostDelegate,
-                       API::Unity3dApiUnity3dLocalCallPostRequest>(
+        .createContext<API::FUnity3dLocalCallPostDelegate,
+                       API::Unity3dLocalCallPostRequest>(
             request_builders::buildLocalCallRequest(data),
-            std::bind(&API::Unity3dApiUnity3dLocalCallPost, unrealApi_.Get(),
+            std::bind(&API::Unity3dLocalCallPost, unrealApi_.Get(),
                       std::placeholders::_1, std::placeholders::_2),
             [callback](const auto& response) {
                 if (response.IsSuccessful()) {
@@ -499,6 +502,73 @@ void UStratisUnrealManager::makeLocalCall(
                         result::ok(response.Content._Return.GetValue()->AsString()));
                 } else {
                     callback(result::error<FString>(response.GetResponseString()));
+                }
+            });
+}
+
+void UStratisUnrealManager::watchNFTContract(const FString& address,
+                                             const FWatchNFTContractDelegate& delegate,
+                                             const FErrorReceivedDelegate& errorDelegate)
+{
+    this->watchNFTContract(
+        address, [delegate, errorDelegate](const TResult<FEmptyValue>& result) {
+            if (result::isSuccessful(result))
+                delegate.ExecuteIfBound(result::getValue(result));
+            else
+                errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+        });
+}
+
+void UStratisUnrealManager::watchNFTContract(const FString& address,
+                                             TFunction<void(const TResult<FEmptyValue>&)> callback)
+{
+    this->requestContextManager_
+        .createContext<API::FUnity3dWatchNftContractGetDelegate,
+                       API::Unity3dWatchNftContractGetRequest>(
+            request_builders::buildWatchNFTContractRequest(address),
+            std::bind(&API::Unity3dWatchNftContractGet, unrealApi_.Get(),
+                      std::placeholders::_1, std::placeholders::_2),
+            [callback](const auto& response) {
+                if (response.IsSuccessful()) {
+                    callback(
+                        result::ok(FEmptyValue()));
+                } else {
+                    callback(result::error<FEmptyValue>(response.GetResponseString()));
+                }
+            });
+}
+
+void UStratisUnrealManager::getOwnedNFTs(const FString& address,
+                                         const FGetOwnedNFTsResponseReceivedDelegate& delegate,
+                                         const FErrorReceivedDelegate& errorDelegate)
+{
+    this->getOwnedNFTs(
+        address, [delegate, errorDelegate](const TResult<FOwnedNFTs>& result) {
+            if (result::isSuccessful(result))
+                delegate.ExecuteIfBound(result::getValue(result));
+            else
+                errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
+        });
+}
+
+void UStratisUnrealManager::getOwnedNFTs(const FString& address,
+                                         TFunction<void(const TResult<FOwnedNFTs>&)> callback)
+{
+    this->requestContextManager_
+        .createContext<API::FUnity3dGetOwnedNftsGetDelegate,
+                       API::Unity3dGetOwnedNftsGetRequest>(
+            request_builders::buildGetOwnedNFTsRequest(address),
+            std::bind(&API::Unity3dGetOwnedNftsGet, unrealApi_.Get(),
+                      std::placeholders::_1, std::placeholders::_2),
+            [callback, this](const auto& response) {
+                if (response.IsSuccessful()) {
+                    FOwnedNFTs ownedNFTs;
+                    ownedNFTs.accessor = NewObject<UOwnedNFTAccessor>(this);
+                    ownedNFTs.accessor->Initialize(response.Content.OwnedIDsByContractAddress.GetValue());
+
+                    callback(result::ok(ownedNFTs));
+                } else {
+                    callback(result::error<FOwnedNFTs>(response.GetResponseString()));
                 }
             });
 }

@@ -16,7 +16,7 @@
 #include "UNFTWrapper.generated.h"
 
 USTRUCT(BlueprintType)
-struct STRATIS_API RoyaltyInfo {
+struct STRATIS_API FRoyaltyInfo {
     GENERATED_USTRUCT_BODY()
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -25,9 +25,9 @@ struct STRATIS_API RoyaltyInfo {
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     FUInt64 royaltyAmount;
 
-    RoyaltyInfo() {}
+    FRoyaltyInfo() {}
 
-    RoyaltyInfo(const FString& royaltyRecipientArg, const FUInt64& royaltyAmountArg)
+    FRoyaltyInfo(const FString& royaltyRecipientArg, const FUInt64& royaltyAmountArg)
         : royaltyRecipient(royaltyRecipientArg), royaltyAmount(royaltyAmountArg) {}
 };
 
@@ -52,7 +52,7 @@ DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTSafeMintDelegate, const FString&, transact
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTBurnDelegate, const FString&, transactionID);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTSetPendingOwnerDelegate, const FString&, transactionID);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTClaimOwnershipDelegate, const FString&, transactionID);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetRoyaltyInfoDelegate, const RoyaltyInfo&, royaltyInfo);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FNFTGetRoyaltyInfoDelegate, const FRoyaltyInfo&, royaltyInfo);
 
 UCLASS(BlueprintType, Blueprintable)
 class STRATIS_API UNFTWrapper : public UObject
@@ -149,7 +149,7 @@ public:
                       const FNFTGetBalanceOfDelegate& delegate,
                       const FErrorReceivedDelegate& errorDelegate);
     void getBalanceOf(const FString& address,
-                      TFunction<void(const TResult<uint64>&)> callback);
+                      TFunction<void(const TResult<FUInt256>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
     void getOwnerOf(const FUInt256& tokenID,
@@ -280,5 +280,5 @@ public:
     void royaltyInfo(const UInt64& salePrice,
                      const FNFTGetRoyaltyInfoDelegate& delegate,
                      const FErrorReceivedDelegate& errorDelegate);
-    void royaltyInfo(uint64 salePrice, TFunction<void(const TResult<RoyaltyInfo>&)> callback);
+    void royaltyInfo(uint64 salePrice, TFunction<void(const TResult<FRoyaltyInfo>&)> callback);
 };

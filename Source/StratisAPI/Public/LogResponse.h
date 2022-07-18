@@ -19,6 +19,7 @@
 #pragma once
 
 #include "BaseModel.h"
+#include "LogData.h"
 
 namespace stratis {
 namespace api {
@@ -38,7 +39,7 @@ public:
     TOptional<FString> Address;
     TOptional<TArray<FString>> Topics;
     TOptional<FString> Data;
-    TOptional<TSharedPtr<FJsonValue>> Log;
+    TOptional<LogData> Log;
 };
 
 } // namespace api

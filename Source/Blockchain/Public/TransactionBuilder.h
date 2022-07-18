@@ -27,20 +27,19 @@ public:
 
     virtual Transaction buildSendTransaction(const FString& destinationAddress,
                                              const TArray<UTXO>& utxos,
-                                             uint64 amount, uint64 fee) const = 0;
+                                             uint64 amount) const = 0;
 
     virtual Transaction buildOpReturnTransaction(const TArray<uint8>& data,
-                                                 const TArray<UTXO>& utxos,
-                                                 uint64 fee) const = 0;
+                                                 const TArray<UTXO>& utxos) const = 0;
 
     virtual Transaction buildCreateContractTransaction(
-        const FString& contractCode, const TArray<UTXO>& utxos, uint64 fee,
+        const FString& contractCode, const TArray<UTXO>& utxos,
         uint64 gasPrice, uint64 gasLimit, uint64 amount = 0,
         TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters = {}) const = 0;
 
     virtual Transaction buildCallContractTransaction(
         const FString& methodName, const Address& contractAddress,
-        const TArray<UTXO>& utxos, uint64 fee, uint64 gasPrice, uint64 gasLimit,
+        const TArray<UTXO>& utxos, uint64 gasPrice, uint64 gasLimit,
         uint64 amount = 0,
         TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters = {}) const = 0;
 };

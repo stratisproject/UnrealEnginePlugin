@@ -28,14 +28,14 @@ namespace stratis {
 namespace api {
 
 /*
- * LocalExecutionResult
+ * ILocalExecutionResult
  *
  *
  */
-class STRATISAPI_API LocalExecutionResult : public Model
+class STRATISAPI_API ILocalExecutionResult : public Model
 {
 public:
-    virtual ~LocalExecutionResult() {}
+    virtual ~ILocalExecutionResult() {}
     bool FromJson(const TSharedPtr<FJsonValue>& JsonValue) final;
     void WriteJson(JsonWriter& Writer) const final;
 
@@ -45,6 +45,7 @@ public:
     TOptional<ContractErrorMessage> ErrorMessage;
     TOptional<TSharedPtr<FJsonValue>> _Return;
     TOptional<TArray<Log>> Logs;
+    TOptional<TSharedPtr<FJsonObject>> StateRoot;
 };
 
 } // namespace api

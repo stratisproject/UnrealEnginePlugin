@@ -44,20 +44,20 @@ FString TransactionBuilderImpl::paymentAddress() const
 Transaction
 TransactionBuilderImpl::buildSendTransaction(const FString& destinationAddress,
                                              const TArray<UTXO>& utxos,
-                                             uint64 amount, uint64 fee) const
+                                             uint64 amount) const
 {
     return convertTransaction(
         this->wallet_->createSendCoinsTransaction(convertUTXOs(utxos), TO_STD_STRING(destinationAddress), amount));
 }
 
 Transaction TransactionBuilderImpl::buildOpReturnTransaction(
-    const TArray<uint8>& data, const TArray<UTXO>& utxos, uint64 fee) const
+    const TArray<uint8>& data, const TArray<UTXO>& utxos) const
 {
     return convertTransaction(this->wallet_->createOpReturnTransaction(convertUTXOs(utxos), utils::asData(data)));
 }
 
 Transaction TransactionBuilderImpl::buildCreateContractTransaction(
-    const FString& contractCode, const TArray<UTXO>& utxos, uint64 fee,
+    const FString& contractCode, const TArray<UTXO>& utxos,
     uint64 gasPrice, uint64 gasLimit, uint64 amount,
     TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters) const
 {
@@ -68,12 +68,12 @@ Transaction TransactionBuilderImpl::buildCreateContractTransaction(
              utils::asTArray(utils::hexAsBytes(contractCode)),
              MoveTemp(parameters)});
 
-    return convertTransaction(this->wallet_->createCustomScriptTransaction(convertUTXOs(utxos), scriptBytes, amount));
+    return convertTransaction(this->wallet_->createCustomScriptTransaction(convertUTXOs(utxos), scriptBytes, amount, gasPrice, gasLimit));
 }
 
 Transaction TransactionBuilderImpl::buildCallContractTransaction(
     const FString& methodName, const Address& contractAddress,
-    const TArray<UTXO>& utxos, uint64 fee, uint64 gasPrice, uint64 gasLimit,
+    const TArray<UTXO>& utxos, uint64 gasPrice, uint64 gasLimit,
     uint64 amount,
     TArray<TUniquePtr<smart_contracts::method_parameter::MethodParameter>>&& parameters) const
 {
@@ -85,7 +85,7 @@ Transaction TransactionBuilderImpl::buildCallContractTransaction(
              methodName,
              MoveTemp(parameters)});
 
-    return convertTransaction(this->wallet_->createCustomScriptTransaction(convertUTXOs(utxos), scriptBytes, amount));
+    return convertTransaction(this->wallet_->createCustomScriptTransaction(convertUTXOs(utxos), scriptBytes, amount, gasPrice, gasLimit));
 }
 
 TWCoinType TransactionBuilderImpl::coinType(StratisNetwork network)

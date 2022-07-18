@@ -33,9 +33,9 @@ std::optional<TransactionOutput> TransactionBuilder::prepareOutputWithScript(std
 
 
 /// Estimate encoded size by simple formula
-int64_t estimateSimpleFee(const FeeCalculator& feeCalculator, const TransactionPlan& plan, int outputSize, int64_t byteFee)
+int64_t estimateSimpleFee(const FeeCalculator& feeCalculator, const TransactionPlan& plan, int outputSize, int64_t byteFee, int64_t gasPrice, int64_t gasLimit)
 {
-    return feeCalculator.calculate(plan.utxos.size(), outputSize, byteFee);
+    return feeCalculator.calculate(plan.utxos.size(), outputSize, byteFee, gasPrice, gasLimit);
 }
 
 /// Estimate encoded size by invoking sign(sizeOnly), get actual size
@@ -44,7 +44,7 @@ int64_t estimateSegwitFee(const FeeCalculator& feeCalculator, const TransactionP
     TWPurpose coinPurpose = TW::purpose(static_cast<TWCoinType>(input.coinType));
     if (coinPurpose != TWPurposeBIP84) {
         // not segwit, return default simple estimate
-        return estimateSimpleFee(feeCalculator, plan, outputSize, input.byteFee);
+        return estimateSimpleFee(feeCalculator, plan, outputSize, input.byteFee, input.gasPrice, input.gasLimit);
     }
 
     // duplicate input, with the current plan
@@ -54,7 +54,7 @@ int64_t estimateSegwitFee(const FeeCalculator& feeCalculator, const TransactionP
     auto result = TransactionSigner<Transaction, TransactionBuilder>::sign(inputWithPlan, true);
     if (!result) {
         // signing failed; return default simple estimate
-        return estimateSimpleFee(feeCalculator, plan, outputSize, input.byteFee);
+        return estimateSimpleFee(feeCalculator, plan, outputSize, input.byteFee, input.gasPrice, input.gasLimit);
     }
 
     // Obtain the encoded size
@@ -98,7 +98,7 @@ TransactionPlan TransactionBuilder::plan(const SigningInput& input)
     }
 
     bool maxAmount = input.useMaxAmount;
-    if (input.amount == 0 && !maxAmount) {
+    if (input.amount == 0 && !maxAmount && plan.outputCustomScript.empty() && plan.outputOpReturn.size() == 0) {
         plan.error = SigningError("Error_zero_amount_requested");
     } else if (input.utxos.empty()) {
         plan.error = SigningError("Error_missing_input_utxos");
@@ -116,15 +116,24 @@ TransactionPlan TransactionBuilder::plan(const SigningInput& input)
             maxAmount = true;
         }
 
-        auto extraOutputs = extraOutputCount(input);
+        // TODO: Fix for case with multiple output
+        auto extraOutputs = 0; // extraOutputCount(input);
         auto output_size = 2;
         UTXOs selectedInputs;
         if (!maxAmount) {
             output_size = 2 + extraOutputs; // output + change
             if (input.utxos.size() <= SimpleModeLimit && input.utxos.size() <= MaxUtxosHardLimit) {
-                selectedInputs = inputSelector.select(plan.amount, input.byteFee, output_size);
+                selectedInputs = inputSelector.select(plan.amount,
+                                                      input.byteFee,
+                                                      input.gasPrice,
+                                                      input.gasLimit,
+                                                      output_size);
             } else {
-                selectedInputs = inputSelector.selectSimple(plan.amount, input.byteFee, output_size);
+                selectedInputs = inputSelector.selectSimple(plan.amount,
+                                                            input.byteFee,
+                                                            input.gasPrice,
+                                                            input.gasLimit,
+                                                            output_size);
             }
         } else {
             output_size = 1 + extraOutputs; // output, no change
