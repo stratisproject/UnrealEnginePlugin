@@ -5,6 +5,9 @@ Official Unreal Engine plugin for Stratis Blockchain Platform.
 
 This plugin provides functionallity for creating a wallet, building different types of transactions and interacting with [smart contracts](https://academy.stratisplatform.com/Architecture%20Reference/SmartContracts/smartcontracts-introduction.html).
 
+### UE5 support
+In order to build project using Unreal Engine 5.0+, use a branch `support/ue5`.
+
 ### Modules reference
 * **Blockchain** - contains core logic for building wallet & transactions. Usualy, you don't need to interact with it directly.
 * **BlockchainTests** - tests for Blockchain module, nothing interesting.
