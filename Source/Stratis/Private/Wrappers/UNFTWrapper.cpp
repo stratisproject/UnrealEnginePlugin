@@ -772,44 +772,44 @@ void UNFTWrapper::royaltyInfo(const UInt64& salePrice,
 
 void UNFTWrapper::royaltyInfo(uint64 salePrice, TFunction<void(const TResult<FRoyaltyInfo>&)> callback)
 {
-    // FLocalCallData localCallData;
-    // localCallData.gasPrice = 10000;
-    // localCallData.gasLimit = 250000;
-    // localCallData.amount = 0;
-    // localCallData.contractAddress = this->contractAddress;
-    // localCallData.methodName = TEXT("RoyaltyInfo");
-    // localCallData.sender = stratisManager->getAddress();
-    // localCallData.parameters = {
-    //     USmartContractsParametersEncoder::encodeUInt256(TEXT("0")),
-    //     USmartContractsParametersEncoder::encodeULong(salePrice)};
+    FLocalCallData localCallData;
+    localCallData.gasPrice = 10000;
+    localCallData.gasLimit = 250000;
+    localCallData.amount = 0;
+    localCallData.contractAddress = this->contractAddress;
+    localCallData.methodName = TEXT("RoyaltyInfo");
+    localCallData.sender = stratisManager->getAddress();
+    localCallData.parameters = {
+        USmartContractsParametersEncoder::encodeUInt256(TEXT("0")),
+        USmartContractsParametersEncoder::encodeULong(salePrice)};
 
-    // this->stratisManager->makeLocalCall(
-    //     localCallData,
-    //     [callback](const TResult<FString>& result) {
-    //         callback(result::transform<FRoyaltyInfo>(result, [](const FString& value) -> TResult<FRoyaltyInfo> {
-    //             TSharedPtr<FJsonValue> JsonValue;
-    //             auto Reader = TJsonReaderFactory<>::Create(value);
+    this->stratisManager->makeLocalCall(
+        localCallData,
+        [callback](const TResult<FString>& result) {
+            callback(result::transform<FString, FRoyaltyInfo>(result, [](const FString& value) {
+                TSharedPtr<FJsonValue> JsonValue;
+                auto Reader = TJsonReaderFactory<>::Create(value);
 
-    //             if (FJsonSerializer::Deserialize(Reader, JsonValue) && JsonValue.IsValid()) {
-    //                 const TArray<TSharedPtr<FJsonValue>>* JsonArray;
-    //                 if (!JsonValue->TryGetArray(JsonArray))
-    //                     return result::error<FRoyaltyInfo>(TError(TEXT("JSON is invalid.")));
+                if (FJsonSerializer::Deserialize(Reader, JsonValue) && JsonValue.IsValid()) {
+                    const TArray<TSharedPtr<FJsonValue>>* JsonArray;
+                    if (!JsonValue->TryGetArray(JsonArray))
+                        return result::error<FRoyaltyInfo>(TError(TEXT("JSON is invalid.")));
 
-    //                 bool ParseSuccess = true;
+                    bool ParseSuccess = true;
 
-    //                 FString royaltyRecipient;
-    //                 uint64 royaltyAmount;
+                    FString royaltyRecipient;
+                    uint64 royaltyAmount;
 
-    //                 ParseSuccess &= ((*JsonArray)[0])->TryGetString(royaltyRecipient);
-    //                 ParseSuccess &= ((*JsonArray)[1])->TryGetNumber(royaltyAmount);
+                    ParseSuccess &= ((*JsonArray)[0])->TryGetString(royaltyRecipient);
+                    ParseSuccess &= ((*JsonArray)[1])->TryGetNumber(royaltyAmount);
 
-    //                 if (ParseSuccess)
-    //                     return result::ok<FRoyaltyInfo>(FRoyaltyInfo{royaltyRecipient, royaltyAmount});
-    //                 else
-    //                     return result::error<FRoyaltyInfo>(TError(TEXT("JSON is invalid.")));
-    //             } else {
-    //                 return result::error<FRoyaltyInfo>(TError(TEXT("JSON is invalid.")));
-    //             }
-    //         }));
-    //     });
+                    if (ParseSuccess)
+                        return result::ok<FRoyaltyInfo>(FRoyaltyInfo{royaltyRecipient, royaltyAmount});
+                    else
+                        return result::error<FRoyaltyInfo>(TError(TEXT("JSON is invalid.")));
+                } else {
+                    return result::error<FRoyaltyInfo>(TError(TEXT("JSON is invalid.")));
+                }
+            }));
+        });
 }
