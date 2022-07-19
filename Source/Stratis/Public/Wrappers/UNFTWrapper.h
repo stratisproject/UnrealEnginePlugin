@@ -282,7 +282,7 @@ public:
     void claimOwnership(TFunction<void(const TResult<FString>&)> callback);
 
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
-    void royaltyInfo(const UInt64& salePrice,
+    void royaltyInfo(const FUInt64& salePrice,
                      const FNFTGetRoyaltyInfoDelegate& delegate,
                      const FErrorReceivedDelegate& errorDelegate);
     void royaltyInfo(uint64 salePrice, TFunction<void(const TResult<FRoyaltyInfo>&)> callback);

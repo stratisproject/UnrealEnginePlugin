@@ -756,7 +756,7 @@ void UNFTWrapper::setPendingOwner(const FString& newOwner, TFunction<void(const 
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
-void UNFTWrapper::royaltyInfo(const UInt64& salePrice,
+void UNFTWrapper::royaltyInfo(const FUInt64& salePrice,
                               const FNFTGetRoyaltyInfoDelegate& delegate,
                               const FErrorReceivedDelegate& errorDelegate)
 {
