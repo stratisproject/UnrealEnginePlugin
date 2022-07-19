@@ -10,6 +10,7 @@
 
 #include "Models/FLargeUInt.h"
 #include "Models/FUInt64.h"
+#include "TResult.h"
 #include "UStratisUnrealManager.h"
 #include "WhitelistedSmartContracts.h"
 

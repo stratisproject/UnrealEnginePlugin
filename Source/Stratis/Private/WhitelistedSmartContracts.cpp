@@ -66,29 +66,6 @@ FString UWhitelistedSmartContracts::GetRoyaltyNFTContractCode()
 }
 
 // https://github.com/stratisproject/CirrusSmartContracts/tree/master/Mainnet/StandardToken/StandardToken
-const TCHAR* UWhitelistedSmartContracts::StandartTokenContractAddress(TEXT("bd99879e992ea9d655f59f4b0f0b3bec08a34439459568f38f534e45e719d283"));
-FString UWhitelistedSmartContracts::GetStandartTokenContractAddress()
-
-{
-    return UWhitelistedSmartContracts::ManualIdNFTContractAddress;
-}
-FString UWhitelistedSmartContracts::GetManualIdNFTContractCode()
-{
-    return UWhitelistedSmartContracts::loadContractCodeByName(TEXT("ManualIdNFT"));
-}
-
-// https://github.com/stratisproject/CirrusSmartContracts/tree/master/Mainnet/NonFungibleToken-Royalties
-const TCHAR* UWhitelistedSmartContracts::RoyaltyNFTContractAddress(TEXT("9be6ead8318288d3a992a8fcc077be49fb8e672237da56852fb02b3d3999c0df"));
-FString UWhitelistedSmartContracts::GetRoyaltyNFTContractAddress()
-{
-    return UWhitelistedSmartContracts::RoyaltyNFTContractAddress;
-}
-FString UWhitelistedSmartContracts::GetRoyaltyNFTContractCode()
-{
-    return UWhitelistedSmartContracts::loadContractCodeByName(TEXT("RoyaltyNFT"));
-}
-
-// https://github.com/stratisproject/CirrusSmartContracts/tree/master/Mainnet/StandardToken/StandardToken
 const TCHAR* UWhitelistedSmartContracts::StandardTokenContractAddress(TEXT("bd99879e992ea9d655f59f4b0f0b3bec08a34439459568f38f534e45e719d283"));
 FString UWhitelistedSmartContracts::GetStandardTokenContractAddress()
 {

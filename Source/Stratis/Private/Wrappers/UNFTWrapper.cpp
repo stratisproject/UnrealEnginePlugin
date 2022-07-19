@@ -580,15 +580,6 @@ void UNFTWrapper::mint(const FString& toAddress,
                        const FNFTMintDelegate& delegate,
                        const FErrorReceivedDelegate& errorDelegate)
 {
-<<<<<<< HEAD
-    this->mint(toAddress, metadataUri,
-               [delegate, errorDelegate](const TResult<FString>& result) {
-                   if (result::isSuccessful(result))
-                       delegate.ExecuteIfBound(result::getValue(result));
-                   else
-                       errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
-               });
-=======
     this->mint(
         toAddress, metadataUri,
         [delegate, errorDelegate](const TResult<FString>& result) {
@@ -597,17 +588,11 @@ void UNFTWrapper::mint(const FString& toAddress,
             else
                 errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
         });
->>>>>>> demo
 }
 
 void UNFTWrapper::mint(const FString& toAddress,
                        const FString& metadataUri,
-<<<<<<< HEAD
                        TFunction<void(const TResult<FString>&)> callback)
-=======
-                       TFunction<void(const TResult<FString>&)>
-                           callback)
->>>>>>> demo
 {
     this->stratisManager->sendCallContractTransaction(
         this->contractAddress, TEXT("Mint"),
@@ -646,7 +631,6 @@ void UNFTWrapper::safeMint(const FString& toAddress,
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
-<<<<<<< HEAD
 void UNFTWrapper::mintWithManualID(const FString& toAddress,
                                    const FUInt256& tokenID,
                                    const FString& metadataUri,
@@ -708,8 +692,6 @@ void UNFTWrapper::safeMintWithManualID(const FString& toAddress,
         0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
-=======
->>>>>>> demo
 void UNFTWrapper::burn(const FUInt256& tokenID,
                        const FNFTSafeMintDelegate& delegate,
                        const FErrorReceivedDelegate& errorDelegate)
@@ -732,13 +714,8 @@ void UNFTWrapper::burn(const FUInt256& tokenID,
         [callback](const TResult<FString>& result) { callback(result); });
 }
 
-<<<<<<< HEAD
-void claimOwnership(const FNFTClaimOwnershipDelegate& delegate,
-                    const FErrorReceivedDelegate& errorDelegate)
-=======
 void UNFTWrapper::claimOwnership(const FNFTClaimOwnershipDelegate& delegate,
                                  const FErrorReceivedDelegate& errorDelegate)
->>>>>>> demo
 {
     this->claimOwnership(
         [delegate, errorDelegate](const TResult<FString>& result) {
@@ -749,91 +726,12 @@ void UNFTWrapper::claimOwnership(const FNFTClaimOwnershipDelegate& delegate,
         });
 }
 
-<<<<<<< HEAD
-void claimOwnership(TFunction<void(const TResult<FString>&)> callback)
-=======
 void UNFTWrapper::claimOwnership(TFunction<void(const TResult<FString>&)> callback)
->>>>>>> demo
 {
     this->stratisManager->sendCallContractTransaction(
         this->contractAddress, TEXT("ClaimOwnership"),
         {}, 0,
         [callback](const TResult<FString>& result) { callback(result); });
-}
-
-<<<<<<< HEAD
-void royaltyInfo(const UInt64& salePrice,
-                 const FNFTGetRoyaltyInfoDelegate& delegate,
-                 const FErrorReceivedDelegate& errorDelegate)
-{
-    this->royaltyInfo(
-        salePrice,
-        [delegate, errorDelegate](const TResult<RoyaltyInfo>& result) {
-=======
-void UNFTWrapper::mintWithManualID(const FString& toAddress,
-                                   const FUInt256& tokenID,
-                                   const FString& metadataUri,
-                                   const FNFTMintDelegate& delegate,
-                                   const FErrorReceivedDelegate& errorDelegate)
-{
-    this->mintWithManualID(
-        toAddress, tokenID, metadataUri,
-        [delegate, errorDelegate](const TResult<FString>& result) {
->>>>>>> demo
-            if (result::isSuccessful(result))
-                delegate.ExecuteIfBound(result::getValue(result));
-            else
-                errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
-        });
-}
-
-<<<<<<< HEAD
-void royaltyInfo(uint64 salePrice, TFunction<void(const TResult<RoyaltyInfo>&)> callback)
-=======
-void UNFTWrapper::mintWithManualID(const FString& toAddress,
-                                   const FUInt256& tokenID,
-                                   const FString& metadataUri,
-                                   TFunction<void(const TResult<FString>&)> callback)
-{
-    this->stratisManager->sendCallContractTransaction(
-        this->contractAddress, TEXT("Mint"),
-        {USmartContractsParametersEncoder::encodeAddress(toAddress),
-         USmartContractsParametersEncoder::encodeUInt256(tokenID.value),
-         USmartContractsParametersEncoder::encodeString(metadataUri)},
-        0,
-        [callback](const TResult<FString>& result) { callback(result); });
-}
-
-void UNFTWrapper::safeMintWithManualID(const FString& toAddress,
-                                       const FUInt256& tokenID,
-                                       const FString& metadataUri,
-                                       const TArray<uint8>& data,
-                                       const FNFTSafeMintDelegate& delegate,
-                                       const FErrorReceivedDelegate& errorDelegate)
-{
-    this->safeMintWithManualID(
-        toAddress, tokenID, metadataUri, data,
-        [delegate, errorDelegate](const TResult<FString>& result) {
-            if (result::isSuccessful(result))
-                delegate.ExecuteIfBound(result::getValue(result));
-            else
-                errorDelegate.ExecuteIfBound(result::getErrorMessage(result));
-        });
-}
-
-void UNFTWrapper::safeMintWithManualID(const FString& toAddress,
-                                       const FUInt256& tokenID,
-                                       const FString& metadataUri,
-                                       const TArray<uint8>& data,
-                                       TFunction<void(const TResult<FString>&)> callback)
-{
-    this->stratisManager->sendCallContractTransaction(
-        this->contractAddress, TEXT("SafeMint"),
-        {USmartContractsParametersEncoder::encodeAddress(toAddress),
-         USmartContractsParametersEncoder::encodeUInt256(tokenID.value),
-         USmartContractsParametersEncoder::encodeString(metadataUri),
-         USmartContractsParametersEncoder::encodeByteArray(data)},
-        0, [callback](const TResult<FString>& result) { callback(result); });
 }
 
 void UNFTWrapper::setPendingOwner(const FString& newOwner,
@@ -873,53 +771,45 @@ void UNFTWrapper::royaltyInfo(const UInt64& salePrice,
 }
 
 void UNFTWrapper::royaltyInfo(uint64 salePrice, TFunction<void(const TResult<FRoyaltyInfo>&)> callback)
->>>>>>> demo
 {
-    FLocalCallData localCallData;
-    localCallData.gasPrice = 10000;
-    localCallData.gasLimit = 250000;
-    localCallData.amount = 0;
-    localCallData.contractAddress = this->contractAddress;
-    localCallData.methodName = TEXT("RoyaltyInfo");
-    localCallData.sender = stratisManager->getAddress();
-<<<<<<< HEAD
-    localCallData.parameters = {
-        USmartContractsParametersEncoder::encodeUInt256(TEXT("0")),
-        USmartContractsParametersEncoder::encodeULong(salePrice)};
-=======
->>>>>>> demo
+    // FLocalCallData localCallData;
+    // localCallData.gasPrice = 10000;
+    // localCallData.gasLimit = 250000;
+    // localCallData.amount = 0;
+    // localCallData.contractAddress = this->contractAddress;
+    // localCallData.methodName = TEXT("RoyaltyInfo");
+    // localCallData.sender = stratisManager->getAddress();
+    // localCallData.parameters = {
+    //     USmartContractsParametersEncoder::encodeUInt256(TEXT("0")),
+    //     USmartContractsParametersEncoder::encodeULong(salePrice)};
 
-    this->stratisManager->makeLocalCall(
-        localCallData,
-        [callback](const TResult<FString>& result) {
-<<<<<<< HEAD
-            callback(TResult::transform(result), [](const FString& value) {
-                TSharedPtr<FJsonValue> JsonValue;
-                auto Reader = TJsonReaderFactory<>::Create(value);
+    // this->stratisManager->makeLocalCall(
+    //     localCallData,
+    //     [callback](const TResult<FString>& result) {
+    //         callback(result::transform<FRoyaltyInfo>(result, [](const FString& value) -> TResult<FRoyaltyInfo> {
+    //             TSharedPtr<FJsonValue> JsonValue;
+    //             auto Reader = TJsonReaderFactory<>::Create(value);
 
-                if (FJsonSerializer::Deserialize(Reader, JsonValue) && JsonValue.IsValid()) {
-                    const TArray<TSharedPtr<FJsonValue>>* JsonArray;
-                    if (!JsonValue->TryGetArray(JsonArray))
-                        return TResult::error(TEXT("JSON is invalid."));
+    //             if (FJsonSerializer::Deserialize(Reader, JsonValue) && JsonValue.IsValid()) {
+    //                 const TArray<TSharedPtr<FJsonValue>>* JsonArray;
+    //                 if (!JsonValue->TryGetArray(JsonArray))
+    //                     return result::error<FRoyaltyInfo>(TError(TEXT("JSON is invalid.")));
 
-                    bool ParseSuccess = true;
+    //                 bool ParseSuccess = true;
 
-                    FString royaltyRecipient;
-                    uint64 royaltyAmount;
+    //                 FString royaltyRecipient;
+    //                 uint64 royaltyAmount;
 
-                    ParseSuccess &= ((*JsonArray)[0])->TryGetString(royaltyRecipient);
-                    ParseSuccess &= ((*JsonArray)[1])->TryGetNumber(royaltyAmount);
+    //                 ParseSuccess &= ((*JsonArray)[0])->TryGetString(royaltyRecipient);
+    //                 ParseSuccess &= ((*JsonArray)[1])->TryGetNumber(royaltyAmount);
 
-                    if (ParseSuccess)
-                        return TResult::ok(RoyaltyInfo{royaltyRecipient, royaltyAmount});
-                    else
-                        return TResult::error(TEXT("JSON is invalid."))
-                } else {
-                    return TResult::error(TEXT("JSON is invalid."))
-                }
-            });
-=======
-            // callback(result);
->>>>>>> demo
-        });
+    //                 if (ParseSuccess)
+    //                     return result::ok<FRoyaltyInfo>(FRoyaltyInfo{royaltyRecipient, royaltyAmount});
+    //                 else
+    //                     return result::error<FRoyaltyInfo>(TError(TEXT("JSON is invalid.")));
+    //             } else {
+    //                 return result::error<FRoyaltyInfo>(TError(TEXT("JSON is invalid.")));
+    //             }
+    //         }));
+    //     });
 }
