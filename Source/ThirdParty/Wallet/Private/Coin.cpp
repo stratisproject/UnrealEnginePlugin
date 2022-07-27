@@ -11,6 +11,10 @@
 using namespace TW;
 using namespace std;
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4100)
+#endif
 bool TW::validateAddress(TWCoinType coin, const std::string& string)
 {
     auto p2pkh = TW::p2pkhPrefix(coin);
@@ -134,3 +138,7 @@ Hash::Hasher TW::base58Hasher(TWCoinType coin)
     // hardcoded value for Bitcoin/Stratis
     return Hash::sha256d;
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif

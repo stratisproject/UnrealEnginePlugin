@@ -18,10 +18,17 @@ namespace TW::Bitcoin {
 static const uint32_t SigHashMask = 0x1f;
 
 // Return the default HashType for the given coin, such as TWBitcoinSigHashTypeAll.
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4100)
+#endif
 inline enum TWBitcoinSigHashType hashTypeForCoin(enum TWCoinType coinType)
 {
     return TWBitcoinSigHashTypeAll;
 }
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 inline bool hashTypeIsSingle(enum TWBitcoinSigHashType type) { return ((uint32_t)type & SigHashMask) == (uint32_t)TWBitcoinSigHashTypeSingle; }
 

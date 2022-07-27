@@ -76,7 +76,7 @@ Data AESCBCDecrypt(const Data& key, const Data& data, Data& iv, TWAESPaddingMode
     if (paddingMode == TWAESPaddingModePKCS7 && result.size() > 0) {
         // need to remove padding
         assert(result.size() > 0);
-        const byte paddingSize = result[result.size() - 1];
+        const TW::byte paddingSize = result[result.size() - 1];
         if (paddingSize <= result.size()) {
             // remove last paddingSize number of bytes
             const size_t unpaddedSize = result.size() - paddingSize;

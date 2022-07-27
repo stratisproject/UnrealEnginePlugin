@@ -267,7 +267,10 @@ Data PrivateKey::sign(const Data& digest, TWCurve curve, int (*canonicalChecker)
     result[0] += 31;
     return result;
 }
-
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4100)
+#endif
 Data PrivateKey::signAsDER(const Data& digest, TWCurve curve) const
 {
     Data sig(64);
@@ -284,7 +287,9 @@ Data PrivateKey::signAsDER(const Data& digest, TWCurve curve) const
     std::copy(resultBytes.begin(), resultBytes.begin() + sig_size, std::back_inserter(result));
     return result;
 }
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 Data PrivateKey::signSchnorr(const Data& message, TWCurve curve) const
 {
     bool success = false;

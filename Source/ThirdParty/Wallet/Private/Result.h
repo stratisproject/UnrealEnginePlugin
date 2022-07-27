@@ -149,9 +149,15 @@ struct Result<void, E> {
     std::optional<E> error_;
 
   public:
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4100)
+#endif
     /// Initializes a success result with a payload.
     Result(Types::Success<void> payload) : success_(true), error_() {}
-
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
     /// Initializes a failure result.
     Result(Types::Failure<E> error) : success_(false), error_(error.val) {}
 

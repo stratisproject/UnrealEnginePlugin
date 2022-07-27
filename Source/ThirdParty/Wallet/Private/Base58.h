@@ -56,7 +56,7 @@ class Base58 {
     }
 
     /// Encodes data as a base 58 string with a checksum.
-    std::string encodeCheck(const byte* pbegin, const byte* pend, Hash::Hasher hasher = Hash::sha256d) const;
+    std::string encodeCheck(const TW::byte* pbegin, const TW::byte* pend, Hash::Hasher hasher = Hash::sha256d) const;
 
     /// Encodes data as a base 58 string.
     template <typename T>
@@ -65,7 +65,7 @@ class Base58 {
     }
 
     /// Encodes data as a base 58 string.
-    std::string encode(const byte* pbegin, const byte* pend) const;
+    std::string encode(const TW::byte* pbegin, const TW::byte* pend) const;
 };
 
 } // namespace TW

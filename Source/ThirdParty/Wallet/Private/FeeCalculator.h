@@ -10,6 +10,11 @@
 
 namespace TW::Bitcoin {
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4100)
+#endif
+
 /// Interface for transaction fee calculator.
 class FeeCalculator
 {
@@ -94,5 +99,9 @@ public:
 
 /// Return the fee calculator for the given coin.
 FeeCalculator& getFeeCalculator(TWCoinType coinType);
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 } // namespace TW::Bitcoin

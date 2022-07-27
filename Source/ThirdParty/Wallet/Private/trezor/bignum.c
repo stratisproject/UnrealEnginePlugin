@@ -23,6 +23,11 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4668)
+#endif
+
 #include <trezor/bignum.h>
 
 #include <assert.h>
@@ -1838,4 +1843,8 @@ void bn_inverse(bignum256 *x, const bignum256 *prime) {
 void bn_inverse(bignum256 *x, const bignum256 *prime) {
   bn_inverse_slow(x, prime);
 }
+#endif
+
+#ifdef _MSC_VER
+#pragma warning(pop)
 #endif

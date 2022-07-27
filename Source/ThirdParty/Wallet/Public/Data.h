@@ -27,7 +27,7 @@ inline Data data(const std::string& data)
     return std::vector<byte>(data.begin(), data.end());
 }
 
-inline Data data(const byte* data, size_t size)
+inline Data data(const TW::byte* data, size_t size)
 {
     return std::vector<byte>(data, data + size);
 }
@@ -37,7 +37,7 @@ inline void append(Data& data, const Data& suffix)
     data.insert(data.end(), suffix.begin(), suffix.end());
 }
 
-inline void append(Data& data, const byte suffix)
+inline void append(Data& data, const TW::byte suffix)
 {
     data.push_back(suffix);
 }

@@ -92,6 +92,10 @@ HDWallet::~HDWallet()
     std::fill(passphrase.begin(), passphrase.end(), 0);
 }
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4100)
+#endif
 void HDWallet::updateSeedAndEntropy(bool check)
 {
     assert(!check || Mnemonic::isValid(mnemonic)); // precondition
@@ -107,6 +111,10 @@ void HDWallet::updateSeedAndEntropy(bool check)
     entropy = data(entropyRaw.data(), entropyBytes);
     assert(!check || entropy.size() > 10);
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 PrivateKey HDWallet::getMasterKey(TWCurve curve) const
 {

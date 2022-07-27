@@ -12,6 +12,10 @@ using namespace TW;
 
 namespace TW::Bitcoin {
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable: 4100)
+#endif
 int64_t LinearFeeCalculator::calculate(int64_t inputs,
                                        int64_t outputs,
                                        int64_t byteFee,
@@ -45,5 +49,9 @@ FeeCalculator& getFeeCalculator(TWCoinType coinType)
         return defaultFeeCalculator;
     }
 }
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
 
 } // namespace TW::Bitcoin

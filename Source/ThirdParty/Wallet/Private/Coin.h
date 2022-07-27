@@ -53,9 +53,9 @@ Hash::Hasher publicKeyHasher(TWCoinType coin);
 Hash::Hasher base58Hasher(TWCoinType coin);
 
 /// Returns P2PKH prefix for a coin type.
-byte p2pkhPrefix(TWCoinType coin);
+TW::byte p2pkhPrefix(TWCoinType coin);
 
 /// Returns P2SH prefix for a coin type.
-byte p2shPrefix(TWCoinType coin);
+TW::byte p2shPrefix(TWCoinType coin);
 
 } // namespace TW

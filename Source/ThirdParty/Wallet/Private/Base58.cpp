@@ -141,7 +141,7 @@ Data Base58::decode(const char* begin, const char* end) const {
     return result;
 }
 
-std::string Base58::encodeCheck(const byte* begin, const byte* end, Hash::Hasher hasher) const {
+std::string Base58::encodeCheck(const TW::byte* begin, const TW::byte* end, Hash::Hasher hasher) const {
     // add 4-byte hash check to the end
     Data dataWithCheck(begin, end);
     auto hash = hasher(begin, end - begin);
@@ -149,7 +149,7 @@ std::string Base58::encodeCheck(const byte* begin, const byte* end, Hash::Hasher
     return encode(dataWithCheck);
 }
 
-std::string Base58::encode(const byte* begin, const byte* end) const {
+std::string Base58::encode(const TW::byte* begin, const TW::byte* end) const {
     // Skip & count leading zeroes.
     int zeroes = 0;
     int length = 0;

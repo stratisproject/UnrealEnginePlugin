@@ -79,10 +79,8 @@ inline Data unhex(const Iter begin, const Iter end)
 
     Data result;
 
-    size_t counter = 0;
-
     while (it != end) {
-        byte firstValue = hex_char_to_int(*it);
+        TW::byte firstValue = hex_char_to_int(*it);
         it += 1;
 
         if (it != end) {

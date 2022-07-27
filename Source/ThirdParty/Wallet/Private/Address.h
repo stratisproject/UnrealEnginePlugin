@@ -25,7 +25,7 @@ public:
     explicit Address(const Data& data) : TW::Base58Address<21>(data) {}
 
     /// Initializes an address with a public key and a prefix.  Applicable for P2PKH addresses (but not P2SH).
-    Address(const PublicKey& publicKey, byte prefix) : TW::Base58Address<21>(publicKey, {prefix}) {}
+    Address(const PublicKey& publicKey, TW::byte prefix) : TW::Base58Address<21>(publicKey, {prefix}) {}
 };
 
 } // namespace TW::Bitcoin
