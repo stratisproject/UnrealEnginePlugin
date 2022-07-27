@@ -7,9 +7,9 @@
 	"Category": "Blockchain",
 	"CreatedBy": "Stratis Platform",
 	"CreatedByURL": "https://www.stratisplatform.com/",
-	"DocsURL": "",
-	"MarketplaceURL": "",
-	"SupportURL": "",
+	"DocsURL": "https://academy.stratisplatform.com/Developer%20Resources/Unreal%20Engine/unreal-engine-introduction.html",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/6cde16785f2e4240a09e10314f5dff94",
+	"SupportURL": "https://www.stratisplatform.com/contact/",
 	"CanContainContent": true,
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": true,
@@ -20,22 +20,26 @@
 		{
 			"Name": "Stratis",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ]
 		},
 		{
 			"Name": "StratisAPI",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ]
 		},
 		{
 			"Name": "Blockchain",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ]
 		},
 		{
 			"Name": "Wallet",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ]
 		}
 	]
 }
