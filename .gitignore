@@ -1,5 +1,7 @@
 .DS_Store
 .idea/
+.vscode/
+*.code-workspace
 .openapi-generator/
 Intermediate/
 Binaries/
