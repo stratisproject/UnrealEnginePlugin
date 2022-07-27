@@ -14,59 +14,59 @@ USTRUCT(BlueprintType)
 struct STRATIS_API FReceiptResponse {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isTransactionHashValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString transactionHash;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isBlockHashValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString blockHash;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isBlockNumberValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     int64 blockNumber;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isPostStateValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString postState;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     int64 gasUsed;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isFromAddressValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString fromAddress;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isToAddressValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString toAddress;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isNewContractAddressValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString newContractAddress;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool success = false;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isReturnValueValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString returnValue;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isBloomValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString bloom;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     bool isErrorValid = false;
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString error;
 };

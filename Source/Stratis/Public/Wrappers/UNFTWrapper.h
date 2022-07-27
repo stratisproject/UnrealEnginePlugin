@@ -20,10 +20,10 @@ USTRUCT(BlueprintType)
 struct STRATIS_API FRoyaltyInfo {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString royaltyRecipient;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FUInt64 royaltyAmount;
 
     FRoyaltyInfo()
@@ -79,10 +79,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "NFTWrapper")
     static UNFTWrapper* createDefaultRoyaltyInstance(UStratisUnrealManager* manager, UObject* outer);
 
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     UStratisUnrealManager* stratisManager;
 
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString contractAddress;
 
     UWorld* GetWorld() const override;

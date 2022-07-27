@@ -17,7 +17,7 @@ struct STRATIS_API FNetwork {
     static FNetwork CIRRUS;
     static FNetwork CIRRUS_TEST;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     uint8 base58_pubkey_address_prefix;
 
     FNetwork() {}

@@ -16,28 +16,28 @@ USTRUCT(BlueprintType)
 struct STRATIS_API FLocalCallData {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString contractAddress;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString methodName;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     int64 gasPrice = -1;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     int64 gasLimit = -1;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString amount;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString sender;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     int64 blockHeight = -1;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     TArray<FString> parameters;
 
     FLocalCallData() {}

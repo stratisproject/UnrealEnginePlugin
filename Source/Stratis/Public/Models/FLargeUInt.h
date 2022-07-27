@@ -12,7 +12,7 @@ USTRUCT(BlueprintType)
 struct STRATIS_API FUInt128 {
     GENERATED_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString value;
 
     FUInt128() : value("0") {}
@@ -23,7 +23,7 @@ USTRUCT(BlueprintType)
 struct STRATIS_API FUInt256 {
     GENERATED_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString value;
 
     FUInt256() : value("0") {}

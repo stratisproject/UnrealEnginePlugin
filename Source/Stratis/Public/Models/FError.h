@@ -14,7 +14,7 @@ USTRUCT(BlueprintType)
 struct STRATIS_API FError {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString message;
 
     FError() {}
