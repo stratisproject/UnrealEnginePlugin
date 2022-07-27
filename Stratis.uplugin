@@ -14,32 +14,32 @@
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": true,
 	"Installed": false,
-	"EngineVersion" : "4.27.0",
-	"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ],
+	"EngineVersion" : "5.0.0",
+	"WhitelistPlatforms": [ "Win64", "Mac", "Linux", "IOS", "Android" ],
 	"Modules": [
 		{
 			"Name": "Stratis",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ]
+			"WhitelistPlatforms": [ "Win64", "Mac", "Linux", "IOS", "Android" ]
 		},
 		{
 			"Name": "StratisAPI",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ]
+			"WhitelistPlatforms": [ "Win64", "Mac", "Linux", "IOS", "Android" ]
 		},
 		{
 			"Name": "Blockchain",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ]
+			"WhitelistPlatforms": [ "Win64", "Mac", "Linux", "IOS", "Android" ]
 		},
 		{
 			"Name": "Wallet",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32", "Mac", "Linux", "IOS", "Android" ]
+			"WhitelistPlatforms": [ "Win64", "Mac", "Linux", "IOS", "Android" ]
 		}
 	]
 }
