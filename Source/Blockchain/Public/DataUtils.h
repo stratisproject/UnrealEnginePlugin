@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Core.h"
+#include "CoreMinimal.h"
 
 inline TArray<uint8> HexToBytesArray(const FString &value)
 {

@@ -6,6 +6,8 @@
 
 #include "UStratisUnrealManager.h"
 
+#include "TimerManager.h"
+
 #include <string>
 #include <vector>
 

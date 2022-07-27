@@ -13,7 +13,7 @@
 #include "SmartContracts/MethodParameters/AddressMethodParameter.h"
 #include "SmartContracts/MethodParameters/ByteArrayMethodParameter.h"
 
-#include "Core.h"
+#include "CoreMinimal.h"
 
 namespace smart_contracts
 {

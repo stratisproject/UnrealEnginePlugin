@@ -6,7 +6,8 @@
 
 #pragma once
 
-#include "Core.h"
+#include "CoreMinimal.h"
+#include "Engine/World.h"
 
 #include "Models/ENetwork.h"
 #include "Models/FEmptyValue.h"
@@ -48,13 +49,13 @@ public:
     UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
     static UStratisUnrealManager* createInstance(const FString& mnemonic, const FString& baseUrl, ENetwork network, UObject* outer);
 
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(EditAnywhere, Category = "Transaction parameters")
     uint64 gasPrice;
 
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(EditAnywhere, Category = "Transaction parameters")
     uint64 gasLimit;
 
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(EditAnywhere, Category = "Transaction parameters")
     uint64 defaultFee;
 
     UFUNCTION(BlueprintCallable, Category = "StratisUnrealManager")
