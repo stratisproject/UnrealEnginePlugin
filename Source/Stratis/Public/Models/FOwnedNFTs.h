@@ -30,6 +30,6 @@ USTRUCT(BlueprintType)
 struct STRATIS_API FOwnedNFTs {
     GENERATED_USTRUCT_BODY()
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     UOwnedNFTAccessor* accessor;
 };

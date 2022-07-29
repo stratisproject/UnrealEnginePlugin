@@ -41,10 +41,10 @@ public:
     UFUNCTION(BlueprintCallable, Category = "StandardTokenWrapper256")
     static UStandardTokenWrapper* createDefaultInstance(UStratisUnrealManager* manager, UObject* outer);
 
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     UStratisUnrealManager* stratisManager;
 
-    UPROPERTY(EditAnywhere)
+    UPROPERTY(BlueprintReadOnly, Category = "Default")
     FString contractAddress;
 
     UWorld* GetWorld() const override;
