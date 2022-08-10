@@ -8,6 +8,8 @@
 
 #include "CoreMinimal.h"
 
+#include "Misc/TVariant.h"
+
 #include <type_traits>
 
 struct TError {

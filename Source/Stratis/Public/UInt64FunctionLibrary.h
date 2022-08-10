@@ -6,9 +6,11 @@
 
 #pragma once
 
-#include "Core.h"
+#include "CoreMinimal.h"
 
 #include "Models/FUInt64.h"
+
+#include "Kismet/BlueprintFunctionLibrary.h"
 
 #include "UInt64FunctionLibrary.generated.h"
 
