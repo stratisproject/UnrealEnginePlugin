@@ -54,10 +54,10 @@ template <typename TypeWithAmount>
 static inline std::vector<std::vector<TypeWithAmount>> slice(const std::vector<TypeWithAmount>& inputsList, size_t sliceSize)
 {
     std::vector<std::vector<TypeWithAmount>> slices;
-    for (auto i = 0; i <= inputsList.size() - sliceSize; ++i) {
+    for (size_t i = 0; i <= inputsList.size() - sliceSize; ++i) {
         slices.emplace_back();
         slices[i].reserve(sliceSize);
-        for (auto j = i; j < i + sliceSize; j++) {
+        for (size_t j = i; j < i + sliceSize; j++) {
             slices[i].push_back(inputsList[j]);
         }
     }
@@ -93,7 +93,7 @@ std::vector<TypeWithAmount> InputSelector<TypeWithAmount>::select(int64_t target
     std::vector<uint64_t> maxWithXInputs = std::vector<uint64_t>();
     maxWithXInputs.push_back(0);
     int64_t maxSum = 0;
-    for (auto i = 0; i < n; ++i) {
+    for (size_t i = 0; i < n; ++i) {
         maxSum += sorted[n - 1 - i].amount;
         maxWithXInputs.push_back(maxSum);
     }

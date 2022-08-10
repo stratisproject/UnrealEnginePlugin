@@ -69,7 +69,7 @@ public:
     bool matchPayToWitnessScriptHash(Data& scriptHash) const;
 
     /// Matches the script to a multisig script.
-    bool matchMultisig(std::vector<Data>& publicKeys, int& required) const;
+    bool matchMultisig(std::vector<Data>& publicKeys, size_t& required) const;
 
     /// Builds a pay-to-public-key (P2PK) script from a public key.
     static Script buildPayToPublicKey(const Data& publickKey);
@@ -114,7 +114,7 @@ public:
     }
 
     /// Decodes a small integer
-    static inline int decodeNumber(uint8_t opcode)
+    static inline uint8_t decodeNumber(uint8_t opcode)
     {
         if (opcode == OP_0) {
             return 0;

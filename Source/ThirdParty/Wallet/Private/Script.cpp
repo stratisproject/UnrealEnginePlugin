@@ -58,7 +58,7 @@ bool Script::isWitnessProgram() const
     if (bytes[0] != OP_0 && (bytes[0] < OP_1 || bytes[0] > OP_16)) {
         return false;
     }
-    return bytes[1] + 2 == bytes.size();
+    return (size_t)(bytes[1] + 2) == bytes.size();
 }
 
 bool Script::matchPayToPublicKey(Data& result) const
@@ -121,7 +121,7 @@ bool Script::matchPayToWitnessScriptHash(Data& result) const
     return true;
 }
 
-bool Script::matchMultisig(std::vector<Data>& keys, int& required) const
+bool Script::matchMultisig(std::vector<Data>& keys, size_t& required) const
 {
     keys.clear();
     required = 0;
@@ -138,7 +138,7 @@ bool Script::matchMultisig(std::vector<Data>& keys, int& required) const
     if (!op || !TWOpCodeIsSmallInteger(opcode)) {
         return false;
     }
-    required = decodeNumber(opcode);
+    required = (int)decodeNumber(opcode);
     while (true) {
         auto res = getScriptOp(it, opcode, operand);
         if (!res) {

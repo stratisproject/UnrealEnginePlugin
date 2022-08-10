@@ -35,7 +35,7 @@ Result<Transaction, SigningError> SignatureBuilder<Transaction>::sign()
               std::back_inserter(transactionToSign.inputs));
 
     const auto hashSingle = hashTypeIsSingle(input.hashType);
-    for (auto i = 0; i < plan.utxos.size(); i++) {
+    for (size_t i = 0; i < plan.utxos.size(); i++) {
         // Only sign TWBitcoinSigHashTypeSingle if there's a corresponding output
         if (hashSingle && i >= transaction.outputs.size()) {
             continue;
@@ -131,7 +131,7 @@ Result<std::vector<Data>, SigningError> SignatureBuilder<Transaction>::signStep(
 {
     Data data;
     std::vector<Data> keys;
-    int required;
+    size_t required;
 
     if (script.matchPayToScriptHash(data)) {
         auto redeemScript = scriptForScriptHash(data);
