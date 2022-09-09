@@ -10,11 +10,12 @@
 
 using namespace TW;
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4100)
+#pragma warning(disable : 4100)
 #endif
 int64_t LinearFeeCalculator::calculate(int64_t inputs,
                                        int64_t outputs,
@@ -54,4 +55,5 @@ FeeCalculator& getFeeCalculator(TWCoinType coinType)
 #pragma warning(pop)
 #endif
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

@@ -11,12 +11,13 @@
 #include "Transaction.h"
 #include "UTXO.h"
 
+#include "Misc/Optional.h"
 #include <map>
-#include <optional>
 #include <string>
 #include <vector>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// Input for signing, info of an unsigned transaction
 class SigningInput
@@ -61,7 +62,7 @@ public:
     TWCoinType coinType = TWCoinTypeBitcoin;
 
     // Optional transaction plan
-    std::optional<TransactionPlan> plan;
+    TOptional<TransactionPlan> plan;
 
     Data outputOpReturn;
 
@@ -73,4 +74,5 @@ public:
     SigningInput() = default;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

@@ -12,10 +12,11 @@
 #include "TransactionPlan.h"
 #include <TWCoinType.h>
 
+#include "Misc/Optional.h"
 #include <algorithm>
-#include <optional>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 class TransactionBuilder
 {
@@ -33,10 +34,10 @@ public:
 
         if (plan.outputCustomScript.empty()) {
             auto outputTo = prepareOutputWithScript(toAddress, plan.amount, coin);
-            if (!outputTo.has_value()) {
+            if (!outputTo.IsSet()) {
                 return {};
             }
-            tx.outputs.push_back(outputTo.value());
+            tx.outputs.push_back(outputTo.GetValue());
         } else {
             tx.outputs.push_back({plan.amount, plan.outputCustomScript});
         }
@@ -44,10 +45,10 @@ public:
 
         if (plan.change > 0) {
             auto outputChange = prepareOutputWithScript(changeAddress, plan.change, coin);
-            if (!outputChange.has_value()) {
+            if (!outputChange.IsSet()) {
                 return {};
             }
-            tx.outputs.push_back(outputChange.value());
+            tx.outputs.push_back(outputChange.GetValue());
         }
 
         const auto emptyScript = Script();
@@ -65,10 +66,11 @@ public:
     }
 
     /// Prepares a TransactionOutput with given address and amount, prepares script for it
-    static std::optional<TransactionOutput> prepareOutputWithScript(std::string address, Amount amount, enum TWCoinType coin);
+    static TOptional<TransactionOutput> prepareOutputWithScript(std::string address, Amount amount, enum TWCoinType coin);
 
     /// The maximum number of UTXOs to consider.  UTXOs above this limit are cut off because it cak take very long.
     static const size_t MaxUtxosHardLimit;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

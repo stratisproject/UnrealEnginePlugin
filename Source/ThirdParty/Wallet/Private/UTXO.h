@@ -12,7 +12,8 @@
 
 #include <vector>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 class UTXO
 {
@@ -39,4 +40,5 @@ public:
     UTXOs(UTXO utxo) : std::vector<UTXO>({utxo}) {}
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

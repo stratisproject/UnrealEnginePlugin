@@ -12,7 +12,8 @@
 
 #include <string>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// Class for non-segwit P2PKH and P2SH addresses
 class Address : public TW::Base58Address<21>
@@ -28,4 +29,5 @@ public:
     Address(const PublicKey& publicKey, TW::byte prefix) : TW::Base58Address<21>(publicKey, {prefix}) {}
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

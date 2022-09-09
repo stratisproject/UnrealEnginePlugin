@@ -13,7 +13,8 @@
 #include "Transaction.h"
 #include "TransactionBuilder.h"
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// Frontend class for transaction planning, building, and signing
 template <typename Transaction, typename TransactionBuilder>
@@ -27,4 +28,5 @@ public:
     static Result<Transaction, SigningError> sign(const SigningInput& input, bool estimationMode = false);
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

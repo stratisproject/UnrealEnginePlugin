@@ -19,7 +19,8 @@
 
 #include <vector>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// A list of transaction inputs
 template <typename TransactionInput>
@@ -109,4 +110,5 @@ private:
                               enum TWBitcoinSigHashType hashType) const;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

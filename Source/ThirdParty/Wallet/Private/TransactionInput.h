@@ -12,7 +12,8 @@
 
 #include <vector>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// Bitcoin transaction input.
 class TransactionInput
@@ -45,4 +46,5 @@ public:
     void encodeWitness(Data& data) const;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

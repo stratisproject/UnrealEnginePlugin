@@ -17,8 +17,8 @@
 #include "TWHDVersion.h"
 #include "TWPurpose.h"
 
+#include "Misc/Optional.h"
 #include <array>
-#include <optional>
 #include <string>
 
 namespace TW {
@@ -91,10 +91,10 @@ public:
     std::string getRootKey(TWCoinType coin, TWHDVersion version) const;
 
     /// Computes the public key from an extended public key representation.
-    static std::optional<PublicKey> getPublicKeyFromExtended(const std::string& extended, TWCoinType coin, const DerivationPath& path);
+    static TOptional<PublicKey> getPublicKeyFromExtended(const std::string& extended, TWCoinType coin, const DerivationPath& path);
 
     /// Computes the private key from an extended private key representation.
-    static std::optional<PrivateKey> getPrivateKeyFromExtended(const std::string& extended, TWCoinType coin, const DerivationPath& path);
+    static TOptional<PrivateKey> getPrivateKeyFromExtended(const std::string& extended, TWCoinType coin, const DerivationPath& path);
 
 public:
     // Private key type (later could be moved out of HDWallet)

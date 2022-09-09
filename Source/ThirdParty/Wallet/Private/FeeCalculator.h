@@ -8,11 +8,12 @@
 
 #include "TWCoinType.h"
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4100)
+#pragma warning(disable : 4100)
 #endif
 
 /// Interface for transaction fee calculator.
@@ -104,4 +105,5 @@ FeeCalculator& getFeeCalculator(TWCoinType coinType);
 #pragma warning(pop)
 #endif
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

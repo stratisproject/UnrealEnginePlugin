@@ -21,5 +21,7 @@ public class Stratis : ModuleRules
                 "Wallet"
             }
             );
+
+        CppStandard = CppStandardVersion.Cpp14;
     }
 }

@@ -9,7 +9,8 @@
 #include "Data.h"
 #include "TWAESPaddingMode.h"
 
-namespace TW::Encrypt {
+namespace TW {
+namespace Encrypt {
 
 /// Determind needed padding size (used internally)
 size_t paddingSize(size_t origSize, size_t blockSize, TWAESPaddingMode paddingMode);
@@ -46,4 +47,5 @@ Data AESCTREncrypt(const Data& key, const Data& data, Data& iv);
 /// \param iv initialization vector.
 Data AESCTRDecrypt(const Data& key, const Data& data, Data& iv);
 
-} // namespace TW::Encrypt
+} // namespace Encrypt
+} // namespace TW

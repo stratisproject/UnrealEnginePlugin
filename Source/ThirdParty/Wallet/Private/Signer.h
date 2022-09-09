@@ -9,7 +9,8 @@
 #include "SigningOutput.h"
 #include "TransactionPlan.h"
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 class Signer
 {
@@ -23,4 +24,5 @@ public:
     static SigningOutput sign(const SigningInput& input) noexcept;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

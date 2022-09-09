@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <optional>
+#include "Misc/Optional.h"
 #include <string>
 #include <type_traits>
 
@@ -22,7 +22,8 @@ struct Success {
 };
 
 template <>
-struct Success<void> {};
+struct Success<void> {
+};
 
 template <typename E>
 struct Failure {
@@ -35,7 +36,7 @@ struct Failure {
 
 template <typename T, typename E = std::string>
 struct Result {
-  private:
+private:
     static_assert(!std::is_same<E, void>::value, "void error type is not allowed");
     static constexpr size_t Size = sizeof(T) > sizeof(E) ? sizeof(T) : sizeof(E);
     static constexpr size_t Align = sizeof(T) > sizeof(E) ? alignof(T) : alignof(E);
@@ -45,14 +46,15 @@ struct Result {
     bool success_;
     Storage storage_;
 
-  public:
+public:
     /// Initializes a success result with a payload.
     Result(Types::Success<T> payload) : success_(true) { new (&storage_) T(payload.val); }
 
     /// Initializes a failure result.
     Result(Types::Failure<E> error) : success_(false) { new (&storage_) E(error.val); }
 
-    Result(const Result& other) : success_(other.success_) {
+    Result(const Result& other) : success_(other.success_)
+    {
         if (success_) {
             new (&storage_) T(other.get<T>());
         } else {
@@ -60,7 +62,8 @@ struct Result {
         }
     }
 
-    Result& operator=(const Result& other) {
+    Result& operator=(const Result& other)
+    {
         if (success_) {
             get<T>().~T();
         } else {
@@ -75,7 +78,8 @@ struct Result {
         }
     }
 
-    Result(Result&& other) {
+    Result(Result&& other)
+    {
         if (success_) {
             new (&storage_) T(other.get<T>());
         } else {
@@ -83,7 +87,8 @@ struct Result {
         }
     }
 
-    Result& operator=(Result&& other) {
+    Result& operator=(Result&& other)
+    {
         if (success_) {
             get<T>().~T();
         } else {
@@ -98,7 +103,8 @@ struct Result {
         }
     }
 
-    ~Result() {
+    ~Result()
+    {
         if (success_)
             get<T>().~T();
         else
@@ -129,29 +135,31 @@ struct Result {
 
     operator bool() const { return success_; }
 
-  private:
+private:
     template <typename U>
-    const U& get() const {
+    const U& get() const
+    {
         return *reinterpret_cast<const U*>(&storage_);
     }
 
     template <typename U>
-    U& get() {
+    U& get()
+    {
         return *reinterpret_cast<U*>(&storage_);
     }
 };
 
 template <typename E>
 struct Result<void, E> {
-  private:
+private:
     /// Wether the operation succeeded.
     bool success_;
-    std::optional<E> error_;
+    TOptional<E> error_;
 
-  public:
+public:
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4100)
+#pragma warning(disable : 4100)
 #endif
     /// Initializes a success result with a payload.
     Result(Types::Success<void> payload) : success_(true), error_() {}
@@ -174,7 +182,8 @@ struct Result<void, E> {
     static inline Result<void, E> success() { return Result(Types::Success<void>()); }
 
     /// Returns a new failure result with the given error.
-    static Result<void, E> failure(E&& val) {
+    static Result<void, E> failure(E&& val)
+    {
         return Result(Types::Failure<E>(std::forward<E>(val)));
     }
 

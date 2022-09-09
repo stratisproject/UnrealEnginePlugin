@@ -165,7 +165,7 @@ Result<std::vector<Data>, SigningError> SignatureBuilder<Transaction>::signStep(
             }
             auto keyHash = Hash::ripemd(Hash::sha256(pubKey));
             auto pair = keyPairForPubKeyHash(keyHash);
-            if (!pair.has_value() && !estimationMode) {
+            if (!pair.IsSet() && !estimationMode) {
                 // Error: missing key
                 return Result<std::vector<Data>, SigningError>::failure("Error_missing_private_key");
             }
@@ -182,7 +182,7 @@ Result<std::vector<Data>, SigningError> SignatureBuilder<Transaction>::signStep(
     if (script.matchPayToPublicKey(data)) {
         auto keyHash = Hash::ripemd(Hash::sha256(data));
         auto pair = keyPairForPubKeyHash(keyHash);
-        if (!pair.has_value() && !estimationMode) {
+        if (!pair.IsSet() && !estimationMode) {
             // Error: Missing key
             return Result<std::vector<Data>, SigningError>::failure("Error_missing_private_key");
         }
@@ -195,7 +195,7 @@ Result<std::vector<Data>, SigningError> SignatureBuilder<Transaction>::signStep(
     }
     if (script.matchPayToPublicKeyHash(data)) {
         auto pair = keyPairForPubKeyHash(data);
-        if (!pair.has_value() && !estimationMode) {
+        if (!pair.IsSet() && !estimationMode) {
             // Error: Missing keys
             return Result<std::vector<Data>, SigningError>::failure("Error_missing_private_key");
         }
@@ -204,11 +204,11 @@ Result<std::vector<Data>, SigningError> SignatureBuilder<Transaction>::signStep(
             // Error: Failed to sign
             return Result<std::vector<Data>, SigningError>::failure("Error_signing");
         }
-        if (!pair.has_value() && estimationMode) {
+        if (!pair.IsSet() && estimationMode) {
             // estimation mode, key is missing: use placeholder for public key
             return Result<std::vector<Data>, SigningError>::success({signature, Data(PublicKey::secp256k1Size)});
         }
-        auto pubkey = std::get<1>(pair.value());
+        auto pubkey = std::get<1>(pair.GetValue());
         return Result<std::vector<Data>, SigningError>::success({signature, pubkey.bytes});
     }
     // Error: Invalid output script
@@ -219,7 +219,7 @@ template <typename Transaction>
 Data SignatureBuilder<Transaction>::createSignature(
     const Transaction& transaction,
     const Script& script,
-    const std::optional<KeyPair>& pair,
+    const TOptional<KeyPair>& pair,
     size_t index,
     Amount amount,
     uint32_t version) const
@@ -228,7 +228,7 @@ Data SignatureBuilder<Transaction>::createSignature(
         // Don't sign, only estimate signature size. It is 71-72 bytes.  Return placeholder.
         return Data(72);
     }
-    auto key = std::get<0>(pair.value());
+    auto key = std::get<0>(pair.GetValue());
     Data sighash = transaction.getSignatureHash(script, index, input.hashType, amount,
                                                 static_cast<SignatureVersion>(version));
     auto pk = PrivateKey(key);
@@ -266,7 +266,7 @@ Data SignatureBuilder<Transaction>::pushAll(const std::vector<Data>& results)
 }
 
 template <typename Transaction>
-std::optional<KeyPair> SignatureBuilder<Transaction>::keyPairForPubKeyHash(const Data& hash) const
+TOptional<KeyPair> SignatureBuilder<Transaction>::keyPairForPubKeyHash(const Data& hash) const
 {
     for (auto& key : input.privateKeys) {
         auto pubKeyExtended = key.getPublicKey(TWPublicKeyTypeSECP256k1Extended);

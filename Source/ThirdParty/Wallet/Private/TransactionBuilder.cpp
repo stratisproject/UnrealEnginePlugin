@@ -14,7 +14,8 @@
 #include <algorithm>
 #include <cassert>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 
 // Above this number of UTXOs a simplified selection is used (optimization)
@@ -22,7 +23,7 @@ static const auto SimpleModeLimit = 1000;
 // The maximum number of UTXOs to consider.  UTXOs above this limit are cut off because it cak take very long
 const size_t TransactionBuilder::MaxUtxosHardLimit = 3000;
 
-std::optional<TransactionOutput> TransactionBuilder::prepareOutputWithScript(std::string address, Amount amount, enum TWCoinType coin)
+TOptional<TransactionOutput> TransactionBuilder::prepareOutputWithScript(std::string address, Amount amount, enum TWCoinType coin)
 {
     auto lockingScript = Script::lockScriptForAddress(address, coin);
     if (lockingScript.empty()) {
@@ -194,4 +195,5 @@ TransactionPlan TransactionBuilder::plan(const SigningInput& input)
     return plan;
 }
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

@@ -11,7 +11,8 @@
 #include <cstring>
 #include <stdexcept>
 
-namespace TW::Encrypt {
+namespace TW {
+namespace Encrypt {
 
 size_t paddingSize(size_t origSize, size_t blockSize, TWAESPaddingMode paddingMode)
 {
@@ -111,4 +112,5 @@ Data AESCTRDecrypt(const Data& key, const Data& data, Data& iv)
     return result;
 }
 
-} // namespace TW::Encrypt
+} // namespace Encrypt
+} // namespace TW

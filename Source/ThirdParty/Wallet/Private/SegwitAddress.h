@@ -13,7 +13,8 @@
 #include <string>
 #include <tuple>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// A Segwit address.
 /// Note: Similar to Bech32Address, but it differs enough so that reuse makes no sense.
@@ -71,4 +72,5 @@ private:
     SegwitAddress() = default;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

@@ -6,9 +6,11 @@
 
 #pragma once
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 enum SignatureVersion {
     BASE,
     WITNESS_V0
 };
-} // TW::Bitcoin namespace
+} // namespace Bitcoin
+} // namespace TW

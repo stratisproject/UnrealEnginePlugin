@@ -14,7 +14,8 @@
 #include <tuple>
 #include <vector>
 
-namespace TW::Bech32 {
+namespace TW {
+namespace Bech32 {
 
 enum ChecksumVariant {
     None = 0,
@@ -61,4 +62,5 @@ inline bool convertBits(Data& out, const Data& in)
     return true;
 }
 
-} // namespace TW::Bech32
+} // namespace Bech32
+} // namespace TW

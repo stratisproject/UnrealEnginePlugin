@@ -22,8 +22,8 @@ template <typename Transaction, typename TransactionBuilder>
 Result<Transaction, SigningError> TransactionSigner<Transaction, TransactionBuilder>::sign(const SigningInput& input, bool estimationMode)
 {
     TransactionPlan plan;
-    if (input.plan.has_value()) {
-        plan = input.plan.value();
+    if (input.plan.IsSet()) {
+        plan = input.plan.GetValue();
     } else {
         plan = TransactionBuilder::plan(input);
     }

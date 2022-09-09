@@ -12,7 +12,8 @@
 #include <numeric>
 #include <vector>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 template <typename TypeWithAmount> // TypeWithAmount has to have a uint64_t amount
 class InputSelector
@@ -49,4 +50,5 @@ private:
     const FeeCalculator& feeCalculator;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

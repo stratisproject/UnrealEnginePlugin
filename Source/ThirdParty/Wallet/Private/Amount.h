@@ -10,7 +10,8 @@
 
 #include <cstdint>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// Amount in satoshis (can be negative)
 using Amount = int64_t;
@@ -28,4 +29,5 @@ inline bool isValidAmount(const Amount& amount)
     return (amount >= 0 && amount <= maxAmount);
 }
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

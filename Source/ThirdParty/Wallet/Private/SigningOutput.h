@@ -4,7 +4,7 @@
 #include "SigningError.h"
 #include "Transaction.h"
 
-#include <optional>
+#include "Misc/Optional.h"
 #include <string>
 
 struct SigningOutput {
@@ -18,5 +18,5 @@ struct SigningOutput {
     std::string transactionId;
 
     // Optional error
-    std::optional<SigningError> error;
+    TOptional<SigningError> error;
 };

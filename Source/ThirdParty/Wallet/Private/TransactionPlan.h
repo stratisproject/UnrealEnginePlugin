@@ -11,7 +11,8 @@
 #include "SigningError.h"
 #include "UTXO.h"
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// Describes a preliminary transaction plan.
 struct TransactionPlan {
@@ -42,4 +43,5 @@ struct TransactionPlan {
     TransactionPlan() = default;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

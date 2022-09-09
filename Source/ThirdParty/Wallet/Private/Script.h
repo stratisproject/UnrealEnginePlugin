@@ -15,7 +15,8 @@
 #include <string>
 #include <vector>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 class Script
 {
@@ -142,4 +143,5 @@ inline bool operator!=(const Script& lhs, const Script& rhs)
     return !(lhs == rhs);
 }
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

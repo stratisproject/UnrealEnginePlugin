@@ -11,7 +11,8 @@
 #include "TWBitcoinSigHashType.h"
 #include "TWCoinType.h"
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 // Defines the number of bits of the hash type which is used to identify which
 // outputs are signed.
@@ -20,7 +21,7 @@ static const uint32_t SigHashMask = 0x1f;
 // Return the default HashType for the given coin, such as TWBitcoinSigHashTypeAll.
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4100)
+#pragma warning(disable : 4100)
 #endif
 inline enum TWBitcoinSigHashType hashTypeForCoin(enum TWCoinType coinType)
 {
@@ -30,8 +31,12 @@ inline enum TWBitcoinSigHashType hashTypeForCoin(enum TWCoinType coinType)
 #pragma warning(pop)
 #endif
 
-inline bool hashTypeIsSingle(enum TWBitcoinSigHashType type) { return ((uint32_t)type & SigHashMask) == (uint32_t)TWBitcoinSigHashTypeSingle; }
+inline bool hashTypeIsSingle(enum TWBitcoinSigHashType type)
+{
+    return ((uint32_t)type & SigHashMask) == (uint32_t)TWBitcoinSigHashTypeSingle;
+}
 
 inline bool hashTypeIsNone(enum TWBitcoinSigHashType type) { return ((uint32_t)type & SigHashMask) == (uint32_t)TWBitcoinSigHashTypeNone; }
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

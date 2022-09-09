@@ -12,7 +12,8 @@
 
 #include <memory>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// Bitcoin transaction output.
 struct TransactionOutput {
@@ -33,4 +34,5 @@ struct TransactionOutput {
     void encode(Data& data) const;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

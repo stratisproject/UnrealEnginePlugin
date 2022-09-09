@@ -14,10 +14,11 @@
 #include "Transaction.h"
 #include "TransactionInput.h"
 
-#include <optional>
+#include "Misc/Optional.h"
 #include <vector>
 
-namespace TW::Bitcoin {
+namespace TW {
+namespace Bitcoin {
 
 /// Class that performs Bitcoin transaction signing.
 template <typename Transaction>
@@ -57,14 +58,15 @@ private:
     Result<void, SigningError> sign(Script script, size_t index, const UTXO& utxo);
     Result<std::vector<Data>, SigningError> signStep(Script script, size_t index,
                                                      const UTXO& utxo, uint32_t version) const;
-    Data createSignature(const Transaction& transaction, const Script& script, const std::optional<KeyPair>&,
+    Data createSignature(const Transaction& transaction, const Script& script, const TOptional<KeyPair>&,
                          size_t index, Amount amount, uint32_t version) const;
 
     /// Returns the private key for the given public key hash.
-    std::optional<KeyPair> keyPairForPubKeyHash(const Data& hash) const;
+    TOptional<KeyPair> keyPairForPubKeyHash(const Data& hash) const;
 
     /// Returns the redeem script for the given script hash.
     Data scriptForScriptHash(const Data& hash) const;
 };
 
-} // namespace TW::Bitcoin
+} // namespace Bitcoin
+} // namespace TW

@@ -94,7 +94,7 @@ HDWallet::~HDWallet()
 
 #ifdef _MSC_VER
 #pragma warning(push)
-#pragma warning(disable: 4100)
+#pragma warning(disable : 4100)
 #endif
 void HDWallet::updateSeedAndEntropy(bool check)
 {
@@ -193,7 +193,7 @@ std::string HDWallet::getExtendedPublicKey(TWPurpose purpose, TWCoinType coin, T
     return serialize(&node, fingerprintValue, version, true, base58Hasher(coin));
 }
 
-std::optional<PublicKey> HDWallet::getPublicKeyFromExtended(const std::string& extended, TWCoinType coin, const DerivationPath& path)
+TOptional<PublicKey> HDWallet::getPublicKeyFromExtended(const std::string& extended, TWCoinType coin, const DerivationPath& path)
 {
     const auto curve = TW::curve(coin);
     const auto hasher = TW::base58Hasher(coin);
@@ -230,7 +230,7 @@ std::optional<PublicKey> HDWallet::getPublicKeyFromExtended(const std::string& e
     return {};
 }
 
-std::optional<PrivateKey> HDWallet::getPrivateKeyFromExtended(const std::string& extended, TWCoinType coin, const DerivationPath& path)
+TOptional<PrivateKey> HDWallet::getPrivateKeyFromExtended(const std::string& extended, TWCoinType coin, const DerivationPath& path)
 {
     const auto curve = TW::curve(coin);
     const auto hasher = TW::base58Hasher(coin);
