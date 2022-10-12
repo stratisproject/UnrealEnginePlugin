@@ -18,6 +18,6 @@ public class Blockchain : ModuleRules
         bEnableExceptions = true;
         bEnableUndefinedIdentifierWarnings = true;
 
-        CppStandard = CppStandardVersion.Cpp14;
+        CppStandard = CppStandardVersion.Cpp17;
     }
 }
