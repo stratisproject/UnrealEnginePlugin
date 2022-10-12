@@ -19,7 +19,7 @@ public class Wallet : ModuleRules
         bEnableExceptions = true;
         bEnableUndefinedIdentifierWarnings = true;
 
-        CppStandard = CppStandardVersion.Cpp14;
+        CppStandard = CppStandardVersion.Cpp17;
         ShadowVariableWarningLevel = WarningLevel.Off;
 
         if (Target.Platform == UnrealTargetPlatform.Win64)

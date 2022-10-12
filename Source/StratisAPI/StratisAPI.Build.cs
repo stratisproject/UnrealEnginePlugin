@@ -33,6 +33,6 @@ public class StratisAPI : ModuleRules
             }
         );
         PCHUsage = PCHUsageMode.NoPCHs;
-        CppStandard = CppStandardVersion.Cpp14;
+        CppStandard = CppStandardVersion.Cpp17;
     }
 }

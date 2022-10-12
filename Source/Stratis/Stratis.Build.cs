@@ -22,6 +22,6 @@ public class Stratis : ModuleRules
             }
             );
 
-        CppStandard = CppStandardVersion.Cpp14;
+        CppStandard = CppStandardVersion.Cpp17;
     }
 }
