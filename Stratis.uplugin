@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"Version": 1,
+	"Version": 2,
 	"VersionName": "1.0",
 	"FriendlyName": "Stratis",
 	"Description": "Official Stratis Blockchain Platform integration plugin for Unreal Engine",
