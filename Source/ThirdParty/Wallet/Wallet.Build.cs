@@ -11,10 +11,16 @@ public class Wallet : ModuleRules
         PublicDependencyModuleNames.AddRange(
             new string[]
             {
-                "Core",
+                "Core"
+            }
+        );
+
+        PrivateDependencyModuleNames.AddRange(
+            new string[]
+            {
                 "Trezor"
             }
-            );
+        );
 
         bUseRTTI = true;
         bEnableExceptions = true;
