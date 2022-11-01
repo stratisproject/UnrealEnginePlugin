@@ -10,6 +10,8 @@ public class Trezor : ModuleRules
 
         Type = ModuleType.External;
         
+        PublicIncludePaths.Add(Path.Combine(ModuleDirectory));
+
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "Libraries", "Release", "Win64", "trezor.lib"));
