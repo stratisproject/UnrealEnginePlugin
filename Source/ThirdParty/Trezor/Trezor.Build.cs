@@ -15,6 +15,9 @@ public class Trezor : ModuleRules
 		if (Target.Platform == UnrealTargetPlatform.Win64)
 		{
 			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "Libraries", "Release", "Win64", "trezor.lib"));
+        } else if (Target.Platform == UnrealTargetPlatform.Mac)
+		{
+			PublicAdditionalLibraries.Add(Path.Combine(ModuleDirectory, "Libraries", "Release", "MacOS", "trezor.a"));
         }
     }
 }
