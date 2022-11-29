@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "1.0",
+	"VersionName": "1.0.2",
 	"FriendlyName": "Stratis",
 	"Description": "Official Stratis Blockchain Platform integration plugin for Unreal Engine",
 	"Category": "Blockchain",
@@ -14,32 +14,32 @@
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": true,
 	"Installed": false,
-	"EngineVersion" : "4.27.0",
-	"WhitelistPlatforms": [ "Win64", "Win32"],
+	"EngineVersion" : "4.27.2",
+	"WhitelistPlatforms": [ "Win64", "Win32", "Mac" ],
 	"Modules": [
 		{
 			"Name": "Stratis",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32" ]
+			"WhitelistPlatforms": [ "Win64", "Win32", "Mac" ]
 		},
 		{
 			"Name": "StratisAPI",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32" ]
+			"WhitelistPlatforms": [ "Win64", "Win32", "Mac" ]
 		},
 		{
 			"Name": "Blockchain",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32" ]
+			"WhitelistPlatforms": [ "Win64", "Win32", "Mac" ]
 		},
 		{
 			"Name": "Wallet",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [ "Win64", "Win32" ]
+			"WhitelistPlatforms": [ "Win64", "Win32", "Mac" ]
 		}
 	]
 }
