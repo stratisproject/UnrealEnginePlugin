@@ -28,7 +28,7 @@ public class StratisAPI : ModuleRules
             new string[]
             {
                 "Core",
-                "Http",
+                "HTTP",
                 "Json",
             }
         );
