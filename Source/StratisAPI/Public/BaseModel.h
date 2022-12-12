@@ -31,7 +31,7 @@ namespace api {
 typedef TSharedRef<TJsonWriter<>> JsonWriter;
 using namespace FHttpRetrySystem;
 
-struct STRATISAPI_API HttpRetryManager : public FManager, public FTSTickerObjectBase {
+struct STRATISAPI_API HttpRetryManager : public FManager, public FTickerObjectBase {
     using FManager::FManager;
 
     bool Tick(float DeltaTime) final;
